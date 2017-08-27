@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<style>
+textarea {
+  display:block;
+  width: 100%;
+  height: 200px;
+}
+</style>
+
+
+<title>FIXED-LENGTH DATA VIEWER</title>
+<h1>FIXED-LENGTH DATA VIEWER</h1>
+<div>Convert fixed length delimited text to TAB delimiter that is easy to paste in Excel.</div>
+<h3>TYPE DEFINE</h3>
+<textarea id="schema">
+名前(全角(10)),
+//コメント行
+年齢(半角(3)),
+</textarea>
+<h3>INPUT</h3>
+<textarea id="data">
+ほげ　　　　　　　　10
+金さん　　　　　　　100
+</textarea>
+<button>RUN</button>
+<h3>OUTPUT</h3>
+<textarea id="result"></textarea>
+
+<script>
+var createOnClickAction = (inputSelectors, outputSelector, action) => {
+  return () => document.querySelector(outputSelector).value = action(inputSelectors.map(v => document.querySelector(v).value))
+}
+
+function convert(args) {
+  var schema = args[0].trim()
+  var data = args[1].trim()
+
+  // convert define text to object
+  // {
+  //    name: column name
+  //    type: 全角 or 半角
+  //    length: text length
+  // }
+  schema = schema
+    .split('\n')
+    .map(v => v.trim())
+    .map(v => v.indexOf('//') != -1 ? v.slice(0, v.indexOf('//')) : v)
+    .filter(v => v.trim().length > 0)
+    .map(v => v.split(')')[0].split('('))
+    .map(v => ({name: v[0].trim(), type: v[1].trim(), length:v[2].trim()}))
+
+  var result = data
+    .split('\n')
+    .map(v => {
+      var i = 0
+      return schema.reduce((memo, s) => {
+        memo.push(v.slice(i, i + s.length).trim())
+        i += s.length
+        return memo
+      }, [])
+    })
+
+  var header = schema.map(v => v.name).join('\t')
+
+  var table = [header]
+  table = result.reduce((memo, v) => {
+    memo.push(v.join('\t'))
+    return memo
+  }, table).join('\n')
+  console.log(table)
+  return table
+}
+
+document.querySelector('button').addEventListener(
+  'click',
+  createOnClickAction(
+    ['#schema', '#data'], // input selectors
+    '#result',            // output selector
+    convert               // convert process
+  )
+)
+</script>
