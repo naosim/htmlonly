@@ -1,30 +1,38 @@
 <!DOCTYPE html>
+<link rel="stylesheet" href="css/skyblue.css">
 <style>
+html {
+  padding: 12px;
+}
 textarea {
   display:block;
   width: 100%;
   height: 200px;
+}
+.description {
+  margin-bottom: 0.5em;
 }
 </style>
 
 
 <title>FIXED-LENGTH DATA VIEWER</title>
 <h1>FIXED-LENGTH DATA VIEWER</h1>
-<div>Convert fixed length delimited text to TAB delimiter that is easy to paste in Excel.</div>
+</div>
+<div class="description">Convert fixed length delimited text to TAB delimiter that is easy to paste in Excel.</div>
 <h3>TYPE DEFINE</h3>
-<textarea id="schema">
+<textarea  class="col" id="schema" class="form-control">
 名前(全角(10)),
 //コメント行
 年齢(半角(3)),
 </textarea>
 <h3>INPUT</h3>
-<textarea id="data">
+<textarea id="data" class="form-control">
 ほげ　　　　　　　　10
 金さん　　　　　　　100
 </textarea>
-<button>RUN</button>
+<button class="btn">RUN</button>
 <h3>OUTPUT</h3>
-<textarea id="result"></textarea>
+<textarea id="result" class="form-control"></textarea>
 
 <script>
 var createOnClickAction = (inputSelectors, outputSelector, action) => {
