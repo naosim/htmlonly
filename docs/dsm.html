@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<title>Design structure matrix</title>
+<style>
+textarea {
+  width: 100%;
+  height: 300px;
+}
+pre, code, textarea {
+  font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
+  font-size: 11px;
+  line-height: 1.2;
+}
+table, th, td {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  line-height: 1.5;
+}
+th, td {
+  padding: 4px;
+}
+.self {
+  background: #ccc;
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<h1>Design structure matrix</h1>
+<div id="app">
+  <table>
+    <tr>
+      <th>CONTROL</th>
+      <th>ID</th>
+      <th>TITLE</th>
+      <th v-for="task in list">{{task.id}}</th>
+    </tr>
+    <tr v-for="(task, i) in list">
+      <td><button @click="up(task, i)">UP</button><button @click="down(task, i)">DOWN</button></td>
+      <td>{{task.id}}</td>
+      <td>{{task.title}}</td>
+      <template v-for="depTask in list">
+        <td v-bind:class="{self:task.id == depTask.id}">{{task.isDependence(depTask) ? 'x' : ''}}</td>
+      </template>
+    </tr>
+  </table>
+  <button @click="save">SAVE</button>
+
+  <h2>input</h2>
+  <textarea v-model="inputText"></textarea>
+  <button @click="apply(inputText)">APPLY</button>
+
+  <h2>output</h2>
+  <pre><code>{{outputText}}</code></pre>
+</div>
+
+<script>
+class Task {
+  constructor(id, title, dependencies) {
+    this.id = id
+    this.title = title
+    this.dependencies = dependencies
+  }
+  isDependence(otherTask) {
+    return this.dependencies.filter(v => v == otherTask.id).length > 0
+  }
+
+  static create(dict) {
+    return new Task(dict.id, dict.title, dict.dep)
+  }
+}
+
+var list = [
+  // new Task("001", "task1", []),
+  // new Task("002", "task2", ["001"]),
+  // new Task("003", "task3", ["001", "002"]),
+]
+
+var inputText = `
+[
+  {id:1, title:"task1", dep:[]},
+  {id:2, title:"task2", dep:[1]},
+  {id:3, title:"task3", dep:[1, 2]}
+]
+`.trim()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!',
+    list: list,
+    inputText: inputText,
+    outputText: ''
+  },
+  methods: {
+    up: function(task, i) {
+      if(i == 0) {
+        return;
+      }
+      var m = list[i - 1]
+      this.$set(list, i - 1, list[i])
+      this.$set(list, i, m)
+    },
+    down: function(task, i) {
+      if(i == list.length - 1) {
+        return;
+      }
+      var m = list[i + 1]
+      this.$set(list, i + 1, list[i])
+      this.$set(list, i, m)
+    },
+    apply: function(inputText) {
+      try {
+        var newList = eval(inputText).map(v => Task.create(v)) 
+      } catch(e) {
+        alert(e)
+        return
+      }
+      
+      newList.forEach(newTask => {
+        var existList = list.filter(v => v.id == newTask.id)
+        // ないものを挿入する
+        if(existList.length == 0) {
+          list.push(newTask)
+        } else {
+          // あるものを更新する
+          existList.forEach(v => {
+            v.id = newTask.id
+            v.title = newTask.title
+            v.dependencies = newTask.dependencies
+          })
+        }
+      })
+
+      // 消えたものを消す
+      var index = 0
+      while(index < list.length) {
+        if(newList.filter(v => v.id == list[index].id).length == 0) {
+          list.splice(index, 1)
+          console.log("delete");
+        } else {
+          index++
+        }
+      }
+    },
+    save: function() {
+      var out = '[\n' + list.map(v => JSON.stringify(v)).join(',\n') + '\n]';
+      this.outputText = out;
+      console.log(out);
+    }
+    
+  }
+})
+
+
+
+</script>
