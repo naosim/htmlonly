@@ -5,18 +5,26 @@ textarea {
   width: 100%;
   height: 300px;
 }
+table {
+  width: 200%;
+}
+th.title {
+  width: 200px;
+}
+th .tate {
+  -webkit-writing-mode: vertical-rl;
+  -ms-writing-mode: tb-rl;
+  writing-mode: vertical-rl;
+}
+
+table tbody td {
+  padding: 4px;
+}
+
 pre, code, textarea {
   font-family: Consolas, 'Courier New', Courier, Monaco, monospace;
   font-size: 11px;
   line-height: 1.2;
-}
-table, th, td {
-  border-collapse: collapse;
-  border: 1px solid #ccc;
-  line-height: 1.5;
-}
-th, td {
-  padding: 4px;
 }
 .self {
   background: #ccc;
@@ -29,8 +37,8 @@ th, td {
     <tr>
       <th>CONTROL</th>
       <th>ID</th>
-      <th>TITLE</th>
-      <th v-for="task in list">{{task.id}}</th>
+      <th class="title">TITLE</th>
+      <th v-for="task in list"><p class="tate">{{task.id}}</p></th>
     </tr>
     <tr v-for="(task, i) in list">
       <td><button @click="up(task, i)">UP</button><button @click="down(task, i)">DOWN</button></td>
@@ -42,9 +50,10 @@ th, td {
     </tr>
   </table>
   <button @click="save">SAVE</button>
+  <button @click="uml">TO PLANTUML</button>
 
   <h2>input</h2>
-  <textarea v-model="inputText"></textarea>
+  <textarea  class="siimple-textarea" v-model="inputText"></textarea>
   <button @click="apply(inputText)">APPLY</button>
 
   <h2>output</h2>
@@ -60,6 +69,9 @@ class Task {
   }
   isDependence(otherTask) {
     return this.dependencies.filter(v => v == otherTask.id).length > 0
+  }
+  toJson() {
+    return JSON.stringify({id:this.id, title:this.title, dep:this.dependencies})
   }
 
   static create(dict) {
@@ -108,12 +120,12 @@ var app = new Vue({
     },
     apply: function(inputText) {
       try {
-        var newList = eval(inputText).map(v => Task.create(v)) 
+        var newList = eval(inputText).map(v => Task.create(v))
       } catch(e) {
         alert(e)
         return
       }
-      
+
       newList.forEach(newTask => {
         var existList = list.filter(v => v.id == newTask.id)
         // ないものを挿入する
@@ -141,11 +153,17 @@ var app = new Vue({
       }
     },
     save: function() {
-      var out = '[\n' + list.map(v => JSON.stringify(v)).join(',\n') + '\n]';
+      var out = '[\n' + list.map(v => v.toJson()).join(',\n') + '\n]';
+      this.outputText = out;
+      console.log(out);
+    },
+    uml: function() {
+      var out = list.map(v => `[${v.title}] as ${v.id}`).join('\n');
+      out += list.map(v => v.dependencies.map(w => `${w} --> ${v.id}`).join('\n')).join('\n');
       this.outputText = out;
       console.log(out);
     }
-    
+
   }
 })
 
