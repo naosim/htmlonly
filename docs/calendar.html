@@ -25,6 +25,7 @@
   }
   .out {
     color: #bbb;
+    background-color: #fafafa;
   }
   .today {
     background: #adf;
@@ -53,7 +54,13 @@ Date.prototype.getDayFromMonday = function() {
 }
 
 var clock = q('.clock');
+var lastMinute;
 function updateClock() {
+  var date = new Date();
+  if(lastMinute && date.getMinutes() == lastMinute) {
+    return;
+  }
+  lastMinute = date.getMinutes();
   clock.innerHTML = new Date().toLocaleTimeString().split(':').slice(0, 2).join(':')
 }
 setInterval(updateClock, 1000);
@@ -62,6 +69,7 @@ updateClock();
 var lastDate = null;
 function updateCalendar(date) {
   if(lastDate && date.toLocaleDateString() == lastDate.toLocaleDateString()) {
+    // 変化がないなら何もしない
     return;
   }
   date = new Date(date);
@@ -108,15 +116,12 @@ function updateCalendar(date) {
   }).join('\n')
 
   q(`#${dateToId(date)}`).className += 'today';
-
-
-  // q('table.calendar>tbody')
-
 }
 
 function dateToId(d) {
   return `d${d.getYear()}_${d.getMonth()}_${d.getDate()}`
 }
 
+setInterval(() => updateCalendar(new Date()), 60 * 1000);
 updateCalendar(new Date())
 </script>
