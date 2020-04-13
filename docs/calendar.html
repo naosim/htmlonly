@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<style>
+  html {
+    color: #333;
+  }
+  .clock {
+    font-size: 64pt;
+    font-weight: bold;
+    text-align: center;
+  }
+  table {
+    width: 100%;
+    border-collapse:  collapse;
+  }
+  th,td {
+    border: solid 1px;
+    border-color: #aaa;
+  }
+  th {
+    background-color: #eff;
+  }
+  td {
+    text-align: center;
+    font-size: 24pt;
+  }
+  .out {
+    color: #bbb;
+  }
+  .today {
+    background: #adf;
+    font-weight: bold;
+  }
+</style>
+
+<div class="clock"></div>
+<table id="calendar" class="calendar">
+  <thead><tr></tr></thead>
+  <tbody>
+
+  </tbody>
+</table>
+
+<script>
+function q(selector) {
+  return document.querySelector(selector)
+}
+function qa(selector) {
+  return document.querySelectorAll(selector)
+}
+
+Date.prototype.getDayFromMonday = function() {
+  return (this.getDay() + 6) % 7;
+}
+
+var clock = q('.clock');
+function updateClock() {
+  clock.innerHTML = new Date().toLocaleTimeString().split(':').slice(0, 2).join(':')
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+var lastDate = null;
+function updateCalendar(date) {
+  if(lastDate && date.toLocaleDateString() == lastDate.toLocaleDateString()) {
+    return;
+  }
+  date = new Date(date);
+  lastDate = new Date(date);
+  var currentMonth = date.getMonth();
+  var startDate = new Date(date.toLocaleDateString())
+  startDate.setDate(1)
+  startDate.setDate(-startDate.getDayFromMonday() + 1)
+
+  var endDate = new Date(date.toLocaleDateString())
+  endDate.setDate(1)
+  endDate.setMonth(endDate.getMonth() + 1)
+  endDate.setDate(0)
+  endDate.setDate(endDate.getDate() + 7 - endDate.getDayFromMonday())
+
+  var d = new Date(startDate);
+
+  var i = 0;
+  var ary = [];
+  while(d.getTime() < endDate.getTime()) {
+    var x = i % 7;
+    var y = Math.floor(i / 7);
+    if(!ary[y]) {
+      ary.push([])
+    }
+    ary[y].push(new Date(d));
+    // console.log(d.toLocaleDateString());
+    d.setDate(d.getDate() + 1);
+    i++;
+  }
+  console.log(ary);
+
+  q('table.calendar>thead>tr').innerHTML = '月火水木金土日'.split('').map(v => `<th>${v}</th>`).join('')
+  q('table.calendar>tbody').innerHTML = ary.map(week => {
+    var html = week.map(d => {
+      if(currentMonth !== d.getMonth()) {
+        return `<td id="${dateToId(d)}" class="out">${d.getDate()}</td>`
+      } else if(d.getDate() == 1) {
+        return `<td id="${dateToId(d)}">${d.getMonth() + 1}/${d.getDate()}</td>`
+      }
+      return `<td id="${dateToId(d)}">${d.getDate()}</td>`
+    }).join('')
+    return `<tr>${html}</tr>`
+  }).join('\n')
+
+  q(`#${dateToId(date)}`).className += 'today';
+
+
+  // q('table.calendar>tbody')
+
+}
+
+function dateToId(d) {
+  return `d${d.getYear()}_${d.getMonth()}_${d.getDate()}`
+}
+
+updateCalendar(new Date())
+</script>
