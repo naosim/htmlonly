@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<head>
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="OGタグメーカー" />
+  <meta property="og:description" content="入力が面倒なOGタグの支援ツールです。
+  " />
+  <meta property="og:url" content="https://naosim.github.io/htmlonly/ogtagmaker.html" />
+  <meta property="og:image" content="https://naosim.github.io/htmlonly/img/og_ogtagmaker" />
+  
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OGタグメーカー" />
+  <meta name="twitter:description" content="入力が面倒なOGタグの支援ツールです。
+  " />
+  <meta name="twitter:image" content="https://naosim.github.io/htmlonly/img/og_ogtagmaker">
+  <meta name="twitter:site" content="@naosim_" />
+
+  <link rel="stylesheet" href="css/skyblue.css">
+  <style>
+    html {
+      margin: 12px;
+    }
+    textarea#outputArea {
+      height: 300px;
+    }
+    label {
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<h1>OGタグメーカー</h1>
+入力が面倒なOGタグの支援ツールです。
+<h2>input</h2>
+<h3>全般</h3>
+<h4>タイトル</h4>
+<input type="text" name="title" class="form-control" />
+
+<h4>説明</h4>
+改行はスペースに変換されます
+<textarea id="description" class="form-control"></textarea>
+
+<h4>URL</h4>
+フルパスで指定してください
+<input type="text" name="url" class="form-control" />
+
+
+<h4>画像URL</h4>
+フルパスで指定してください
+<input type="text" name="image" class="form-control" />
+
+
+<h3>twiter</h3>
+<h4>カード</h4>
+<label><input type="radio" name="tw_card" value="summary_large_image" checked />summary_large_image</label>
+<label><input type="radio" name="tw_card" value="summary"  class="form-control" />summary</label>
+
+<h4>twitter id</h4>
+<input type="text" name="tw_id" class="form-control" />
+
+<button id="runButton" class="btn">生成</button><br>
+<h2>output</h2>
+<textarea id="outputArea" class="form-control"></textarea>
+
+<script>
+function q(selector) {
+  return document.querySelector(selector)
+}
+function qa(selector) {
+  return document.querySelectorAll(selector)
+}
+
+function getCheckedRadio(selector) {
+  var ary = qa(selector);
+  ary.filter = Array.prototype.filter;
+  return ary.filter(v => v.checked)[0]
+}
+
+q('#runButton').addEventListener('click', () => {
+  var data = {
+    title: q('input[name="title"]').value,
+    description: q('#description').value.split('\n').map(v => v.trim()).join(' '),
+    url: q('input[name="url"]').value,
+    image: q('input[name="image"]').value,
+    twitterCard: getCheckedRadio('input[name="tw_card"]').value,
+    twitterId: q('input[name="tw_id"]').value,
+  }
+
+  var text = `
+<meta property="og:type" content="website" />
+<meta property="og:title" content="${data.title}" />
+<meta property="og:description" content="${data.description}" />
+<meta property="og:url" content="${data.url}" />
+<meta property="og:image" content="${data.image}" />
+
+<meta name="twitter:card" content="${data.twitterCard}" />
+<meta name="twitter:title" content="${data.title}" />
+<meta name="twitter:description" content="${data.description}" />
+<meta name="twitter:image" content="${data.image}">
+  `.trim();
+  if(data.twitterId) {
+    text += `\n<meta name="twitter:site" content="${data.twitterId}" />`
+  }
+  q('#outputArea').value = text;
+})
+
+
+
+</script>
