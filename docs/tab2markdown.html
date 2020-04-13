@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<style>
+  textarea {
+    width: 300px;
+    height: 300px;
+  }
+</style>
+
+<h1>TABtoMarkdown</h1>
+タブでインデントされたテキストをmarkdownに変換します。<br>
+xmindのツリー構造をmarkdownに変換する際に便利なツールです。<br>
+<h2>input</h2>
+<textarea id="inputArea">
+  どうぶつ
+	ちょうるい
+		にわとり
+			たまご
+			むねにく
+			すなぎも
+		しちめんしょう
+	ほにゅうるい
+		ぶた
+		うし
+			かるび
+			たん
+</textarea><br>
+最大hレベル: <input name="hlevel" value="2" /><br>
+<button id="runButton">変換</button><br>
+<h2>output</h2>
+<textarea id="outputArea">
+
+</textarea>
+
+<script>
+function q(selector) {
+  return document.querySelector(selector)
+}
+function qa(selector) {
+  return document.querySelectorAll(selector)
+}
+
+q('#runButton').addEventListener('click', () => {
+  var hlevel = parseInt(q('input[name="hlevel"]').value);
+  console.log(hlevel);
+  var text = q('#inputArea').value.trim();
+  text = text.split('\n').map(line => {
+    return line.split('\t').reduce((memo, v, i) => {
+      if(memo.isTabEnd) {
+        memo.text += '\t' + v;
+      } else {
+        if(v.length == 0) {
+          if(i < hlevel) {
+          } else {
+            memo.text += '  ';
+          }
+          
+        } else {
+          if(i < hlevel) {
+            memo.text += Array(i + 1).fill('#').join('') + ' ' + v;
+          } else {
+            memo.text += '- ' + v;
+          }
+          memo.isTabEnd = true;
+        }
+      }
+      return memo;
+    }, {text:'', isTabEnd: false}).text;
+  }).join('\n')
+  console.log(text);
+  q('#outputArea').value = text;
+})
+
+</script>
