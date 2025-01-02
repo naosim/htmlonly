@@ -2,7 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true,
-    "types": [],
+    "types": ["./js/phaser/v3.24.1/phaser.d.ts"],
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "target": "ES6",
