@@ -13,8 +13,11 @@ export class Player {
     // The player and its settings
     const player = this.sprite = scene.physics.add.sprite(100, 450, 'dude');
 
+    player.setSize(16, 28);
+    player.setOffset(8, 20);
+
     //  Player physics properties. Give the little guy a slight bounce.
-    player.setBounce(0.2);
+    // player.setBounce(0.2);
     // player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
