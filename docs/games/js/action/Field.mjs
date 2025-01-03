@@ -30,7 +30,7 @@ export class Field {
     const back = defined(map.createLayer("mario_background", tileset, 0, 0));
     back.setScale(Field.scale);
 
-    const groundLayer = this.platforms = defined(map.createLayer("mario_layer1", tileset, 0, 0));
+    const groundLayer = this.gameObject = defined(map.createLayer("mario_layer1", tileset, 0, 0));
     groundLayer.setCollisionByProperty({ collides: true });
     groundLayer.setScale(Field.scale);
 
