@@ -1,11 +1,11 @@
-import { defined } from "./lib.mjs";
+import { defined } from "../../js/lib.mjs";
 
 export class Field {
   gameObject;
   static scale = 2;
   preload(scene) {
-    scene.load.image("mario_map", "./assets/mario_map.png");
-    const a = scene.load.tilemapTiledJSON('map', './assets/mario.json');
+    scene.load.image("mario_map", "../assets/mario_map.png");
+    const a = scene.load.tilemapTiledJSON('map', '../assets/mario.json');
     console.log(a);
   }
   create(/** @type {Phaser.Scene} */ scene) {

@@ -13,7 +13,7 @@ export class Stars {
     return this.count === 0;
   }
   preload(/** @type {Phaser.Scene}*/ scene) {
-    scene.load.image('star', 'assets/star.png');
+    scene.load.image('star', '../assets/star.png');
   }
   create(/** @type {Phaser.Scene}*/ scene) {
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis

@@ -15,20 +15,22 @@ export class ActionGameScene extends Phaser.Scene {
   field = new Field();
   subScene = [this.field, this.player, this.stars, this.bombs, this.score];
   /** @type {number} */
+  // @ts-ignore
   gameWidth;
   constructor() {
     super({ key: 'ActionGameScene' });
-    this.gameWidth = 800;
   }
 
   preload() {
     const scene = this;
-    this.load.image('sky', 'assets/sky.png');
+    this.load.image('sky', '../assets/sky.png');
     this.subScene.forEach((sub) => sub.preload(scene));
   }
 
   create() {
     const scene = this;
+    // @ts-ignore
+    this.gameWidth = scene.game.config.width;
     //  A simple background for our game
     scene.add.image(400, 300, 'sky');
 

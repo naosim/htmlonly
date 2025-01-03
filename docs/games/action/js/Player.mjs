@@ -6,7 +6,7 @@ export class Player {
   // @ts-ignore
   cursors;
   preload(/** @type {Phaser.Scene}*/ scene) {
-    scene.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+    scene.load.spritesheet('dude', '../assets/dude.png', { frameWidth: 32, frameHeight: 48 });
   }
 
   create(/** @type {Phaser.Scene}*/ scene) {

@@ -6,7 +6,7 @@ export class Bombs {
   // @ts-ignore lateinit
   gameObject;
   preload(/** @type {Phaser.Scene}*/ scene) {
-    scene.load.image('bomb', 'assets/bomb.png');
+    scene.load.image('bomb', '../assets/bomb.png');
   }
   create(/** @type {Phaser.Scene}*/ scene) {
     this.gameObject = scene.physics.add.group();
