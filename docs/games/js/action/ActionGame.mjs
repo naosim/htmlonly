@@ -20,13 +20,13 @@ export function defined(obj) {
 export class ActionGame {
   gameOver = false;
   game;
-  playerSprite = new Player();
-  starsGroup = new Stars();
-  bombsGroup = new Bombs();
+  player = new Player();
+  stars = new Stars();
+  bombs = new Bombs();
   // platformGroup = new Platform();
-  scoreSprite = new Score();
+  score = new Score();
   field = new Field();
-  subScene = [this.field, this.playerSprite, this.starsGroup, this.bombsGroup, this.scoreSprite];
+  subScene = [this.field, this.player, this.stars, this.bombs, this.score];
   /** @type {Phaser.Scene} */
   // @ts-ignore
   scene;
@@ -58,36 +58,36 @@ export class ActionGame {
     this.subScene.forEach((sub) => sub.create(scene));
 
     // 地面との衝突
-    [this.playerSprite.sprite, this.starsGroup.group, this.bombsGroup.group]
+    [this.player.sprite, this.stars.group, this.bombs.group]
       .forEach(v => scene.physics.add.collider(v, this.field.platforms));
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-    scene.physics.add.overlap(this.playerSprite.sprite,  this.starsGroup.group, (a, b) => this.collectStar(a, b), undefined, scene);
-    scene.physics.add.collider(this.playerSprite.sprite, this.bombsGroup.group, (a, b) => this.hitBomb(a, b), undefined, scene);
+    scene.physics.add.overlap(this.player.sprite,  this.stars.group, (a, b) => this.collectStar(a, b), undefined, scene);
+    scene.physics.add.collider(this.player.sprite, this.bombs.group, (a, b) => this.hitBomb(a, b), undefined, scene);
   }
 
   update(/** @type {Phaser.Scene}*/ scene) {
     if (this.gameOver) {
       return;
     }
-    this.playerSprite.update(scene);
+    this.player.update(scene);
   }
 
   collectStar(player, star) {
-    this.starsGroup.hitPlayer(star);
+    this.stars.hitPlayer(star);
 
     //  Add and update the score
-    this.scoreSprite.add(10);
+    this.score.add(10);
 
-    if (this.starsGroup.isEmpty) {
-      this.starsGroup.reset();
+    if (this.stars.isEmpty) {
+      this.stars.reset();
       var x = (player.x < this.gameWidth / 2) ? Phaser.Math.Between(this.gameWidth / 2, this.gameWidth) : Phaser.Math.Between(0, this.gameWidth / 2);
-      this.bombsGroup.add({ x });
+      this.bombs.add({ x });
     }
   }
 
 
   hitBomb(player, bomb) {
-    this.playerSprite.hitBomb();
+    this.player.hitBomb();
     this.scene.physics.pause();
     this.gameOver = true;
   }
