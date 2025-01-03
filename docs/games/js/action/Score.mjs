@@ -4,7 +4,7 @@ export class Score {
   preload(scene) {
   }
   create(scene) {
-    this.gameObject = scene.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+    this.gameObject = scene.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);;
   }
 
   add(/** @type {number}*/ point) {
