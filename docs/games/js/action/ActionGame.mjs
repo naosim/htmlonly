@@ -57,11 +57,9 @@ export class ActionGame {
 
     this.subScene.forEach((sub) => sub.create(scene));
 
-    //  Collide the player and the stars with the platforms
-    // scene.physics.add.collider(this.playerSprite.sprite, this.platformGroup.group);
-    scene.physics.add.collider(this.starsGroup.group,    this.field.platforms);
-    scene.physics.add.collider(this.bombsGroup.group,    this.field.platforms);
-    scene.physics.add.collider(this.playerSprite.sprite, this.field.platforms);
+    // 地面との衝突
+    [this.playerSprite.sprite, this.starsGroup.group, this.bombsGroup.group]
+      .forEach(v => scene.physics.add.collider(v, this.field.platforms));
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     scene.physics.add.overlap(this.playerSprite.sprite,  this.starsGroup.group, (a, b) => this.collectStar(a, b), undefined, scene);
     scene.physics.add.collider(this.playerSprite.sprite, this.bombsGroup.group, (a, b) => this.hitBomb(a, b), undefined, scene);
