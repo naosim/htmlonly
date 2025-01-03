@@ -1,4 +1,6 @@
 export class Player {
+  /** @type {Phaser.Types.Physics.Arcade.SpriteWithDynamicBody} */
+  // @ts-ignore
   sprite;
   /** @type {Phaser.Types.Input.Keyboard.CursorKeys} */
   // @ts-ignore
@@ -41,9 +43,10 @@ export class Player {
       throw new Error('scene.input.keyboard is undefined');
     }
     this.cursors = scene.input.keyboard.createCursorKeys();
+    scene.cameras.main.setZoom(1.6, 1.6);
   }
 
-  update() {
+  update(/** @type {Phaser.Scene}*/ scene) {
     if (this.cursors.left.isDown) {
       this.sprite.setVelocityX(-160);
       this.sprite.anims.play('left', true);
@@ -56,9 +59,10 @@ export class Player {
       this.sprite.anims.play('turn');
     }
 
-    if (this.cursors.up.isDown && this.sprite.body.touching.down) {
+    if (this.cursors.up.isDown && (this.sprite.body.touching.down || this.sprite.body.blocked.down)) {
       this.sprite.setVelocityY(-330);
     }
+    scene.cameras.main.centerOn(this.sprite.x, this.sprite.y);
   }
 
   hitBomb() {

@@ -5,6 +5,47 @@ import { Score } from "./Score.mjs";
 import { Stars } from "./Stars.mjs";
 // @ts-ignore
 export const Phaser = window.Phaser;
+
+class Field {
+  platforms;
+  preload(scene) {
+    scene.load.image("mario-tiles", "./assets/mario_map.png");
+  }
+  create(/** @type {Phaser.Scene} */ scene) {
+    const level = [
+      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
+      [  0,   1,   2,   3,   0,   0,   0,   1,   2,   3,   0 ],
+      [  0,   5,   6,   7,   0,   0,   0,   5,   6,   7,   0 ],
+      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
+      [  0,   0,   0,  14,  13,  14,   0,   0,   0,   0,   0 ],
+      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
+      [  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0 ],
+      [  0,   0,  14,  14,  14,  14,  14,   0,   0,   0,  15 ],
+      [  0,   0,   0,   0,   0,   0,   0,   0,   0,  15,  15 ],
+      [ 35,  36,  37,   0,   0,   0,   0,   0,  15,  15,  15 ],
+      [ 39,  39,  39,  39,  39,  39,  39,  39,  39,  39,  39 ]
+    ];
+  
+    // When loading from an array, make sure to specify the tileWidth and tileHeight
+    const map = scene.make.tilemap({ data: level, tileWidth: 16, tileHeight: 16 });
+    const tileset = defined(map.addTilesetImage("mario-tiles"));
+    const groundLayer = this.platforms = defined(map.createLayer(0, tileset, 0, 0));
+    groundLayer.setCollisionByProperty({ collides: true });
+    groundLayer.setScale(2, 2);
+    map.setCollisionBetween(10, 100);
+  }
+}
+
+/**
+ * @template T
+ * @param {T | undefined | null} obj 
+ * @returns {T}
+ */
+function defined(obj) {
+  // @ts-ignore
+  return obj;
+}
+
 export class ActionGame {
   gameOver = false;
   game;
@@ -13,7 +54,8 @@ export class ActionGame {
   bombsGroup = new Bombs();
   platformGroup = new Platform();
   scoreSprite = new Score();
-  subScene = [this.platformGroup, this.playerSprite, this.starsGroup, this.bombsGroup, this.scoreSprite];
+  field = new Field();
+  subScene = [this.platformGroup, this.field, this.playerSprite, this.starsGroup, this.bombsGroup, this.scoreSprite];
   /** @type {Phaser.Scene} */
   // @ts-ignore
   scene;
@@ -48,17 +90,17 @@ export class ActionGame {
     scene.physics.add.collider(this.playerSprite.sprite, this.platformGroup.group);
     scene.physics.add.collider(this.starsGroup.group,    this.platformGroup.group);
     scene.physics.add.collider(this.bombsGroup.group,    this.platformGroup.group);
-
+    scene.physics.add.collider(this.playerSprite.sprite, this.field.platforms);
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     scene.physics.add.overlap(this.playerSprite.sprite,  this.starsGroup.group, (a, b) => this.collectStar(a, b), undefined, scene);
     scene.physics.add.collider(this.playerSprite.sprite, this.bombsGroup.group, (a, b) => this.hitBomb(a, b), undefined, scene);
   }
 
-  update() {
+  update(/** @type {Phaser.Scene}*/ scene) {
     if (this.gameOver) {
       return;
     }
-    this.playerSprite.update();
+    this.playerSprite.update(scene);
   }
 
   collectStar(player, star) {

@@ -15,8 +15,9 @@ const config = {
   scene: {
       preload: function() { actionGame.preload(this) },
       create: function() { actionGame.create(this) },
-      update: function() { actionGame.update() }
-  }
+      update: function() { actionGame.update(this) }
+  },
+  pixelArt: true,
 };
 
 const game = new Phaser.Game(config);
