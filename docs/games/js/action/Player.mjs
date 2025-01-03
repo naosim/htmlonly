@@ -46,7 +46,8 @@ export class Player {
       throw new Error('scene.input.keyboard is undefined');
     }
     this.cursors = scene.input.keyboard.createCursorKeys();
-    scene.cameras.main.setZoom(1.6, 1.6);
+    //scene.cameras.main.setZoom(1.6, 1.6);
+    // scene.cameras.main.startFollow(this.gameObject);
   }
 
   update(/** @type {Phaser.Scene}*/ scene) {
