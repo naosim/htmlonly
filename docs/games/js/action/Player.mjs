@@ -1,7 +1,7 @@
 export class Player {
   /** @type {Phaser.Types.Physics.Arcade.SpriteWithDynamicBody} */
   // @ts-ignore
-  sprite;
+  gameObject;
   /** @type {Phaser.Types.Input.Keyboard.CursorKeys} */
   // @ts-ignore
   cursors;
@@ -11,7 +11,7 @@ export class Player {
 
   create(/** @type {Phaser.Scene}*/ scene) {
     // The player and its settings
-    const player = this.sprite = scene.physics.add.sprite(100, 450, 'dude');
+    const player = this.gameObject = scene.physics.add.sprite(100, 450, 'dude');
 
     player.setSize(16, 28);
     player.setOffset(8, 20);
@@ -51,25 +51,25 @@ export class Player {
 
   update(/** @type {Phaser.Scene}*/ scene) {
     if (this.cursors.left.isDown) {
-      this.sprite.setVelocityX(-160);
-      this.sprite.anims.play('left', true);
+      this.gameObject.setVelocityX(-160);
+      this.gameObject.anims.play('left', true);
     }
     else if (this.cursors.right.isDown) {
-      this.sprite.setVelocityX(160);
-      this.sprite.anims.play('right', true);
+      this.gameObject.setVelocityX(160);
+      this.gameObject.anims.play('right', true);
     } else {
-      this.sprite.setVelocityX(0);
-      this.sprite.anims.play('turn');
+      this.gameObject.setVelocityX(0);
+      this.gameObject.anims.play('turn');
     }
 
-    if (this.cursors.up.isDown && (this.sprite.body.touching.down || this.sprite.body.blocked.down)) {
-      this.sprite.setVelocityY(-330);
+    if (this.cursors.up.isDown && (this.gameObject.body.touching.down || this.gameObject.body.blocked.down)) {
+      this.gameObject.setVelocityY(-330);
     }
-    scene.cameras.main.centerOn(this.sprite.x, this.sprite.y);
+    scene.cameras.main.centerOn(this.gameObject.x, this.gameObject.y);
   }
 
   hitBomb() {
-    this.sprite.setTint(0xff0000);
-    this.sprite.anims.play('turn');
+    this.gameObject.setTint(0xff0000);
+    this.gameObject.anims.play('turn');
   }
 }

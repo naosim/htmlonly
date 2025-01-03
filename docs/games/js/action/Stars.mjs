@@ -2,20 +2,22 @@
 export const Phaser = window.Phaser;
 
 export class Stars {
-  group;
+  /** @type {Phaser.Physics.Arcade.Group} */
+  // @ts-ignore
+  gameObject;
   get count() {
-    return this.group.countActive(true);
+    return this.gameObject.countActive(true);
   }
   get isEmpty() {
     console.log('isEmpty', this.count);
     return this.count === 0;
   }
-  preload(scene) {
+  preload(/** @type {Phaser.Scene}*/ scene) {
     scene.load.image('star', 'assets/star.png');
   }
-  create(scene) {
+  create(/** @type {Phaser.Scene}*/ scene) {
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
-    this.group = scene.physics.add.group({
+    this.gameObject = scene.physics.add.group({
       key: 'star',
       repeat: 11,
       setXY: { x: 12, y: 0, stepX: 70 }
@@ -28,7 +30,7 @@ export class Stars {
     });
   }
   forEach(cb) {
-    this.group.children.iterate(cb);
+    this.gameObject.children.iterate(cb);
   }
   reset() {
     this.forEach((child) => {

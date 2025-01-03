@@ -1,7 +1,7 @@
 import { defined } from "./ActionGame.mjs";
 
 export class Field {
-  platforms;
+  gameObject;
   static scale = 2;
   preload(scene) {
     scene.load.image("mario_map", "./assets/mario_map.png");
@@ -33,7 +33,7 @@ export class Field {
     const groundLayer = this.platforms = defined(map.createLayer("mario_layer1", tileset, 0, 0));
     groundLayer.setCollisionByProperty({ collides: true });
     groundLayer.setScale(Field.scale);
-    
+
     map.setCollisionBetween(10, 100);
   }
 }
