@@ -1,4 +1,4 @@
-import { ActionGame } from "./ActionGame.mjs";
+import { ActionGameScene } from "./ActionGame.mjs";
 
 /** @type {Phaser.Types.Core.GameConfig} */
 const config = {
@@ -12,13 +12,8 @@ const config = {
           debug: false
       }
   },
-  scene: {
-      preload: function() { actionGame.preload(this) },
-      create: function() { actionGame.create(this) },
-      update: function() { actionGame.update(this) }
-  },
+  scene: [ ActionGameScene ],
   pixelArt: true,
 };
 
 const game = new Phaser.Game(config);
-const actionGame = new ActionGame({game});

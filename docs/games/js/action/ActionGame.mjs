@@ -16,40 +16,33 @@ export function defined(obj) {
   return obj;
 }
 
-export class ActionGame {
+export class ActionGameScene extends Phaser.Scene {
   gameOver = false;
-  game;
   player = new Player();
   stars = new Stars();
   bombs = new Bombs();
   score = new Score();
   field = new Field();
   subScene = [this.field, this.player, this.stars, this.bombs, this.score];
-  /** @type {Phaser.Scene} */
-  // @ts-ignore
-  scene;
   /** @type {number} */
   gameWidth;
-
-  /**
-   *
-   * @param {{game:Phaser.Game}} param
-   */
-  constructor({ game }) {
-    this.game = game;
-    if (typeof game.config.width === "string") {
-      throw new Error('game.config.width is string');
-    }
-    this.gameWidth = game.config.width;
+  constructor() {
+    super({ key: 'ActionGameScene' });
+    // if (typeof this.game.config.width === "string") {
+    //   throw new Error('game.config.width is string');
+    // }
+    this.gameWidth = 800;
+    
   }
 
-  preload(/** @type {Phaser.Scene} */ scene) {
-    this.scene = scene;
-    scene.load.image('sky', 'assets/sky.png');
+  preload() {
+    const scene = this;
+    this.load.image('sky', 'assets/sky.png');
     this.subScene.forEach((sub) => sub.preload(scene));
   }
 
-  create(/** @type {Phaser.Scene} */ scene) {
+  create() {
+    const scene = this;
     //  A simple background for our game
     scene.add.image(400, 300, 'sky');
 
@@ -63,12 +56,14 @@ export class ActionGame {
     scene.physics.add.collider(this.player.gameObject, this.bombs.gameObject, (a, b) => this.hitBomb(a, b), undefined, scene);
   }
 
-  update(/** @type {Phaser.Scene}*/ scene) {
+  update() {
+    const scene = this;
     if (this.gameOver) {
       return;
     }
     this.player.update(scene);
   }
+
 
   collectStar(player, star) {
     this.stars.hitPlayer(star);
