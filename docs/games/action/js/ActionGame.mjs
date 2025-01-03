@@ -8,40 +8,33 @@ export const Phaser = window.Phaser;
 
 export class ActionGameScene extends Phaser.Scene {
   gameOver = false;
+  background = new Background();
   player = new Player();
-  stars = new Stars();
-  bombs = new Bombs();
+  items = new Stars();
+  enemies = new Bombs();
   score = new Score();
   field = new Field();
-  subScene = [this.field, this.player, this.stars, this.bombs, this.score];
-  /** @type {number} */
-  // @ts-ignore
-  gameWidth;
-  constructor() {
-    super({ key: 'ActionGameScene' });
+  subScene = [this.background, this.field, this.player, this.items, this.enemies, this.score];
+  constructor(args) {
+    const key = args && args.key ? args.key : 'ActionGameScene';
+    super({ key });
   }
 
   preload() {
     const scene = this;
-    this.load.image('sky', '../assets/sky.png');
     this.subScene.forEach((sub) => sub.preload(scene));
   }
 
   create() {
     const scene = this;
-    // @ts-ignore
-    this.gameWidth = scene.game.config.width;
-    //  A simple background for our game
-    scene.add.image(400, 300, 'sky');
-
     this.subScene.forEach((sub) => sub.create(scene));
 
     // 地面との衝突
-    [this.player.gameObject, this.stars.gameObject, this.bombs.gameObject]
+    [this.player.gameObject, this.items.gameObject, this.enemies.gameObject]
       .forEach(v => scene.physics.add.collider(v, this.field.gameObject));
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-    scene.physics.add.overlap(this.player.gameObject,  this.stars.gameObject, (a, b) => this.collectStar(a, b), undefined, scene);
-    scene.physics.add.collider(this.player.gameObject, this.bombs.gameObject, (a, b) => this.hitBomb(a, b), undefined, scene);
+    scene.physics.add.overlap(this.player.gameObject,  this.items.gameObject, (a, b) => this.onHitItem(a, b), undefined, scene);
+    scene.physics.add.collider(this.player.gameObject, this.enemies.gameObject, (a, b) => this.onHitBomb(a, b), undefined, scene);
   }
 
   update() {
@@ -51,26 +44,35 @@ export class ActionGameScene extends Phaser.Scene {
     }
     this.player.update(scene);
   }
+  
 
 
-  collectStar(player, star) {
-    this.stars.hitPlayer(star);
+  onHitItem(player, item) {
+    this.items.hitPlayer(item);
 
     //  Add and update the score
     this.score.add(10);
 
-    if (this.stars.isEmpty) {
-      this.stars.reset();
-      var x = (player.x < this.gameWidth / 2) ? Phaser.Math.Between(this.gameWidth / 2, this.gameWidth) : Phaser.Math.Between(0, this.gameWidth / 2);
-      this.bombs.add({ x });
+    if (this.items.isEmpty) {
+      this.items.reset();
+      this.enemies.add(player.x);
     }
   }
 
 
-  hitBomb(player, bomb) {
+  onHitBomb(player, bomb) {
     const scene = this;
     this.player.hitBomb();
     scene.physics.pause();
     this.gameOver = true;
+  }
+}
+
+class Background {
+  preload(scene) {
+    scene.load.image('sky', '../assets/sky.png');
+  }
+  create(scene) {
+    scene.add.image(400, 300, 'sky');
   }
 }
