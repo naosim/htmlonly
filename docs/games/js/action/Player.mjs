@@ -15,7 +15,7 @@ export class Player {
 
     //  Player physics properties. Give the little guy a slight bounce.
     player.setBounce(0.2);
-    player.setCollideWorldBounds(true);
+    // player.setCollideWorldBounds(true);
 
     //  Our player animations, turning, walking left and walking right.
     scene.anims.create({
