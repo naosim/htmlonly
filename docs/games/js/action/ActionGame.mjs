@@ -6,16 +6,6 @@ import { Stars } from "./Stars.mjs";
 // @ts-ignore
 export const Phaser = window.Phaser;
 
-/**
- * @template T
- * @param {T | undefined | null} obj 
- * @returns {T}
- */
-export function defined(obj) {
-  // @ts-ignore
-  return obj;
-}
-
 export class ActionGameScene extends Phaser.Scene {
   gameOver = false;
   player = new Player();
@@ -28,11 +18,7 @@ export class ActionGameScene extends Phaser.Scene {
   gameWidth;
   constructor() {
     super({ key: 'ActionGameScene' });
-    // if (typeof this.game.config.width === "string") {
-    //   throw new Error('game.config.width is string');
-    // }
     this.gameWidth = 800;
-    
   }
 
   preload() {
@@ -80,8 +66,9 @@ export class ActionGameScene extends Phaser.Scene {
 
 
   hitBomb(player, bomb) {
+    const scene = this;
     this.player.hitBomb();
-    this.scene.physics.pause();
+    scene.physics.pause();
     this.gameOver = true;
   }
 }

@@ -1,4 +1,4 @@
-import { defined } from "./ActionGame.mjs";
+import { defined } from "./lib.mjs";
 
 export class Field {
   gameObject;
