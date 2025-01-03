@@ -1,4 +1,5 @@
 import { ActionGameScene } from "./ActionGame.mjs";
+import { Stage1 } from "./Stage1.mjs";
 
 /** @type {Phaser.Types.Core.GameConfig} */
 const config = {
@@ -12,7 +13,7 @@ const config = {
           debug: false
       }
   },
-  scene: [ ActionGameScene ],
+  scene: [ Stage1 ],
   pixelArt: true,
 };
 
