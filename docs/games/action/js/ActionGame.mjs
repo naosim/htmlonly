@@ -1,15 +1,29 @@
 import { ActionGameLoader } from "./ActionGameLoader.mjs";
-import { Player } from "./Player.mjs";
-import { Score } from "./Score.mjs";
-// @ts-ignore
-export const Phaser = window.Phaser;
+
+export const defaultConfig = {
+  type: Phaser.AUTO,
+  width: 800,
+  height: 600,
+  physics: {
+      default: 'arcade',
+      arcade: {
+          gravity: { x:0, y: 300 },
+          debug: false
+      }
+  },
+  /*scene: [ Stage1 ],*/
+  pixelArt: true,
+};
+
+export function main(sceneClass) {
+  const config = {...defaultConfig, scene: [ sceneClass ]}
+  new Phaser.Game(config);
+}
 
 /** @abstract */
 export class ActionGameScene extends Phaser.Scene {
   gameOver = false;
   actionGameLoader = new ActionGameLoader();
-  player = new Player();
-  score = new Score();
   /** @abstract */
   subScene;
   constructor(args) {
@@ -18,25 +32,20 @@ export class ActionGameScene extends Phaser.Scene {
   }
 
   preload() {
-    if(this.subScene === undefined) {
-      throw new Error('subScene is not defined');
-    }
-    const scene = this;
-    this.actionGameLoader.preload(scene);
-    // this.subScene.forEach((sub) => {if(sub.preload) sub.preload(scene)});
+    this.actionGameLoader.preload(this);
   }
 
   create() {
-    const scene = this;
-    this.subScene.forEach((sub) => sub.create(scene));
+    if(this.subScene === undefined) {
+      throw new Error('subScene is not defined');
+    }
+    this.subScene.forEach((sub) => sub.create(this));
   }
 
   update() {
-    const scene = this;
     if (this.gameOver) {
       return;
     }
-    // @ts-ignore
-    this.subScene.forEach((sub) => {if(sub.update) sub.update(scene)});
+    this.subScene.forEach((sub) => {if(sub.update) sub.update(this)});
   }
 }

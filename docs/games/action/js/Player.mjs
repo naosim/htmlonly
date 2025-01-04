@@ -7,6 +7,7 @@ export class Player {
   cursors;
   create(/** @type {Phaser.Scene}*/ scene) {
     // The player and its settings
+    // const player = this.gameObject = scene.physics.add.sprite(100, 450, 'dude');
     const player = this.gameObject = scene.physics.add.sprite(100, 450, 'dude');
 
     player.setSize(16, 28);

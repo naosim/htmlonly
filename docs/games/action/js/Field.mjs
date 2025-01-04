@@ -18,3 +18,4 @@ export class Field {
     map.setCollisionBetween(10, 100);
   }
 }
+

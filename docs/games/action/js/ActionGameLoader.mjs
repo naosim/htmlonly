@@ -1,20 +1,33 @@
+export const AssetKeys = {
+  sky: 'sky',
+  bomb: 'bomb',
+  ground: 'ground',
+  star: 'star',
+  mario_map: 'mario_map',
+  map: 'map',
+  dude: "dude"
+};
+
+
 export class ActionGameLoader {
   images = {
-    sky: '../assets/sky.png',
-    bomb: '../assets/bomb.png',
-    ground: '../assets/platform.png',
-    star: '../assets/star.png',
-    mario_map: '../assets/mario_map.png',
+    [AssetKeys.sky]: '../assets/sky.png',
+    [AssetKeys.bomb]: '../assets/bomb.png',
+    [AssetKeys.ground]: '../assets/platform.png',
+    [AssetKeys.star]: '../assets/star.png',
+    [AssetKeys.mario_map]: '../assets/mario_map.png',
   };
   tilemap = {
-    map: '../assets/mario.json',
+    [AssetKeys.map]: '../assets/mario.json',
   };
-  dude = "dude";
-  constructor() {
+  spritesheet = {
+    [AssetKeys.dude]: {path: "../assets/dude.png", frameConfig: { frameWidth: 32, frameHeight: 48 }}
   }
+  
   preload(/** @type {Phaser.Scene}*/ scene) {
-    scene.load.spritesheet(this.dude, "../assets/dude.png", { frameWidth: 32, frameHeight: 48 });
+    Object.keys(this.spritesheet).forEach(k => scene.load.spritesheet(k, this.spritesheet[k].path, this.spritesheet[k].frameConfig));
     Object.keys(this.images).forEach(k => scene.load.image(k, this.images[k]));
     Object.keys(this.tilemap).forEach(k => scene.load.tilemapTiledJSON(k, this.tilemap[k]));
   }
 }
+
