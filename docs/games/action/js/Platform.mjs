@@ -1,8 +1,5 @@
 export class Platform {
   group;
-  preload(scene) {
-    scene.load.image('ground', '../assets/platform.png');
-  }
   create(scene) {
     //  The platforms group contains the ground and the 2 ledges we can jump on
     const group = this.group = scene.physics.add.staticGroup();

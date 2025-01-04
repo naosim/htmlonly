@@ -12,9 +12,6 @@ export class Stars {
     console.log('isEmpty', this.count);
     return this.count === 0;
   }
-  preload(/** @type {Phaser.Scene}*/ scene) {
-    scene.load.image('star', '../assets/star.png');
-  }
   create(/** @type {Phaser.Scene}*/ scene) {
     //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
     this.gameObject = scene.physics.add.group({
