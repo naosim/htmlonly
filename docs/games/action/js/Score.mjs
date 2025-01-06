@@ -1,8 +1,7 @@
 export class Score {
   value = 0;
   gameObject;
-  preload(scene) {
-  }
+
   create(scene) {
     this.gameObject = scene.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' }).setScrollFactor(0);;
   }

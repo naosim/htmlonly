@@ -5,13 +5,10 @@ export class Player {
   /** @type {Phaser.Types.Input.Keyboard.CursorKeys} */
   // @ts-ignore
   cursors;
-  preload(/** @type {Phaser.Scene}*/ scene) {
-    scene.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-  }
-
   create(/** @type {Phaser.Scene}*/ scene) {
     // The player and its settings
-    const player = this.gameObject = scene.physics.add.sprite(100, 450, 'dude');
+    // const player = this.gameObject = scene.physics.add.sprite(100, 450, 'dude');
+    const player = this.gameObject = scene.physics.add.sprite(100, 50, 'dude');
 
     player.setSize(16, 28);
     player.setOffset(8, 20);
