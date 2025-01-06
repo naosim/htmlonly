@@ -2,7 +2,7 @@ import { defined } from "../../js/lib.mjs";
 
 export class Field {
   gameObject;
-  static scale = 2;
+  static scale = 1.6;
   create(/** @type {Phaser.Scene} */ scene) {
     // When loading from an array, make sure to specify the tileWidth and tileHeight
     const map = scene.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
