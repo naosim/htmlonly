@@ -2,13 +2,14 @@ import { ActionGameScene } from "./ActionGame.mjs";
 import { Background } from "./Background.mjs";
 import { Bombs } from "./Bombs.mjs";
 import { Field } from "./Field.mjs";
+import { Player } from "./Player.mjs";
 import { PlayerRect } from "./PlayerRect.mjs";
 import { Score } from "./Score.mjs";
 import { Stars } from "./Stars.mjs";
 
 
 export class StageSample extends ActionGameScene {
-  player = new PlayerRect();
+  player = new Player();
   score = new Score();
   background = new Background();
   items = new Stars();

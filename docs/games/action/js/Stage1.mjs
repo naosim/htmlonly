@@ -1,9 +1,9 @@
 import { ActionGameScene } from "./ActionGame.mjs";
 import { Field1 } from "./Field1.mjs";
-import { PlayerRect } from "./PlayerRect.mjs";
+import { Player } from "./Player.mjs";
 
 export class Stage1 extends ActionGameScene {
-  player = new PlayerRect();
+  player = new Player();
   field = new Field1();
   subScene = [this.field, this.player];
   constructor() {

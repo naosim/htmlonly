@@ -8,7 +8,7 @@ export class Player {
   create(/** @type {Phaser.Scene}*/ scene) {
     // The player and its settings
     // const player = this.gameObject = scene.physics.add.sprite(100, 450, 'dude');
-    const player = this.gameObject = scene.physics.add.sprite(100, 450, 'dude');
+    const player = this.gameObject = scene.physics.add.sprite(100, 50, 'dude');
 
     player.setSize(16, 28);
     player.setOffset(8, 20);
