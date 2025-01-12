@@ -1,0 +1,58 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>Actions</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/androidstudio.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/highlightjs-line-numbers.js@2.9.0/dist/highlightjs-line-numbers.min.js"></script>
+
+    
+    <script src="../js/libs/phaser/v3.87.0/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>アクションゲーム</h1>
+<div id="phaser-example"></div>
+<h2>ソースコード</h2>
+<div><pre><code class="language-js"></code></pre></div>
+<script id="gameScript">
+
+</script>
+
+<script>
+function getJsName() {
+  if(location.href.indexOf("jsname=") == -1) {
+    throw new Error("jsnameがない");
+  }
+  const result = location.href.split("jsname=")[1].split("&")[0];
+  console.log(result);
+  return result;
+}
+const jsName = getJsName();
+fetch(`./${jsName}.js`).then(res => {
+  res.text().then(script => {
+    // jsを実行
+    eval(script);
+
+    // ソースコードを表示
+    document.querySelector("code").innerHTML = script;
+    hljs.highlightAll();
+    hljs.initLineNumbersOnLoad();
+
+    // タイトル表示
+    if(script.indexOf("// title: ") != -1) {
+      const title = script.split("// title: ")[1].split("\n")[0].trim();
+      document.title = title;
+      document.querySelector("h1").innerText = title;
+    }
+  });
+})
+</script>
+</body>
+</html>
