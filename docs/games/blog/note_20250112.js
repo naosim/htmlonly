@@ -1,4 +1,4 @@
-// title: アクションゲームステージ
+// title: アクションゲーム 動く床
 
 
 /** 
@@ -61,14 +61,13 @@ var game = new Phaser.Game(config);
 function preload() {}
 function create() {
   player.create(this);
-  const platforms = createPlatforms_正しい_Groupを使う(this);
+  const platforms = createPlatforms(this);
 
   this.physics.add.collider(player.gameObject, platforms);
 }
 var movingObject;
-function createPlatforms_正しい_Groupを使う(scene) {
-  movingObject = scene.physics.add.existing(scene.add.rectangle(200, 300, 40, 16, 0x0000ff));
-  
+function createPlatforms(scene) {
+  movingObject = scene.physics.add.existing(scene.add.rectangle(200, 300, 40, 16, 0x00ffff));
 
   const platforms = scene.physics.add.group([
     scene.physics.add.existing(scene.add.rectangle(100, 360, 100, 16, 0x0000ff)),
@@ -91,39 +90,7 @@ function createPlatforms_正しい_Groupを使う(scene) {
     obj.body.friction.x = 1; // groupに追加したときに0になってしまうため、変更。
   });
   
-
-
   return platforms;
-}
-
-function createPlatforms_NGパタン_Groupにaddする前に物理設定をする(scene) {
-  var obj1 = scene.physics.add.existing(scene.add.rectangle(100, 360, 100, 16, 0x0000ff));
-  // groupにaddする前に物理的な設定をする
-  obj1.body.setImmovable(true);
-  obj1.body.allowGravity = false;
-
-  var obj2 = scene.physics.add.existing(scene.add.rectangle(300, 300, 100, 16, 0x0000ff));
-  obj2.body.setImmovable(true);
-  obj2.body.allowGravity = false;
-
-  const platforms = scene.physics.add.group([obj1, obj2]);
-
-  return platforms;
-}
-
-function createPlatforms_正しい_StaticGroupを使う(scene) {
-  return scene.physics.add.staticGroup([
-    scene.add.rectangle(100, 360, 100, 16, 0x0000ff),
-    scene.add.rectangle(300, 300, 100, 16, 0x0000ff),
-  ]);
-}
-
-function createPlatforms_NGパタン_StaticGroupにphysicsで作られたGameObjectを渡す(scene) {
-  // staticGroupにphysics.addで作られたGameObjectをaddする
-  return scene.physics.add.staticGroup([
-  scene.physics.add.existing(scene.add.rectangle(100, 360, 100, 16, 0x0000ff)),
-  scene.physics.add.existing(scene.add.rectangle(300, 300, 100, 16, 0x0000ff)),
-  ]);
 }
 
 function update() {
