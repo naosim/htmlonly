@@ -59,6 +59,7 @@ var config = {
 const player = new Player();
 var game = new Phaser.Game(config);
 function preload() {}
+
 function create() {
   player.create(this);
   const platforms = createPlatforms(this);
