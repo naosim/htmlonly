@@ -1,6 +1,6 @@
 // title: アクションゲーム 初期状態
 
-
+(function() { // startprogram
 /** 
  * プレイヤー。矢印で操作できる
  */
@@ -83,3 +83,5 @@ function createPlatforms(scene) {
 function update() {
   player.update(this);
 }
+
+})(); // endprogram

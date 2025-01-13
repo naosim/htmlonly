@@ -1,6 +1,6 @@
 // title: アクションゲーム 動く床
 
-
+(function() { // startprogram
 /** 
  * プレイヤー。矢印で操作できる
  */
@@ -97,3 +97,5 @@ function update() {
   player.update(this);
   movingObject.update();
 }
+
+})(); // endprogram

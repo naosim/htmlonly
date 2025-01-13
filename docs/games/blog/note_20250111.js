@@ -1,6 +1,5 @@
 // title: アクションゲームステージ
-
-
+(function() { // startprogram
 /** 
  * プレイヤー。矢印で操作できる
  */
@@ -112,3 +111,5 @@ function createPlatforms_NGパタン_StaticGroupにphysicsで作られたGameObj
 function update() {
   player.update(this);
 }
+
+})(); // endprogram

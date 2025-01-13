@@ -44,10 +44,6 @@ td.hljs-ln-code {
 <div id="phaser-example"></div>
 <h2>ソースコード</h2>
 <div><pre><code class="language-js"></code></pre></div>
-<script id="gameScript">
-
-</script>
-
 <script>
 function getJsName() {
   if(location.href.indexOf("jsname=") == -1) {
@@ -60,6 +56,17 @@ function getJsName() {
 const jsName = getJsName();
 fetch(`./${jsName}.js`).then(res => {
   res.text().then(script => {
+    // タイトル表示
+    if(script.indexOf("// title: ") != -1) {
+      const title = script.split("// title: ")[1].split("\n")[0].trim();
+      document.title = title;
+      document.querySelector("h1").innerText = title;
+    }
+
+    if(script.indexOf("// startprogram") != -1) {
+      script = script.split("(function() { // startprogram")[1].split("})(); // endprogram")[0].trim();
+    }
+
     // jsを実行
     eval(script);
 
@@ -68,12 +75,7 @@ fetch(`./${jsName}.js`).then(res => {
     hljs.highlightAll();
     hljs.initLineNumbersOnLoad();
 
-    // タイトル表示
-    if(script.indexOf("// title: ") != -1) {
-      const title = script.split("// title: ")[1].split("\n")[0].trim();
-      document.title = title;
-      document.querySelector("h1").innerText = title;
-    }
+    
   });
 })
 </script>

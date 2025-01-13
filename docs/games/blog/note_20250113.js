@@ -1,6 +1,5 @@
 // title: アクションゲーム 落ちる床
-
-
+(function() { // startprogram
 /** 
  * プレイヤー。矢印で操作できる
  */
@@ -63,49 +62,34 @@ function create() {
   player.create(this);
   const platforms = createPlatforms(this);
 
-  const collision = this.physics.add.collider(player.gameObject, platforms, (player, platform) => {
-    if (platform.type == "fall" && platform.isFallStarting != true) {
-      // this.time.addEvent({ delay: 300, callback: ()=>platform.body.allowGravity = true });
+  this.physics.add.collider(player.gameObject, platforms, (player, platform) => {
+    // 落ちるブロックに当たったときの処理
+    if (platform.type == "fall" && !platform.isFallStarting) {
+      platform.isFallStarting = true; //当たった瞬間だけイベントを拾う
       this.time.addEvent({ delay: 500, callback: ()=>{
-        // 使えない
-        // platform.body.disableBody(true, true);
-        // platform.body.enable = false;
-        // platform.active = false;
-        platform.body.allowGravity = true;
-        
-        console.log("hoge");
-        // this.physics.world.remove(platform);
-        // platform.destroy();
-        platforms.remove(platform);
-
-        this.time.addEvent({ delay: 500, callback: ()=>{
-          // platform.body.enable = false;
-          // platform.active = false;
-          // platform.body.allowGravity = false;
-          platform.destroy();
-        }});
+        platform.body.allowGravity = true;// 落ちる
+        platforms.remove(platform); // 当たり判定対象から削除
+        this.time.addEvent({ delay: 1000, callback:()=> platform.destroy()});
       } });
-      platform.isFallStarting = true;
-      
     }
-  });
-
-  
+  });  
 }
-var movingObject, timerEvent;
+var fallObject;
 function createPlatforms(scene) {
-  movingObject = scene.physics.add.existing(scene.add.rectangle(200, 300, 40, 16, 0x00ffff));
-  movingObject.type = "fall";
+  // 落ちるブロック生成
+  fallObject = scene.physics.add.existing(scene.add.rectangle(200, 300, 40, 16, 0x00ffff));
+  fallObject.type = "fall";
+
   const platforms = scene.physics.add.group([
     scene.physics.add.existing(scene.add.rectangle(100, 360, 100, 16, 0x0000ff)),
     scene.physics.add.existing(scene.add.rectangle(300, 360, 100, 16, 0x0000ff)),
-    movingObject,
+    fallObject, // グループに追加
   ]);
 
   platforms.getChildren().forEach(obj => {
     obj.body.setImmovable(true);
     obj.body.allowGravity = false;
-    obj.body.friction.x = 1; // groupに追加したときに0になってしまうため、変更。
+    obj.body.friction.x = 1;
   });
   
   return platforms;
@@ -113,5 +97,6 @@ function createPlatforms(scene) {
 
 function update() {
   player.update(this);
-  movingObject.update();
 }
+
+})(); // endprogram
