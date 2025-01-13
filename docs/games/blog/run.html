@@ -44,40 +44,6 @@ td.hljs-ln-code {
 <div id="phaser-example"></div>
 <h2>ソースコード</h2>
 <div><pre><code class="language-js"></code></pre></div>
-<script>
-function getJsName() {
-  if(location.href.indexOf("jsname=") == -1) {
-    throw new Error("jsnameがない");
-  }
-  const result = location.href.split("jsname=")[1].split("&")[0];
-  console.log(result);
-  return result;
-}
-const jsName = getJsName();
-fetch(`./${jsName}.js`).then(res => {
-  res.text().then(script => {
-    // タイトル表示
-    if(script.indexOf("// title: ") != -1) {
-      const title = script.split("// title: ")[1].split("\n")[0].trim();
-      document.title = title;
-      document.querySelector("h1").innerText = title;
-    }
-
-    if(script.indexOf("// startprogram") != -1) {
-      script = script.split("(function() { // startprogram")[1].split("})(); // endprogram")[0].trim();
-    }
-
-    // jsを実行
-    eval(script);
-
-    // ソースコードを表示
-    document.querySelector("code").innerHTML = script;
-    hljs.highlightAll();
-    hljs.initLineNumbersOnLoad();
-
-    
-  });
-})
-</script>
+<script src="./note_20250113.js"></script>
 </body>
 </html>

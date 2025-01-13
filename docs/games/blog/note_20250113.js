@@ -1,4 +1,4 @@
-// title: アクションゲームステージ
+// title: アクションゲーム 落ちる床
 (function() { // startprogram
 /** 
  * プレイヤー。矢印で操作できる
@@ -60,52 +60,39 @@ var game = new Phaser.Game(config);
 function preload() {}
 function create() {
   player.create(this);
-  const platforms = createPlatforms_正しい_Groupを使う(this);
+  const platforms = createPlatforms(this);
 
-  this.physics.add.collider(player.gameObject, platforms);
+  this.physics.add.collider(player.gameObject, platforms, (player, platform) => {
+    // 落ちるブロックに当たったときの処理
+    if (platform.type == "fall" && !platform.isFallStarting) {
+      platform.isFallStarting = true; //当たった瞬間だけイベントを拾う
+      this.time.addEvent({ delay: 500, callback: ()=>{
+        platform.body.allowGravity = true;// 落ちる
+        platforms.remove(platform); // 当たり判定対象から削除
+        this.time.addEvent({ delay: 1000, callback:()=> platform.destroy()});
+      } });
+    }
+  });  
 }
+var fallObject;
+function createPlatforms(scene) {
+  // 落ちるブロック生成
+  fallObject = scene.physics.add.existing(scene.add.rectangle(200, 300, 40, 16, 0x00ffff));
+  fallObject.type = "fall";
 
-function createPlatforms_正しい_Groupを使う(scene) {
   const platforms = scene.physics.add.group([
     scene.physics.add.existing(scene.add.rectangle(100, 360, 100, 16, 0x0000ff)),
-    scene.physics.add.existing(scene.add.rectangle(300, 300, 100, 16, 0x0000ff)),
+    scene.physics.add.existing(scene.add.rectangle(300, 360, 100, 16, 0x0000ff)),
+    fallObject, // グループに追加
   ]);
 
   platforms.getChildren().forEach(obj => {
     obj.body.setImmovable(true);
     obj.body.allowGravity = false;
-  })
+    obj.body.friction.x = 1;
+  });
+  
   return platforms;
-}
-
-function createPlatforms_NGパタン_Groupにaddする前に物理設定をする(scene) {
-  var obj1 = scene.physics.add.existing(scene.add.rectangle(100, 360, 100, 16, 0x0000ff));
-  // groupにaddする前に物理的な設定をする
-  obj1.body.setImmovable(true);
-  obj1.body.allowGravity = false;
-
-  var obj2 = scene.physics.add.existing(scene.add.rectangle(300, 300, 100, 16, 0x0000ff));
-  obj2.body.setImmovable(true);
-  obj2.body.allowGravity = false;
-
-  const platforms = scene.physics.add.group([obj1, obj2]);
-
-  return platforms;
-}
-
-function createPlatforms_正しい_StaticGroupを使う(scene) {
-  return scene.physics.add.staticGroup([
-    scene.add.rectangle(100, 360, 100, 16, 0x0000ff),
-    scene.add.rectangle(300, 300, 100, 16, 0x0000ff),
-  ]);
-}
-
-function createPlatforms_NGパタン_StaticGroupにphysicsで作られたGameObjectを渡す(scene) {
-  // staticGroupにphysics.addで作られたGameObjectをaddする
-  return scene.physics.add.staticGroup([
-  scene.physics.add.existing(scene.add.rectangle(100, 360, 100, 16, 0x0000ff)),
-  scene.physics.add.existing(scene.add.rectangle(300, 300, 100, 16, 0x0000ff)),
-  ]);
 }
 
 function update() {
