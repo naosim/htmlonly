@@ -55,6 +55,9 @@ function getJsName() {
 }
 const jsName = getJsName();
 fetch(`./${jsName}.js`).then(res => {
+  if(!res.ok) {
+    throw new Error(`アクセスできません:${jsName}`);
+  }
   res.text().then(script => {
     // タイトル表示
     if(script.indexOf("// title: ") != -1) {
