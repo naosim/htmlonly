@@ -59,6 +59,7 @@ var config = {
 const player = new Player();
 var game = new Phaser.Game(config);
 function preload() {}
+
 function create() {
   player.create(this);
   const platforms = createPlatforms(this);
@@ -67,15 +68,18 @@ function create() {
 }
 var movingObject;
 function createPlatforms(scene) {
+  // 移動するブロックを作成
   movingObject = scene.physics.add.existing(scene.add.rectangle(200, 300, 40, 16, 0x00ffff));
 
   const platforms = scene.physics.add.group([
     scene.physics.add.existing(scene.add.rectangle(100, 360, 100, 16, 0x0000ff)),
     scene.physics.add.existing(scene.add.rectangle(300, 360, 100, 16, 0x0000ff)),
-    movingObject,
+    movingObject, // 当たり判定のグループに追加
   ]);
 
+  // グループに追加したあとに物理設定を変更
   movingObject.body.setVelocityX(30);
+  // 左右に動く処理
   movingObject.update = () => {
     if(movingObject.x > 300) {
       movingObject.body.setVelocityX(-30);
@@ -95,7 +99,7 @@ function createPlatforms(scene) {
 
 function update() {
   player.update(this);
-  movingObject.update();
+  movingObject.update(); // 左右に動く処理を呼び出し
 }
 
 })(); // endprogram
