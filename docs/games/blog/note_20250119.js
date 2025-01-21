@@ -89,8 +89,8 @@ function create() {
   const platforms = createPlatforms(this);
   player.create(this);
   this.physics.add.collider(player.gameObject, platforms);
-  this.physics.add.overlap(player.gameObject, ladder,(a, b) => {
-    player.overlapLadder(b);
+  this.physics.add.overlap(player.gameObject, ladders,(a, ladder) => {
+    player.overlapLadder(ladder);
   });
 }
 var ladder;
