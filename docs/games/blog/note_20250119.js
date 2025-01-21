@@ -31,7 +31,7 @@
     } else {
       this.gameObject.body.setVelocityX(0);
     }
-    
+
     if(this.isClimbing) {// 登るモード
       if(!this.gameObject.scene.physics.world.intersects(this.gameObject.body, this.ladderBody)) {
         this.ladderBody = null;
@@ -93,11 +93,16 @@ function create() {
     player.overlapLadder(ladder);
   });
 }
-var ladder;
+var ladders;
 function createPlatforms(scene) {
-  ladder = scene.physics.add.existing(scene.add.rectangle(190, 200, 20, 300, 0x00ff00));
-  ladder.body.setImmovable(true);
-  ladder.body.allowGravity = false;
+  ladders = scene.physics.add.group([
+    scene.physics.add.existing(scene.add.rectangle(190, 200, 20, 300, 0x00ff00)),
+    scene.physics.add.existing(scene.add.rectangle(160, 200, 20, 300, 0x00ff00))
+  ]);
+  ladders.getChildren().forEach(obj => {
+    obj.body.setImmovable(true);
+    obj.body.allowGravity = false;
+  });
 
   const platforms = scene.physics.add.group([
     scene.physics.add.existing(scene.add.rectangle(100, 360, 200, 20, 0x0000ff)),
