@@ -7,6 +7,10 @@
  class Player {
   gameObject;
   cursors;
+  /** 登るモードのフラグ */
+  isClimbing = false;
+  /** 登っているはしご */
+  ladderBody = null;
   create(scene) {
     const player = (this.gameObject = scene.physics.add.existing(
       scene.add.rectangle(100, 300, 16, 28, 0xffff00)
@@ -27,23 +31,34 @@
     } else {
       this.gameObject.body.setVelocityX(0);
     }
-
-    if (
+    
+    if(this.isClimbing) {// 登るモード
+      if(!this.gameObject.scene.physics.world.intersects(this.gameObject.body, this.ladderBody)) {
+        this.ladderBody = null;
+        this.isClimbing = false;
+      }
+      if(this.cursors.up.isDown) {
+        this.gameObject.body.setVelocityY(-160);
+      } else if(this.cursors.down.isDown) {
+        this.gameObject.body.setVelocityY(160);
+      } else {
+        this.gameObject.body.setVelocityY(0);
+      }
+    } else if (
       this.cursors.up.isDown &&
       (this.gameObject.body.touching?.down || this.gameObject.body.blocked.down)
     ) {
       this.gameObject.body.setVelocityY(-330);
     }
+
     // scene.cameras.main.centerOn(this.gameObject .x, this.gameObject .y);
   }
 
-  overlapLadder() {
-    if(this.cursors.up.isDown) {
-      this.gameObject.body.setVelocityY(-160);
-    } else if(this.cursors.down.isDown) {
-      this.gameObject.body.setVelocityY(160);
-    } else {
-      this.gameObject.body.setVelocityY(-6);
+  overlapLadder(ladder) {
+    if(!this.isClimbing && this.cursors.up.isDown) {
+      // 登るモードにする
+      this.isClimbing = true;
+      this.ladderBody = ladder.body;
     }
   }
 }
@@ -75,7 +90,7 @@ function create() {
   player.create(this);
   this.physics.add.collider(player.gameObject, platforms);
   this.physics.add.overlap(player.gameObject, ladder,(a, b) => {
-    player.overlapLadder();
+    player.overlapLadder(b);
   });
 }
 var ladder;
