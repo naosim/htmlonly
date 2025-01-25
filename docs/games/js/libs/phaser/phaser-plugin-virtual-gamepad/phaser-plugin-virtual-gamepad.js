@@ -2,6 +2,22 @@
 // https://github.com/ShawnHymel/phaser-plugin-virtual-gamepad/blob/master/js/phaser-plugin-virtual-gamepad.js
 
 class VirtualGamepad {
+  get up() {
+    return this.joystick?.properties.up;
+  }
+
+  get down() {
+    return this.joystick?.properties.down;
+  }
+
+  get right() {
+    return this.joystick?.properties.right;
+  }
+
+  get left() {
+    return this.joystick?.properties.left;
+  }
+
   constructor(scene) {
     // Class members
     this.scene = scene;

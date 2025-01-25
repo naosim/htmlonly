@@ -21,17 +21,16 @@
   }
 
   update(/** @type {Phaser.Scene}*/ scene) {
-    console.log(this.vgamepad);
-    if (this.cursors.left.isDown || this.vgamepad?.joystick.properties.left) {
+    if (this.cursors.left.isDown || this.vgamepad.left) {
       this.gameObject.body.setVelocityX(-160);
-    } else if (this.cursors.right.isDown || this.vgamepad?.joystick.properties.right) {
+    } else if (this.cursors.right.isDown || this.vgamepad.right) {
       this.gameObject.body.setVelocityX(160);
     } else {
       this.gameObject.body.setVelocityX(0);
     }
 
     if (
-      (this.cursors.up.isDown || this.vgamepad?.joystick.properties.up) &&
+      (this.cursors.up.isDown || this.vgamepad.up) &&
       (this.gameObject.body.touching?.down || this.gameObject.body.blocked.down)
     ) {
       this.gameObject.body.setVelocityY(-330);
