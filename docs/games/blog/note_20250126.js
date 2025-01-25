@@ -6,37 +6,66 @@
  */
  class Player {
   gameObject;
-  cursors;
-  vgamepad;
+  // cursors;
+  gamepad;
+  constructor(gamepad) {
+    this.gamepad = gamepad;
+  }
   create(scene) {
+    this.scene = scene;
     const player = (this.gameObject = scene.physics.add.existing(
       scene.add.rectangle(100, 300, 16, 28, 0xffff00)
     ));
     player.body.setCollideWorldBounds(true);
-    //  Input Events
-    if (!scene.input.keyboard) {
-      throw new Error("scene.input.keyboard is undefined");
-    }
-    this.cursors = scene.input.keyboard.createCursorKeys();
+
+    scene.events.on('update', this.update, this);
   }
 
   update(/** @type {Phaser.Scene}*/ scene) {
-    console.log(this.vgamepad);
-    if (this.cursors.left.isDown || this.vgamepad?.joystick.properties.left) {
+    if (this.gamepad.left.isDown) {
       this.gameObject.body.setVelocityX(-160);
-    } else if (this.cursors.right.isDown || this.vgamepad?.joystick.properties.right) {
+    } else if (this.gamepad.right.isDown) {
       this.gameObject.body.setVelocityX(160);
     } else {
       this.gameObject.body.setVelocityX(0);
     }
 
     if (
-      (this.cursors.up.isDown || this.vgamepad?.joystick.properties.up) &&
+      (this.gamepad.up.isDown || this.gamepad.button.isDown) &&
       (this.gameObject.body.touching?.down || this.gameObject.body.blocked.down)
     ) {
       this.gameObject.body.setVelocityY(-330);
     }
-    // scene.cameras.main.centerOn(this.gameObject .x, this.gameObject .y);
+    this.scene.cameras.main.centerOn(this.gameObject .x, this.gameObject .y);
+  }
+}
+
+class GameKey {
+  constructor(cursors, vgamepad, key) {
+    this.cursors = cursors;
+    this.vgamepad = vgamepad;
+    this.key = key;
+  }
+  get isDown() {
+    return this.cursors[this.key].isDown || this.vgamepad[this.key].isDown;
+  }
+}
+
+class Gamepad {
+  constructor(vgamepad) {
+    this.vgamepad = vgamepad;
+  }
+  create(scene) {
+    this.scene = scene;
+    if (!scene.input.keyboard) {
+      throw new Error("scene.input.keyboard is undefined");
+    }
+    this.cursors = scene.input.keyboard.createCursorKeys();
+    this.up = new GameKey(this.cursors, this.vgamepad, "up");
+    this.down = new GameKey(this.cursors, this.vgamepad, "down");
+    this.right = new GameKey(this.cursors, this.vgamepad, "right");
+    this.left = new GameKey(this.cursors, this.vgamepad, "left");
+    this.button = this.vgamepad.button;
   }
 }
 
@@ -58,7 +87,9 @@ var config = {
     update: update
   }
 };
-const player = new Player();
+const vgamepad = new VirtualGamepad();
+const gamepad = new Gamepad(vgamepad);
+const player = new Player(gamepad);
 var game = new Phaser.Game(config);
 function preload() {
   this.load.spritesheet('gamepad', 
@@ -71,13 +102,10 @@ function create() {
 
   this.physics.add.collider(player.gameObject, platforms);
 
-  const vgamepad = new VirtualGamepad(this);
-  // Add a joystick to the game (only one is allowed right now)
-  const joystick = vgamepad.addJoystick(100, 300, 1.2, 'gamepad');
-        
-  // Add a button to the game (only one is allowed right now)
-  const button = vgamepad.addButton(300, 300, 1.0, 'gamepad');
-  player.vgamepad = vgamepad;
+  gamepad.create(this);
+  vgamepad.create(this);
+  vgamepad.addJoystick(100, 300, 1.2, 'gamepad');
+  vgamepad.addButton(300, 300, 1.0, 'gamepad');
 }
 
 function createPlatforms(scene) {
@@ -95,7 +123,7 @@ function createPlatforms(scene) {
 }
 
 function update() {
-  player.update(this);
+  // player.update(this);
 }
 
 })(); // endprogram
