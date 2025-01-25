@@ -22,21 +22,32 @@
   }
 
   update(/** @type {Phaser.Scene}*/ scene) {
-    if (this.gamepad.left) {
+    if (this.gamepad.left.isDown) {
       this.gameObject.body.setVelocityX(-160);
-    } else if (this.gamepad.right) {
+    } else if (this.gamepad.right.isDown) {
       this.gameObject.body.setVelocityX(160);
     } else {
       this.gameObject.body.setVelocityX(0);
     }
 
     if (
-      (this.gamepad.up || this.gamepad.buttonIsDown) &&
+      (this.gamepad.up.isDown || this.gamepad.button.isDown) &&
       (this.gameObject.body.touching?.down || this.gameObject.body.blocked.down)
     ) {
       this.gameObject.body.setVelocityY(-330);
     }
     this.scene.cameras.main.centerOn(this.gameObject .x, this.gameObject .y);
+  }
+}
+
+class GameKey {
+  constructor(cursors, vgamepad, key) {
+    this.cursors = cursors;
+    this.vgamepad = vgamepad;
+    this.key = key;
+  }
+  get isDown() {
+    return this.cursors[this.key].isDown || this.vgamepad[this.key].isDown;
   }
 }
 
@@ -50,26 +61,11 @@ class Gamepad {
       throw new Error("scene.input.keyboard is undefined");
     }
     this.cursors = scene.input.keyboard.createCursorKeys();
-  }
-
-  get up() {
-    return this.cursors?.up.isDown || this.vgamepad?.up;
-  }
-
-  get down() {
-    return this.cursors?.down.isDown || this.vgamepad?.down;
-  }
-
-  get right() {
-    return this.cursors?.right.isDown || this.vgamepad?.right;
-  }
-
-  get left() {
-    return this.cursors?.left.isDown || this.vgamepad?.left;
-  }
-
-  get buttonIsDown() {
-    return this.vgamepad?.buttonIsDown;
+    this.up = new GameKey(this.cursors, this.vgamepad, "up");
+    this.down = new GameKey(this.cursors, this.vgamepad, "down");
+    this.right = new GameKey(this.cursors, this.vgamepad, "right");
+    this.left = new GameKey(this.cursors, this.vgamepad, "left");
+    this.button = this.vgamepad.button;
   }
 }
 
