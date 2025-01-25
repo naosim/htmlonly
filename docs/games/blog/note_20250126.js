@@ -1,4 +1,4 @@
-// title: アクションゲーム はしご
+// title: アクションゲーム スクリーんゲームパッド
 
 (function() { // startprogram
 /** 
@@ -40,35 +40,6 @@
   }
 }
 
-class GameKey {
-  constructor(cursors, vgamepad, key) {
-    this.cursors = cursors;
-    this.vgamepad = vgamepad;
-    this.key = key;
-  }
-  get isDown() {
-    return this.cursors[this.key].isDown || this.vgamepad[this.key].isDown;
-  }
-}
-
-class Gamepad {
-  constructor(vgamepad) {
-    this.vgamepad = vgamepad;
-  }
-  create(scene) {
-    this.scene = scene;
-    if (!scene.input.keyboard) {
-      throw new Error("scene.input.keyboard is undefined");
-    }
-    this.cursors = scene.input.keyboard.createCursorKeys();
-    this.up = new GameKey(this.cursors, this.vgamepad, "up");
-    this.down = new GameKey(this.cursors, this.vgamepad, "down");
-    this.right = new GameKey(this.cursors, this.vgamepad, "right");
-    this.left = new GameKey(this.cursors, this.vgamepad, "left");
-    this.button = this.vgamepad.button;
-  }
-}
-
 var config = {
   parent: "phaser-example",
   type: Phaser.AUTO,
@@ -87,25 +58,20 @@ var config = {
     update: update
   }
 };
-const vgamepad = new VirtualGamepad();
-const gamepad = new Gamepad(vgamepad);
+const gamepad = GamepadWrapper.init();
 const player = new Player(gamepad);
 var game = new Phaser.Game(config);
 function preload() {
   this.load.spritesheet('gamepad', 
-    '../assets/gamepad/gamepad_spritesheet.png', {frameWidth:100, frameHeight:100, endFrame:3});// 変更
+    '../assets/gamepad/gamepad_spritesheet.png', {frameWidth:100, frameHeight:100});
 }
 
 function create() {
   player.create(this);
   const platforms = createPlatforms(this);
-
   this.physics.add.collider(player.gameObject, platforms);
 
-  gamepad.create(this);
-  vgamepad.create(this);
-  vgamepad.addJoystick(100, 300, 1.2, 'gamepad');
-  vgamepad.addButton(300, 300, 1.0, 'gamepad');
+  gamepad.createAll(this, {joystickPos:{x:100, y:300}, buttonPos:{x:300, y:300}});
 }
 
 function createPlatforms(scene) {
@@ -123,7 +89,6 @@ function createPlatforms(scene) {
 }
 
 function update() {
-  // player.update(this);
 }
 
 })(); // endprogram
