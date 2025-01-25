@@ -18,9 +18,12 @@ class VirtualGamepad {
     return this.joystick?.properties.left;
   }
 
-  constructor(scene) {
+  get buttonIsDown() {
+    return this.button?.isDown;
+  }
+
+  constructor() {
     // Class members
-    this.scene = scene;
     this.joystick = null;
     this.joystickPad = null;
     this.joystickPoint = null;
@@ -39,7 +42,10 @@ class VirtualGamepad {
     this.RIGHT_UPPER_BOUND = 3 * (Math.PI / 8);
     this.LEFT_LOWER_BOUND = 5 * (Math.PI / 8);
     this.LEFT_UPPER_BOUND = -5 * (Math.PI / 8);
+  }
 
+  create(scene) {
+    this.scene = scene;
     // Bind preUpdate for polling joystick and button
     this.scene.events.on('preupdate', this.preUpdate, this);
   }
@@ -52,14 +58,10 @@ class VirtualGamepad {
     }
 
     this.joystick = this.scene.add.sprite(x, y, key).setFrame(2);
-    // this.joystick.frame = 2;
-    // this.joystick.setAnchor(0.5);
-    this.joystick.setScrollFactor(1);
+    this.joystick.setScrollFactor(0);
     this.joystick.setScale(scale);
     this.joystickPad = this.scene.add.sprite(x, y, key).setFrame(3);
-    // this.joystickPad.frame = 3;
-    // this.joystickPad.setAnchor(0.5);
-    this.joystickPad.setScrollFactor(1);
+    this.joystickPad.setScrollFactor(0);
     this.joystickPad.setScale(scale);
 
     this.joystickPoint = new Phaser.Math.Vector2(x, y);
@@ -91,7 +93,7 @@ class VirtualGamepad {
 
     this.button = this.scene.add.image(x, y, key);
     // this.button.setAnchor(0.5);
-    this.button.setScrollFactor(1);
+    this.button.setScrollFactor(0);
     this.button.setScale(scale);
 
     this.buttonPoint = new Phaser.Math.Vector2(x, y);
