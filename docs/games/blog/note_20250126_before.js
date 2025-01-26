@@ -1,4 +1,4 @@
-// title: アクションゲーム スクリーンゲームパッド
+// title: アクションゲーム スクリーンゲームパッド before
 
 (function() { // startprogram
 /** 
@@ -6,31 +6,33 @@
  */
  class Player {
   gameObject;
-  gamepad;// cursorsから変更
-  constructor(gamepad) {
-    this.gamepad = gamepad;
-  }
+  cursors;
   create(scene) {
     this.scene = scene;
     const player = (this.gameObject = scene.physics.add.existing(
       scene.add.rectangle(100, 300, 16, 28, 0xffff00)
     ));
     player.body.setCollideWorldBounds(true);
+    //  Input Events
+    if (!scene.input.keyboard) {
+      throw new Error("scene.input.keyboard is undefined");
+    }
+    this.cursors = scene.input.keyboard.createCursorKeys();
 
     scene.events.on('update', this.update, this);
   }
 
   update() {
-    if (this.gamepad.left.isDown) {
+    if (this.cursors.left.isDown) {
       this.gameObject.body.setVelocityX(-160);
-    } else if (this.gamepad.right.isDown) {
+    } else if (this.cursors.right.isDown) {
       this.gameObject.body.setVelocityX(160);
     } else {
       this.gameObject.body.setVelocityX(0);
     }
 
     if (
-      (this.gamepad.up.isDown || this.gamepad.button.isDown) &&
+      this.cursors.up.isDown &&
       (this.gameObject.body.touching?.down || this.gameObject.body.blocked.down)
     ) {
       this.gameObject.body.setVelocityY(-330);
@@ -57,20 +59,15 @@ var config = {
     update: update
   }
 };
-const gamepad = GamepadWrapper.init();
-const player = new Player(gamepad);
+const player = new Player();
 var game = new Phaser.Game(config);
-function preload() {
-  this.load.spritesheet('gamepad', 
-    '../assets/gamepad/gamepad_spritesheet.png', {frameWidth:100, frameHeight:100});
-}
+function preload() {}
 
 function create() {
   player.create(this);
   const platforms = createPlatforms(this);
-  this.physics.add.collider(player.gameObject, platforms);
 
-  gamepad.createAll(this, {joystickPos:{x:100, y:300}, buttonPos:{x:300, y:300}});
+  this.physics.add.collider(player.gameObject, platforms);
 }
 
 function createPlatforms(scene) {
