@@ -48,6 +48,7 @@ td.hljs-ln-code {
 <script>
 function getJsName() {
   if(location.href.indexOf("jsname=") == -1) {
+    return null;
     throw new Error("jsnameがない");
   }
   const result = location.href.split("jsname=")[1].split("&")[0];
@@ -55,7 +56,14 @@ function getJsName() {
   return result;
 }
 const jsName = getJsName();
-fetch(`./${jsName}.js`).then(res => {
+if(jsName == null) {
+  const text = `index.html  note_20250111.js  note_20250112.js  note_20250112_before.js  note_20250113.js  note_20250119.js  note_20250119_before.js  note_20250126.js  note_20250126_before.js  run.html`;
+  const files = text.split(" ").filter(v => v.length > 0 && v.indexOf(".js") != -1).map(v => v.split(".js")[0]);
+  var div = document.createElement("div");
+  div.innerHTML = files.map(v => `<a href="./?jsname=${v}">${v}</a>`).join("<br>");
+  document.querySelector("body").appendChild(div);
+} else {
+  fetch(`./${jsName}.js`).then(res => {
   if(!res.ok) {
     throw new Error(`アクセスできません:${jsName}`);
   }
@@ -82,6 +90,9 @@ fetch(`./${jsName}.js`).then(res => {
     
   });
 })
+  
+}
+
 </script>
 </body>
 </html>

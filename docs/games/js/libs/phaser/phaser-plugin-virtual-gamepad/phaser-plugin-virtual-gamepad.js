@@ -1,6 +1,8 @@
 // aiがv3対応したコード
 // https://github.com/ShawnHymel/phaser-plugin-virtual-gamepad/blob/master/js/phaser-plugin-virtual-gamepad.js
 
+(function() {
+
 class VirtualKey {
   get isDown() {
     return this.vgamepad.joystick.properties[this.key].isDown;
@@ -10,7 +12,7 @@ class VirtualKey {
     this.key = key;
   }
 }
-class VirtualGamepad {
+this.VirtualGamepad = class VirtualGamepad {
   up = new VirtualKey(this, "up");
   down = new VirtualKey(this, "down");
   right = new VirtualKey(this, "right");
@@ -204,3 +206,51 @@ class VirtualGamepad {
       this.joystickPad.y = this.joystickPoint.y + deltaY;
   }
 }
+
+class GameKey {
+  constructor(cursors, vgamepad, key) {
+    this.cursors = cursors;
+    this.vgamepad = vgamepad;
+    this.key = key;
+  }
+  get isDown() {
+    return this.cursors[this.key].isDown || this.vgamepad[this.key].isDown;
+  }
+}
+
+this.GamepadWrapper = class GamepadWrapper {
+  constructor(vgamepad) {
+    this.vgamepad = vgamepad;
+  }
+  create(scene) {
+    this.scene = scene;
+    if (!scene.input.keyboard) {
+      throw new Error("scene.input.keyboard is undefined");
+    }
+    this.cursors = scene.input.keyboard.createCursorKeys();
+    this.up = new GameKey(this.cursors, this.vgamepad, "up");
+    this.down = new GameKey(this.cursors, this.vgamepad, "down");
+    this.right = new GameKey(this.cursors, this.vgamepad, "right");
+    this.left = new GameKey(this.cursors, this.vgamepad, "left");
+    this.button = this.vgamepad.button;
+  }
+
+  /**
+   * 
+   * @param {*} scene 
+   * @param {{joystickPos:{x:number, y:number}, buttonPos:{x:number, y:number}}} config 
+   */
+  createAll(scene, config) {
+    this.create(scene);
+    this.vgamepad.create(scene);
+    this.vgamepad.addJoystick(config.joystickPos.x, config.joystickPos.y, 1.2, 'gamepad');
+    this.vgamepad.addButton(config.buttonPos.x, config.buttonPos.y, 1.0, 'gamepad');
+  }
+
+  static init() {
+    return new GamepadWrapper(new VirtualGamepad());
+  }
+}
+
+
+})()
