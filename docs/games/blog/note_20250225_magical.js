@@ -1,6 +1,12 @@
 // title: マジカルドロップ
 
 (function() { // startprogram
+const gridSize = 24;
+const gridHalfSize = gridSize / 2;
+function create2DArray(rowCount, columnCount, factory) {
+  return new Array(rowCount).fill(null).map((_, row) => new Array(columnCount).fill(null).map((_, column) => factory(row, column)))
+}
+
 /** 
  * プレイヤー。矢印で操作できる
  */
@@ -13,19 +19,19 @@ class Player {
   }
   create(scene) {
     this.scene = scene;
-    const player = this.gameObject = scene.add.rectangle(8, 300, 16, 28, 0xffff00);
+    const player = this.gameObject = scene.add.rectangle(gridHalfSize, 300, gridSize, 28, 0xffff00);
     scene.events.on('update', this.update, this);
   }
   pressed = false;
   update() {
     if (this.gamepad.left.isDown) {
       if(!this.pressed) {
-        this.gameObject.x -= 16;
+        this.gameObject.x -= gridSize;
         this.pressed = true;
       }
     } else if (this.gamepad.right.isDown) {
       if(!this.pressed) {
-        this.gameObject.x += 16;
+        this.gameObject.x += gridSize;
         this.pressed = true;
       }
     } else {
@@ -71,18 +77,33 @@ class PullStones {
  * @typedef {'red' | 'blue' | 'empty'} StoneColor
  */
 
-class StoneSprites {
+class StonesSprite {
+  /** @type {StoneSprite[][]} */
+  gameObjects;
   constructor() {
+    
   }
   createStone(scene) {
-    var gameObject = scene.add.container(0, 0);
-    const figure = this.childGameObject = scene.add.circle(8, 8, 8, 0x000000);
-    this.color = this.color;// update fill color
-    gameObject.add(figure);
+    this.gameObjects = create2DArray(12, 6, (r, c) => new StoneSprite().create(scene).setPos(c*gridSize, r*gridSize));
+  }
+
+  /**
+   * 
+   * @param {Stones} stones 
+   */
+  update(stones) {
+    for(let i = 0; i < stones.values.length; i++) {
+      for(let j = 0; j < stones.values[0].length; j++) {
+        this.gameObjects[i][j].update(stones.values[i][j]);
+      }
+    }
+
   }
 }
 
-class Stone {
+class StoneSprite {
+  gameObject;
+  childGameObject;
   /** @type {StoneColor} */
   #color;
   /**
@@ -107,6 +128,28 @@ class Stone {
   get color() {
     return this.#color;
   }
+  constructor() {
+    this.#color = "empty";
+  }
+  create(scene) {
+    this.gameObject = scene.add.container(0, 0);
+    const figure = this.childGameObject = scene.add.circle(gridHalfSize, gridHalfSize, gridHalfSize, 0x000000);
+    this.color = this.#color;// update fill color
+    this.gameObject.add(figure);
+    return this;
+  }
+  setPos(x, y) {
+    this.gameObject.x = x;
+    this.gameObject.y = y;
+    return this;
+  }
+  update(stone) {
+    this.color = stone.color;// update fill color
+    return this;
+  }
+}
+
+class Stone {
   /** @type {'fixed' | 'falling'} */
   state;
   gameObject;
@@ -125,18 +168,6 @@ class Stone {
     return this.color == "empty";
   }
 
-
-  create(scene) {
-    this.gameObject = scene.add.container(0, 0);
-    const figure = this.childGameObject = scene.add.circle(8, 8, 8, 0x000000);
-    this.color = this.color;// update fill color
-    this.gameObject.add(figure);
-  }
-
-  setPos(x, y) {
-    this.gameObject.x = x;
-    this.gameObject.y = y;
-  }
   static red() {
     return new Stone('red');
   }
@@ -157,15 +188,6 @@ class Stones {
     new Array(6).fill("empty"),
   ].map(row => row.map(cell => new Stone(cell)));
 
-  create(scene) {
-    this.values.forEach((row, y) => {
-      row.forEach((stone, x) => {
-        if (stone) {
-          stone.create(scene);
-        }
-      });
-    });
-  }
   drop(columnNumber, pullStones) {
     // 末端を探す
     for(var i = 0; i < this.values.length; i++) {
@@ -220,13 +242,6 @@ class Stones {
     return "empty"
   }
   update() {
-    this.values.forEach((row, y) => {
-      row.forEach((stone, x) => {
-        if (stone) {
-          stone.setPos(x * 16, y * 16);
-        }
-      });
-    });
   }
 }
 
@@ -250,7 +265,7 @@ var config = {
 };
 const gamepad = GamepadWrapper.init();
 const player = new Player(gamepad);
-
+const stonesSprite = new StonesSprite();
 var game = new Phaser.Game(config);
 function preload() {
   this.load.spritesheet('gamepad', 
@@ -261,15 +276,16 @@ function create() {
   player.create(this);
 
   stones = new Stones();
-  stones.create(this);
-  stones.update();
+
+  stonesSprite.createStone(this);
+  stonesSprite.update(stones);
 
   gamepad.createAll(this, {joystickPos:{x:100, y:300}, buttonPos:{x:300, y:300}});
 }
 
 function update() {
   if(gamepad.button.isPressed) {
-    const x = (player.gameObject.x - 8) / 16;
+    const x = (player.gameObject.x - gridHalfSize) / gridSize;
     const color = stones.getLastColor(x);
     if(color == "empty") {
       return;
@@ -280,16 +296,18 @@ function update() {
     } else if(player.pullStones.color == color) {
       player.pullStones.add(stones.pull(x))
     }
-    // stones.update();
+    
   }
   if(!player.pullStones.isEmpty() && gamepad.up.isDown) {
-    if(stones.getLastColor((player.gameObject.x - 8) / 16) == player.pullStones.color) {
-      stones.drop((player.gameObject.x - 8) / 16, player.pullStones);
+    if(stones.getLastColor((player.gameObject.x - gridHalfSize) / gridSize) == player.pullStones.color) {
+      stones.drop((player.gameObject.x - gridHalfSize) / gridSize, player.pullStones);
       player.pullStones.clear();
       console.log("drop");
     }
        
   }
+
+  stonesSprite.update(stones);
 }
 
 })(); // endprogram
