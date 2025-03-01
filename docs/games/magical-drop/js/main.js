@@ -35,14 +35,6 @@ class Player {
     } else {
       this.pressed = false;
     }
-
-    // if (
-    //   (this.gamepad.up.isDown || this.gamepad.button.isDown) &&
-    //   (this.gameObject.body.touching?.down || this.gameObject.body.blocked.down)
-    // ) {
-    //   this.gameObject.body.setVelocityY(-330);
-    // }
-    // this.scene.cameras.main.centerOn(this.gameObject .x, this.gameObject .y);
   }
 }
 
@@ -165,12 +157,7 @@ function update() {
   }
   if(gamepad.up.isDown) {
     magicalDropGame.drop(columnNumber);
-    // if(magicalDropGame.stones.getLastColor((player.gameObject.x - gridHalfSize) / gridSize) == player.pullStones.color) {
-    //   magicalDropGame.stones.drop((player.gameObject.x - gridHalfSize) / gridSize, player.pullStones);
-    //   player.pullStones.clear();
-    //   console.log("drop");
-    // }
-       
+    magicalDropGame.disappear();
   }
 
   stonesSprite.update(magicalDropGame.stones);
