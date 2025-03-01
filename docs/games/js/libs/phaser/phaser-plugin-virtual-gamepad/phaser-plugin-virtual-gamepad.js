@@ -17,7 +17,7 @@ this.VirtualGamepad = class VirtualGamepad {
   down = new VirtualKey(this, "down");
   right = new VirtualKey(this, "right");
   left = new VirtualKey(this, "left");
-  button = {isDown: false};
+  button = {isDown: false, isPressed: false};
 
   constructor() {
     // Class members
@@ -122,12 +122,18 @@ this.VirtualGamepad = class VirtualGamepad {
     let resetJoystick = true;
 
     // Check for pointer interaction with joystick or button
+    let lastButton = this.button.isDown;
     this.buttonSprite.isDown = false;
     this.button.isDown = false;
     this.buttonSprite.setFrame(0);
     this.scene.input.manager.pointers.forEach((pointer) => {
       resetJoystick = this.testDistance(pointer);
     });
+    if(this.button.isDown && !lastButton) {
+      this.button.isPressed = true;
+    } else {
+      this.button.isPressed = false;
+    }
 
     resetJoystick = this.testDistance(this.scene.input.activePointer);
 
