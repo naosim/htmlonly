@@ -8,8 +8,8 @@ export class Stars {
   get count() {
     return this.gameObject.countActive(true);
   }
-  get isEmpty() {
-    console.log('isEmpty', this.count);
+  get は空である() {
+    console.log('は空である', this.count);
     return this.count === 0;
   }
   create(/** @type {Phaser.Scene}*/ scene) {

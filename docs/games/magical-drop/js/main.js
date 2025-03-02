@@ -11,7 +11,7 @@ function create2DArray(rowCount, columnCount, factory) {
 class Player {
   gameObject;
   gamepad;// cursorsから変更
-  pullStones = new PullStones("empty", 0);
+  pullStones = new PullStones("空", 0);
   constructor(gamepad) {
     this.gamepad = gamepad;
   }
@@ -38,49 +38,51 @@ class Player {
   }
 }
 
-class StonesSprite {
+/**
+ * 格子のスプライト
+ */
+class GridSprite {
   /** @type {StoneSprite[][]} */
   gameObjects;
   constructor() {
     
   }
-  createStone(scene) {
+  create(scene) {
     this.gameObjects = create2DArray(12, 6, (r, c) => new StoneSprite().create(scene).setPos(c*gridSize, r*gridSize));
   }
 
   /**
    * 
-   * @param {Stones} stones 
+   * @param {Grid} 格子 
    */
-  update(stones) {
-    for(let i = 0; i < stones.values.length; i++) {
-      for(let j = 0; j < stones.values[0].length; j++) {
-        this.gameObjects[i][j].update(stones.values[i][j]);
+  update(格子) {
+    for(let i = 0; i < 格子.values.length; i++) {
+      for(let j = 0; j < 格子.values[0].length; j++) {
+        this.gameObjects[i][j].update(格子.values[i][j]);
       }
     }
-
   }
 }
 
 class StoneSprite {
   gameObject;
   childGameObject;
-  /** @type {StoneColor} */
+  /** @type {StoneColor | undefined} */
   #color;
   /**
-   * @param {StoneColor} value
+   * @param {StoneColor | undefined} value
    */
   set color(value) {
     this.#color = value;
     if(this.childGameObject) {
       var colorValue = null;
-      if(value === 'red') {
+      if(value === '赤') {
         colorValue = 0xff0000;
       }
-      if(value === 'blue') {
+      if(value === '青') {
         colorValue = 0x0000ff;
       }
-      if(value === 'empty') {
+      if(!value) {
         colorValue = 0x000000;
       }
       this.childGameObject.setFillStyle(colorValue);
@@ -90,7 +92,7 @@ class StoneSprite {
     return this.#color;
   }
   constructor() {
-    this.#color = "empty";
+    this.#color = undefined;
   }
   create(scene) {
     this.gameObject = scene.add.container(0, 0);
@@ -104,8 +106,13 @@ class StoneSprite {
     this.gameObject.y = y;
     return this;
   }
-  update(stone) {
-    this.color = stone.color;// update fill color
+  /**
+   * 
+   * @param {StoneOrEmpty} 石または空 
+   * @returns 
+   */
+  update(石または空) {
+    this.color = 石または空.は石である ? 石または空.石.色: undefined;// update fill color
     return this;
   }
 }
@@ -132,7 +139,7 @@ var config = {
 const gamepad = GamepadWrapper.init();
 const player = new Player(gamepad);
 const magicalDropGame = new MagicalDropGame();
-const stonesSprite = new StonesSprite();
+const 格子スプライト = new GridSprite();
 var game = new Phaser.Game(config);
 function preload() {
   this.load.spritesheet('gamepad', 
@@ -144,8 +151,8 @@ function create() {
 
   // stones = new Stones();
 
-  stonesSprite.createStone(this);
-  stonesSprite.update(magicalDropGame.stones);
+  格子スプライト.create(this);
+  格子スプライト.update(magicalDropGame.格子);
 
   gamepad.createAll(this, {joystickPos:{x:100, y:300}, buttonPos:{x:300, y:300}});
 }
@@ -153,14 +160,14 @@ function create() {
 function update() {
   const columnNumber = (player.gameObject.x - gridHalfSize) / gridSize;
   if(gamepad.button.isPressed) {
-    magicalDropGame.pull(columnNumber);
+    magicalDropGame.取る(columnNumber);
   }
   if(gamepad.up.isDown) {
-    magicalDropGame.drop(columnNumber);
+    magicalDropGame.置く(columnNumber);
     magicalDropGame.disappear();
   }
 
-  stonesSprite.update(magicalDropGame.stones);
+  格子スプライト.update(magicalDropGame.格子);
 }
 
 })(); // endprogram

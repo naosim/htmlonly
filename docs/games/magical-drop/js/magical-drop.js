@@ -1,6 +1,6 @@
 
 /**
- * @typedef {'red' | 'blue' | 'empty'} StoneColor
+ * @typedef {'赤' | '青'} StoneColor
  */
 
 class PullStones {
@@ -11,10 +11,21 @@ class PullStones {
     this.count = count;
   }
   clear() {
-    this.color = "empty";
+    this.color = "空";
     this.count = 0;
   }
+  /**
+   * 
+   * @param {Stone} stone 
+   * @returns 
+   */
+  同じ色(stone) {
+    return this.color == stone.色;
+  }
   add(other) {
+    if(!other) {
+      return;
+    }
     if(this.color != other.color) {
       throw new Error("色が合わない")
     }
@@ -23,65 +34,183 @@ class PullStones {
   countUp() {
     this.count++;
   }
-  isEmpty() {
-    return this.color == "empty";
+  get は空である() {
+    return this.color == "空";
+  }
+  get は空でない() {
+    return this.color !== "空";
   }
 }
 
 class Stone {
   /** @type {'fixed' | 'falling'} */
-  state;
-  color;
-  groupId;
+  状態;
+  /** @type {StoneColor} */
+  色;
+  グループID;
+
   /**
    * 
-   * @param {StoneColor} color 
-   * @param {'fixed' | 'falling'} state 
+   * @param {StoneColor} 色 
+   * @param {'fixed' | 'falling'} 状態 
    */
-  constructor(color, state = 'fixed') {
-    this.color = color;
-    this.state = state;
+  constructor(色, 状態 = 'fixed') {
+    this.色 = 色;
+    this.状態 = 状態;
   }
 
-  toEmpty() {
-    this.color = "empty";
-    this.state = "fixed";
-    this.groupId = null;
+  グループIDをクリアする() {
+    this.グループID = null;
   }
 
-  isEmpty() {
-    return this.color == "empty";
+  /**
+   * 
+   * @param {number | string} グループID 
+   * @returns 
+   */
+  グループIDが同じ(グループID) {
+    if(!this.グループID) {
+      throw new Error("グループIDがない");
+    }
+
+    return this.グループID == グループID;
   }
 
-  static red() {
-    return new Stone('red');
-  }
-  static blue() {
-    return new Stone('blue');
+  /**
+   * 
+   * @param {number | string} グループID 
+   * @returns 
+   */
+  グループIDが違う(グループID) {
+    return !this.グループIDが同じ(グループID);
   }
 
-  static empty() {
-    return new Stone("empty");
+  get グループIDがすでにある() {
+    return this.グループID !== null;
+  }
+
+  /**
+   * 
+   * @param {Stone} other 
+   */
+  同じ色(other) {
+    return this.色 == other.色;
   }
 }
 
-class Stones {
+/**
+ * 空
+ */
+class Empty {
+  static instance = new Empty();
+}
+
+/**
+ * 石または空
+ */
+class StoneOrEmpty {
+  /** @type {Stone | undefined} */
+  #石
+  /** @type {Empty | undefined} */
+  #空
+
+  /**
+   * @param {Stone | undefined} 石 
+   */
+  constructor(石) {
+    this.#石 = 石;
+    this.#空 = 石 ? undefined : Empty.instance;
+  }
+
+  /**
+   * @return {Stone};
+   */
+  get 石() {
+    if(!this.#石) {
+      throw new Error("空");
+    }
+    return this.#石;
+  }
+
+  /**
+   * 
+   * @param {(v:Stone) => void} cb 
+   */
+  もし石ならば(cb) {
+    if(this.は石である) {
+      cb(this.石);
+    }
+  }
+
+  to空() {
+    this.#石 = undefined;
+    this.#空 = Empty.instance;
+  }
+  /**
+   * 
+   * @param {Stone} 石 
+   */
+  to石(石) {
+    if(this.は石である) {
+      throw new Error("石");
+    }
+    this.#石 = 石;
+    this.#空 = undefined;
+  }
+
+  get は空である() {
+    return !!this.#空;
+  }
+
+  get は石である() {
+    return !!this.#石;
+  }
+
+  static 赤() {
+    return new StoneOrEmpty(new Stone("赤"));
+  }
+  static 青() {
+    return new StoneOrEmpty(new Stone("青"));
+  }
+
+  static 空() {
+    return new StoneOrEmpty(undefined);
+  }
+  static テキストから生成(text) {
+    if(text == "赤") {
+      return StoneOrEmpty.赤();
+    } else if(text == "青") {
+      return StoneOrEmpty.青();
+    } else if(text == "空") {
+      return StoneOrEmpty.空();
+    }
+    throw new Error("不明な値");
+  }
+}
+
+/**
+ * 格子
+ */
+class Grid {
   values = [
-    ["blue", "blue", "blue", "blue", "red", "red"],
-    ["red", "red", "red", "red", "blue", "blue"],
-    ["red", "red", "red", "red", "blue", "blue"],
-    new Array(6).fill("empty"),
-    new Array(6).fill("empty"),
-    new Array(6).fill("empty"),
-    new Array(6).fill("empty"),
-    new Array(6).fill("empty"),
-  ].map(row => row.map(cell => new Stone(cell)));
+    ["青", "青", "青", "青", "赤", "赤"],
+    ["赤", "赤", "赤", "赤", "青", "青"],
+    ["赤", "赤", "赤", "赤", "青", "青"],
+    new Array(6).fill("空"),
+    new Array(6).fill("空"),
+    new Array(6).fill("空"),
+    new Array(6).fill("空"),
+    new Array(6).fill("空"),
+  ].map(row => row.map(cell => StoneOrEmpty.テキストから生成(cell)));
 
   groupMap;
   constructor() {
     this.grouping();
   }
 
+  /**
+   * @param {(v:StoneOrEmpty, row:number, column:number) => void} cb 
+   */
   forEach(cb) {
     for(let row = 0; row < this.values.length; row++) {
       for(let column = 0; column < this.values[0].length; column++) {
@@ -90,32 +219,57 @@ class Stones {
     }
   }
 
+  /**
+   * @param {(v:Stone, row:number, column:number) => void} cb 
+   */
+  石だけforEach(cb) {
+    for(let row = 0; row < this.values.length; row++) {
+      for(let column = 0; column < this.values[0].length; column++) {
+        if(this.values[row][column].は石である) {
+          cb(this.values[row][column].石, row, column);
+        }
+      }
+    }
+  }
+
   drop(columnNumber, pullStones) {
     // 末端を探す
     for(var i = 0; i < this.values.length; i++) {
       let target = this.values[i][columnNumber];
-      if(target.color == "empty") {
+      if(target.は空である) {
         break;
       }
     }
     // 落とす
     for(var j = 0; j < pullStones.count; j++) {
-      this.values[i + j][columnNumber].color = pullStones.color;
-      this.values[i + j][columnNumber].state = "falling";
+      this.values[i + j][columnNumber].to石(new Stone(pullStones.color, "falling"))
+      // this.values[i + j][columnNumber].color = pullStones.color;
+      // this.values[i + j][columnNumber].state = "falling";
     }
   }
+
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
   pull(columnNumber) {
-    const stoneColor = this.getLastColor(columnNumber);
-    // var stoneColor = "empty";
-    var result = new PullStones(stoneColor, 0);
+    if(this.列がすべて空(columnNumber)) {
+      return undefined;
+    }
+    const 最下部の石 = this.最下部の石(columnNumber);
+    const 最下部の石の色 = 最下部の石.色;
+    // var stoneColor = "空";
+    var result = new PullStones(最下部の石の色, 0);
     for(let i = this.values.length - 1; i >= 0; i--) {
-      let target = this.values[i][columnNumber];
-      if(target.color == "empty") {
+      let 対象の石または空 = this.values[i][columnNumber];
+      if(対象の石または空.は空である) {
         continue;
       }
-      if(target.color == stoneColor) {
+      let 対象の石 = 対象の石または空.石;
+      if(最下部の石.同じ色(対象の石)) {
         result.countUp();
-        target.color = "empty";
+        対象の石または空.to空()
       } else {
         break;
       }
@@ -133,17 +287,21 @@ class Stones {
 
   grouping() {
     // clear
-    this.forEach((v) => v.groupId = null);
+    this.forEach((v) => v.もし石ならば(s => {
+      s.グループIDをクリアする()
+    }));
 
-    var groupId = 1;
+    var グループID = 1;
+    /** @type {{[key:string]:Stone[]}} */
     const groupMap = {};
-    this.forEach((v, row, column) => {
-      if(v.isEmpty() || v.groupId !== null) {
+    this.forEach((対象の石または空, row, column) => {
+      if(対象の石または空.は空である || 対象の石または空.石.グループIDがすでにある) {
         return;
       }
-      v.groupId = groupId;
-      var group = [v];
-      groupMap[groupId] = group;
+      const 対象の石 = 対象の石または空.石;
+      対象の石.グループID = グループID;
+      var グループ = [対象の石];
+      groupMap[グループID] = グループ;
       var targets = [];
       // up
       if(row > 0) {
@@ -164,51 +322,61 @@ class Stones {
 
       // groupIdがあるものだけ残す
       targets = targets
-        .filter(t => 
-          !t.isEmpty() 
-          && t.groupId
-          && t.groupId != groupId
-          && v.color == t.color);
+        .filter(t => t.は石である)
+        .map(t => t.石)
+        .filter(t => t.グループIDがすでにある
+          && t.グループIDが違う(グループID)
+          && 対象の石.同じ色(t));
       targets.forEach(t => {
           // マージする
-          var otherGroupId = t.groupId;
-          if(groupId == otherGroupId) {
+          var otherGroupId = t.グループID;
+          if(グループID == otherGroupId) {
             return;
           }
           groupMap[otherGroupId].forEach(p => {
-            p.groupId = groupId;
-            group.push(p);
+            p.グループID = グループID;
+            グループ.push(p);
           })
           delete groupMap[otherGroupId];
           
         });
-      groupId++;
+      グループID++;
     });
 
     console.log(groupMap);
     this.groupMap = groupMap;
   }
 
-
-  getLastStone(columnNumber) {
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns {Stone}
+   */
+  最下部の石(columnNumber) {
     for(let i = this.values.length - 1; i >= 0; i--) {
       let target = this.values[i][columnNumber];
-      if(target.color !== "empty") {
-        return target;
+      if(target.は石である) {
+        return target.石;
       }
     }
-    return Stone.empty();
+    throw new Error("石がない");
   }
 
-  getLastColor(columnNumber) {
-    return this.getLastStone(columnNumber).color;
-    // for(let i = this.values.length - 1; i >= 0; i--) {
-    //   let target = this.values[i][columnNumber];
-    //   if(target.color !== "empty") {
-    //     return target.color;
-    //   }
-    // }
-    // return "empty"
+  列がすべて空(columnNumber) {
+    return !this.列に石がある(columnNumber);
+  }
+  列に石がある(columnNumber) {
+    for(let i = this.values.length - 1; i >= 0; i--) {
+      let target = this.values[i][columnNumber];
+      if(target.は石である) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  最下部の石の色(columnNumber) {
+    return this.最下部の石(columnNumber).色;
   }
   update() {
   }
@@ -217,55 +385,68 @@ class Stones {
 class MagicalDropGame {
   widthCount;
   heightCount;
-  stones;
-  pullStones = new PullStones("empty", 0);
+  格子;
+  /** @type {PullStones | undefined} */
+  pullStones = undefined;
   constructor(config) {
     config = config || {};
     this.widthCount = config.widthCount || 6;
     this.heightCount = config.heightCount || 8;
 
-    this.stones = new Stones();
+    this.格子 = new Grid();
   }
 
-  pull(columnNumber) {
-    const color = this.stones.getLastColor(columnNumber);
-    if(color == "empty") {
+  /**
+   * 
+   * @param {number} columnNumber 
+   */
+  取る(columnNumber) {
+    if(this.格子.列がすべて空(columnNumber)) {
       return;
     }
-
-    if(this.pullStones.isEmpty()) { 
-      this.pullStones = this.stones.pull(columnNumber);
-    } else if(this.pullStones.color == color) {
-      this.pullStones.add(this.stones.pull(columnNumber))
+    const 最下部の石 = this.格子.最下部の石(columnNumber);
+    if(!this.pullStones) { 
+      this.pullStones = this.格子.pull(columnNumber);
+    } else if(this.pullStones.同じ色(最下部の石)) {
+      this.pullStones.add(this.格子.pull(columnNumber))
     }
   }
 
-  drop(columnNumber) {
-    if(this.pullStones.isEmpty()) {
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
+  置く(columnNumber) {
+    if(!this.pullStones) {
       return;
     }
-    if(this.pullStones.color !== this.stones.getLastColor(columnNumber)) {
-      return;
+    if(this.格子.列がすべて空() || !this.pullStones.同じ色(this.格子.最下部の石(columnNumber))) {
+      return
     }
     
-    this.stones.drop(columnNumber, this.pullStones);
+    //   if(this.pullStones.color !== this.格子.getLastColor(columnNumber)) {
+    //   return;
+    // }
+    
+    this.格子.drop(columnNumber, this.pullStones);
     this.pullStones.clear();
   }
 
-  dosappearWithColumnNumber(columnNumber) {
-    // falling以外は処理対象外
-    if(this.stones.getLastStone().state !== "falling") {
-      return;
-    }
-  }
+  // disappearWithColumnNumber(columnNumber) {
+  //   // falling以外は処理対象外
+  //   if(this.格子.getLastStone().state !== "falling") {
+  //     return;
+  //   }
+  // }
 
   disappear() {
-    this.stones.grouping();
+    this.格子.grouping();
     var disappearGroupIds = new Set();
-    this.stones.forEach(v => {if(v.state == "falling") disappearGroupIds.add(v.groupId)});
+    this.格子.石だけforEach(v => {if(v.状態 == "falling") disappearGroupIds.add(v.グループID)});
     disappearGroupIds.forEach(v => {
-      this.stones.groupMap[v].forEach(stone => {
-        stone.toEmpty();
+      this.格子.groupMap[v].forEach(stone => {
+        stone.to空();
       })
     })
     // for(let columnNumber = 0; columnNumber < this.widthCount; columnNumber++) {

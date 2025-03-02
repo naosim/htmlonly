@@ -2756,7 +2756,7 @@ declare namespace Phaser {
                 readonly id: number;
 
                 /**
-                 * The name of the Camera. This is left empty for your own use.
+                 * The name of the Camera. This is left 空 for your own use.
                  */
                 name: string;
 
@@ -3049,7 +3049,7 @@ declare namespace Phaser {
                 /**
                  * Returns a rectangle containing the bounds of the Camera.
                  * 
-                 * If the Camera does not have any bounds the rectangle will be empty.
+                 * If the Camera does not have any bounds the rectangle will be 空.
                  * 
                  * The rectangle is a copy of the bounds, so is safe to modify.
                  * @param out An optional Rectangle to store the bounds in. If not given, a new Rectangle will be created.
@@ -3846,7 +3846,7 @@ declare namespace Phaser {
                 /**
                  * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
                  * the `destroy` method on each post pipeline and then clearing the local array.
-                 * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
                  */
                 resetPostPipeline(resetData?: boolean): void;
 
@@ -5755,7 +5755,7 @@ declare namespace Phaser {
             readonly inputKeyboardEventTarget: any;
 
             /**
-             * `preventDefault` will be called on every non-modified key which has a key code in this array. By default, it is empty.
+             * `preventDefault` will be called on every non-modified key which has a key code in this array. By default, it is 空.
              */
             readonly inputKeyboardCapture: number[] | null;
 
@@ -7364,7 +7364,7 @@ declare namespace Phaser {
 
             /**
              * The name of this Path.
-             * Empty by default and never populated by Phaser, this is left for developers to use.
+             * 空 by default and never populated by Phaser, this is left for developers to use.
              */
             name: string;
 
@@ -7393,14 +7393,14 @@ declare namespace Phaser {
             /**
              * The starting point of the Path.
              * 
-             * This is not necessarily equivalent to the starting point of the first Curve in the Path. In an empty Path, it's also treated as the ending point.
+             * This is not necessarily equivalent to the starting point of the first Curve in the Path. In an 空 Path, it's also treated as the ending point.
              */
             startPoint: Phaser.Math.Vector2;
 
             /**
              * Appends a Curve to the end of the Path.
              * 
-             * The Curve does not have to start where the Path ends or, for an empty Path, at its defined starting point.
+             * The Curve does not have to start where the Path ends or, for an 空 Path, at its defined starting point.
              * @param curve The Curve to append.
              */
             add(curve: Phaser.Curves.Curve): this;
@@ -7418,7 +7418,7 @@ declare namespace Phaser {
              * 
              * A closed Path starts and ends at the same point. If the Path is not closed, a straight Line Curve will be created from the ending point directly to the starting point. During the check, the actual starting point of the Path, i.e. the starting point of the first Curve, will be used as opposed to the Path's defined {@link startPoint}, which could differ.
              * 
-             * Calling this method on an empty Path will result in an error.
+             * Calling this method on an 空 Path will result in an error.
              */
             closePath(): this;
 
@@ -7491,7 +7491,7 @@ declare namespace Phaser {
             /**
              * Returns the ending point of the Path.
              * 
-             * A Path's ending point is equivalent to the ending point of the last Curve in the Path. For an empty Path, the ending point is at the Path's defined {@link #startPoint}.
+             * A Path's ending point is equivalent to the ending point of the last Curve in the Path. For an 空 Path, the ending point is at the Path's defined {@link #startPoint}.
              * @param out The object to store the point in.
              */
             getEndPoint<O extends Phaser.Math.Vector2>(out?: O): O;
@@ -11159,7 +11159,7 @@ declare namespace Phaser {
 
             /**
              * The name of this Game Object.
-             * Empty by default and never populated by Phaser, this is left for developers to use.
+             * 空 by default and never populated by Phaser, this is left for developers to use.
              */
             name: string;
 
@@ -11804,7 +11804,7 @@ declare namespace Phaser {
              * Creates a Tilemap from the given key or data, or creates a blank Tilemap if no key/data provided.
              * When loading from CSV or a 2D array, you should specify the tileWidth & tileHeight. When parsing
              * from a map from Tiled, the tileWidth, tileHeight, width & height will be pulled from the map
-             * data. For an empty map, you should specify tileWidth, tileHeight, width & height.
+             * data. For an 空 map, you should specify tileWidth, tileHeight, width & height.
              * @param config The config options for the Tilemap.
              */
             tilemap(config?: Phaser.Types.Tilemaps.TilemapConfig): Phaser.Tilemaps.Tilemap;
@@ -12143,9 +12143,9 @@ declare namespace Phaser {
              * @param frame An optional frame from the Texture this Game Object is rendering with.
              * @param vertices The vertices array. Either `xy` pairs, or `xyz` if the `containsZ` parameter is `true`.
              * @param uvs The UVs pairs array.
-             * @param indicies Optional vertex indicies array. If you don't have one, pass `null` or an empty array.
+             * @param indicies Optional vertex indicies array. If you don't have one, pass `null` or an 空 array.
              * @param containsZ Does the vertices data include a `z` component? Default false.
-             * @param normals Optional vertex normals array. If you don't have one, pass `null` or an empty array.
+             * @param normals Optional vertex normals array. If you don't have one, pass `null` or an 空 array.
              * @param colors An array of colors, one per vertex, or a single color value applied to all vertices. Default 0xffffff.
              * @param alphas An array of alpha values, one per vertex, or a single alpha value applied to all vertices. Default 1.
              */
@@ -12840,7 +12840,7 @@ declare namespace Phaser {
              * Creates a Tilemap from the given key or data, or creates a blank Tilemap if no key/data provided.
              * When loading from CSV or a 2D array, you should specify the tileWidth & tileHeight. When parsing
              * from a map from Tiled, the tileWidth, tileHeight, width & height will be pulled from the map
-             * data. For an empty map, you should specify tileWidth, tileHeight, width & height.
+             * data. For an 空 map, you should specify tileWidth, tileHeight, width & height.
              * @param key The key in the Phaser cache that corresponds to the loaded tilemap data.
              * @param tileWidth The width of a tile in pixels. Pass in `null` to leave as the
              * default. Default 32.
@@ -12852,8 +12852,8 @@ declare namespace Phaser {
              * default. Default 10.
              * @param data Instead of loading from the cache, you can also load directly from
              * a 2D array of tile indexes. Pass in `null` for no data.
-             * @param insertNull Controls how empty tiles, tiles with an index of -1, in the
-             * map data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+             * @param insertNull Controls how 空 tiles, tiles with an index of -1, in the
+             * map data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
              * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
              * the tile data doesn't need to change then setting this value to `true` will help with memory
              * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -13623,7 +13623,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -13751,7 +13751,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -15037,7 +15037,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -15165,7 +15165,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -15961,7 +15961,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -16089,7 +16089,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -16981,7 +16981,7 @@ declare namespace Phaser {
                  * have been added to this FX Component. They are processed in
                  * the order they are added.
                  * 
-                 * This array is empty if this is a Post FX Component.
+                 * This array is 空 if this is a Post FX Component.
                  */
                 list: Phaser.FX.Controller[];
                 /**
@@ -17710,7 +17710,7 @@ declare namespace Phaser {
                 setPipelineData(key: string, value?: any): this;
                 /**
                  * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-                 * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
                  */
                 resetPipeline(resetData?: boolean): boolean;
                 /**
@@ -17833,7 +17833,7 @@ declare namespace Phaser {
                 /**
                  * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
                  * the `destroy` method on each post pipeline and then clearing the local array.
-                 * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
                  */
                 resetPostPipeline(resetData?: boolean): void;
                 /**
@@ -19211,28 +19211,28 @@ declare namespace Phaser {
             readonly length: number;
 
             /**
-             * Returns the first Game Object within the Container, or `null` if it is empty.
+             * Returns the first Game Object within the Container, or `null` if it is 空.
              * 
              * You can move the cursor by calling `Container.next` and `Container.previous`.
              */
             readonly first: Phaser.GameObjects.GameObject | null;
 
             /**
-             * Returns the last Game Object within the Container, or `null` if it is empty.
+             * Returns the last Game Object within the Container, or `null` if it is 空.
              * 
              * You can move the cursor by calling `Container.next` and `Container.previous`.
              */
             readonly last: Phaser.GameObjects.GameObject | null;
 
             /**
-             * Returns the next Game Object within the Container, or `null` if it is empty.
+             * Returns the next Game Object within the Container, or `null` if it is 空.
              * 
              * You can move the cursor by calling `Container.next` and `Container.previous`.
              */
             readonly next: Phaser.GameObjects.GameObject | null;
 
             /**
-             * Returns the previous Game Object within the Container, or `null` if it is empty.
+             * Returns the previous Game Object within the Container, or `null` if it is 空.
              * 
              * You can move the cursor by calling `Container.next` and `Container.previous`.
              */
@@ -19629,7 +19629,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -21761,7 +21761,7 @@ declare namespace Phaser {
         /**
          * A Graphics object is a way to draw primitive shapes to your game. Primitives include forms of geometry, such as
          * Rectangles, Circles, and Polygons. They also include lines, arcs and curves. When you initially create a Graphics
-         * object it will be empty.
+         * object it will be 空.
          * 
          * To draw to it you must first specify a line style or fill style (or both), draw shapes using paths, and finally
          * fill or stroke them. For example:
@@ -22556,7 +22556,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -22684,7 +22684,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -23004,7 +23004,7 @@ declare namespace Phaser {
 
             /**
              * The name of this group.
-             * Empty by default and never populated by Phaser, this is left for developers to use.
+             * 空 by default and never populated by Phaser, this is left for developers to use.
              */
             name: string;
 
@@ -24053,7 +24053,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -24181,7 +24181,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -24806,7 +24806,7 @@ declare namespace Phaser {
 
             /**
              * The name of this Game Object.
-             * Empty by default and never populated by Phaser, this is left for developers to use.
+             * 空 by default and never populated by Phaser, this is left for developers to use.
              */
             name: string;
 
@@ -25473,7 +25473,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -25981,9 +25981,9 @@ declare namespace Phaser {
              * @param frame An optional frame from the Texture this Game Object is rendering with.
              * @param vertices The vertices array. Either `xy` pairs, or `xyz` if the `containsZ` parameter is `true` (but see note).
              * @param uvs The UVs pairs array.
-             * @param indicies Optional vertex indicies array. If you don't have one, pass `null` or an empty array.
+             * @param indicies Optional vertex indicies array. If you don't have one, pass `null` or an 空 array.
              * @param containsZ Does the vertices data include a `z` component? Note: If not, it will be assumed `z=0`, see method `panZ` or `setOrtho`. Default false.
-             * @param normals Optional vertex normals array. If you don't have one, pass `null` or an empty array.
+             * @param normals Optional vertex normals array. If you don't have one, pass `null` or an 空 array.
              * @param colors An array of colors, one per vertex, or a single color value applied to all vertices. Default 0xffffff.
              * @param alphas An array of alpha values, one per vertex, or a single alpha value applied to all vertices. Default 1.
              */
@@ -26328,9 +26328,9 @@ declare namespace Phaser {
              * If the data is not indexed, it's assumed that the arrays all contain sequential data.
              * @param vertices The vertices array. Either `xy` pairs, or `xyz` if the `containsZ` parameter is `true`.
              * @param uvs The UVs pairs array.
-             * @param indicies Optional vertex indicies array. If you don't have one, pass `null` or an empty array.
+             * @param indicies Optional vertex indicies array. If you don't have one, pass `null` or an 空 array.
              * @param containsZ Does the vertices data include a `z` component? If not, it will be assumed `z=0`, see methods `panZ` or `setOrtho`. Default false.
-             * @param normals Optional vertex normals array. If you don't have one, pass `null` or an empty array.
+             * @param normals Optional vertex normals array. If you don't have one, pass `null` or an 空 array.
              * @param colors An array of colors, one per vertex, or a single color value applied to all vertices. Default 0xffffff.
              * @param alphas An array of alpha values, one per vertex, or a single alpha value applied to all vertices. Default 1.
              */
@@ -26806,7 +26806,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -26934,7 +26934,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -28091,7 +28091,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -28219,7 +28219,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -29742,7 +29742,7 @@ declare namespace Phaser {
                  * 
                  * When set this overrides the `particleBringToTop` setting.
                  * 
-                 * To reset this and disable sorting, so this property to an empty string.
+                 * To reset this and disable sorting, so this property to an 空 string.
                  */
                 sortProperty: string;
 
@@ -30291,7 +30291,7 @@ declare namespace Phaser {
                  * to see if it intersects with any currently alive Particle in this Emitter.
                  * 
                  * Overlapping particles are returned in an array, where you can perform further
-                 * processing on them. If nothing overlaps then the array will be empty.
+                 * processing on them. If nothing overlaps then the array will be 空.
                  * @param target A Rectangle or Arcade Physics Body to check for intersection against all alive particles.
                  */
                 overlap(target: Phaser.Geom.Rectangle | Phaser.Physics.Arcade.Body): Phaser.GameObjects.Particles.Particle[];
@@ -30910,7 +30910,7 @@ declare namespace Phaser {
 
                 /**
                  * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-                 * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
                  */
                 resetPipeline(resetData?: boolean): boolean;
 
@@ -31038,7 +31038,7 @@ declare namespace Phaser {
                 /**
                  * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
                  * the `destroy` method on each post pipeline and then clearing the local array.
-                 * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
                  */
                 resetPostPipeline(resetData?: boolean): void;
 
@@ -32210,7 +32210,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -32338,7 +32338,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -33525,7 +33525,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -33653,7 +33653,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -34453,7 +34453,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -34581,7 +34581,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -35925,7 +35925,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -36053,7 +36053,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -37207,7 +37207,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -37335,7 +37335,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -37783,7 +37783,7 @@ declare namespace Phaser {
 
             /**
              * The underlying shader object being used.
-             * Empty by default and set during a call to the `setShader` method.
+             * 空 by default and set during a call to the `setShader` method.
              */
             shader: Phaser.Display.BaseShader;
 
@@ -39260,7 +39260,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -39388,7 +39388,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -40161,7 +40161,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -40289,7 +40289,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -41015,7 +41015,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -41143,7 +41143,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -41879,7 +41879,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -42007,7 +42007,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -42813,7 +42813,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -42941,7 +42941,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -43714,7 +43714,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -43842,7 +43842,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -44629,7 +44629,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -44757,7 +44757,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -45500,7 +45500,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -45628,7 +45628,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -46375,7 +46375,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -46503,7 +46503,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -47220,7 +47220,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -47348,7 +47348,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -48098,7 +48098,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -48226,7 +48226,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -48950,7 +48950,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -49078,7 +49078,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -50118,7 +50118,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -50246,7 +50246,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -51809,7 +51809,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -51937,7 +51937,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -53454,7 +53454,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -53582,7 +53582,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -54163,7 +54163,7 @@ declare namespace Phaser {
             /**
              * The key of the current video as stored in the Video cache.
              * 
-             * If the video did not come from the cache this will be an empty string.
+             * If the video did not come from the cache this will be an 空 string.
              */
             readonly cacheKey: string;
 
@@ -54207,7 +54207,7 @@ declare namespace Phaser {
             /**
              * Returns the key of the currently played video, as stored in the Video Cache.
              * 
-             * If the video did not come from the cache this will return an empty string.
+             * If the video did not come from the cache this will return an 空 string.
              */
             getVideoKey(): string;
 
@@ -55278,7 +55278,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -55406,7 +55406,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -56512,10 +56512,10 @@ declare namespace Phaser {
             setTo(x?: number, y?: number, radius?: number): this;
 
             /**
-             * Sets this Circle to be empty with a radius of zero.
+             * Sets this Circle to be 空 with a radius of zero.
              * Does not change its position.
              */
-            setEmpty(): this;
+            set空(): this;
 
             /**
              * Sets the position of this Circle.
@@ -56525,9 +56525,9 @@ declare namespace Phaser {
             setPosition(x?: number, y?: number): this;
 
             /**
-             * Checks to see if the Circle is empty: has a radius of zero.
+             * Checks to see if the Circle is 空: has a radius of zero.
              */
-            isEmpty(): boolean;
+            は空である(): boolean;
 
             /**
              * The radius of the Circle.
@@ -56843,10 +56843,10 @@ declare namespace Phaser {
             setTo(x: number, y: number, width: number, height: number): this;
 
             /**
-             * Sets this Ellipse to be empty with a width and height of zero.
+             * Sets this Ellipse to be 空 with a width and height of zero.
              * Does not change its position.
              */
-            setEmpty(): this;
+            set空(): this;
 
             /**
              * Sets the position of this Ellipse.
@@ -56864,9 +56864,9 @@ declare namespace Phaser {
             setSize(width: number, height?: number): this;
 
             /**
-             * Checks to see if the Ellipse is empty: has a width or height equal to zero.
+             * Checks to see if the Ellipse is 空: has a width or height equal to zero.
              */
-            isEmpty(): boolean;
+            は空である(): boolean;
 
             /**
              * Returns the minor radius of the ellipse. Also known as the Semi Minor Axis.
@@ -57059,7 +57059,7 @@ declare namespace Phaser {
              * 
              * If the rays intersect with the polygons, the points of intersection are returned in an array.
              * 
-             * If no intersections are found, the returned array will be empty.
+             * If no intersections are found, the returned array will be 空.
              * 
              * Each Vector4 intersection result has the following properties:
              * 
@@ -57075,12 +57075,12 @@ declare namespace Phaser {
             /**
              * Checks if two Rectangle shapes intersect and returns the area of this intersection as Rectangle object.
              * 
-             * If optional `output` parameter is omitted, new Rectangle object is created and returned. If there is intersection, it will contain intersection area. If there is no intersection, it wil be empty Rectangle (all values set to zero).
+             * If optional `output` parameter is omitted, new Rectangle object is created and returned. If there is intersection, it will contain intersection area. If there is no intersection, it wil be 空 Rectangle (all values set to zero).
              * 
              * If Rectangle object is passed as `output` and there is intersection, then intersection area data will be loaded into it and it will be returned. If there is no intersection, it will be returned without any change.
              * @param rectA The first Rectangle object.
              * @param rectB The second Rectangle object.
-             * @param output Optional Rectangle object. If given, the intersection data will be loaded into it (in case of no intersection, it will be left unchanged). Otherwise, new Rectangle object will be created and returned with either intersection data or empty (all values set to zero), if there is no intersection.
+             * @param output Optional Rectangle object. If given, the intersection data will be loaded into it (in case of no intersection, it will be left unchanged). Otherwise, new Rectangle object will be created and returned with either intersection data or 空 (all values set to zero), if there is no intersection.
              */
             function GetRectangleIntersection<O extends Phaser.Geom.Rectangle>(rectA: Phaser.Geom.Rectangle, rectB: Phaser.Geom.Rectangle, output?: O): O;
 
@@ -57931,9 +57931,9 @@ declare namespace Phaser {
              * If the data is not indexed, it's assumed that the arrays all contain sequential data.
              * @param vertices The vertices array. Either `xy` pairs, or `xyz` if the `containsZ` parameter is `true`.
              * @param uvs The UVs pairs array.
-             * @param indicies Optional vertex indicies array. If you don't have one, pass `null` or an empty array.
+             * @param indicies Optional vertex indicies array. If you don't have one, pass `null` or an 空 array.
              * @param containsZ Does the vertices data include a `z` component? Default false.
-             * @param normals Optional vertex normals array. If you don't have one, pass `null` or an empty array.
+             * @param normals Optional vertex normals array. If you don't have one, pass `null` or an 空 array.
              * @param colors An array of colors, one per vertex, or a single color value applied to all vertices. Default 0xffffff.
              * @param alphas An array of alpha values, one per vertex, or a single alpha value applied to all vertices. Default 1.
              * @param flipUV Flip the UV coordinates? Default false.
@@ -58873,7 +58873,7 @@ declare namespace Phaser {
             /**
              * Resets the position, width, and height of the Rectangle to 0.
              */
-            setEmpty(): this;
+            set空(): this;
 
             /**
              * Sets the position of the Rectangle.
@@ -58890,9 +58890,9 @@ declare namespace Phaser {
             setSize(width: number, height?: number): this;
 
             /**
-             * Determines if the Rectangle is empty. A Rectangle is empty if its width or height is less than or equal to 0.
+             * Determines if the Rectangle is 空. A Rectangle is 空 if its width or height is less than or equal to 0.
              */
-            isEmpty(): boolean;
+            は空である(): boolean;
 
             /**
              * Returns a Line object that corresponds to the top of this Rectangle.
@@ -59081,7 +59081,7 @@ declare namespace Phaser {
 
             /**
              * Filters an array of point-like objects to only those contained within a triangle.
-             * If `returnFirst` is true, will return an array containing only the first point in the provided array that is within the triangle (or an empty array if there are no such points).
+             * If `returnFirst` is true, will return an array containing only the first point in the provided array that is within the triangle (or an 空 array if there are no such points).
              * @param triangle The triangle that the points are being checked in.
              * @param points An array of point-like objects (objects that have an `x` and `y` property)
              * @param returnFirst If `true`, return an array containing only the first point found that is within the triangle. Default false.
@@ -59513,13 +59513,13 @@ declare namespace Phaser {
              * The Game Objects are culled against the camera, and then the coordinates are translated into the local camera space
              * and used to determine if they fall within the remaining Game Objects hit areas or not.
              * 
-             * If nothing is matched an empty array is returned.
+             * If nothing is matched an 空 array is returned.
              * 
              * This method is called automatically by InputPlugin.hitTestPointer and doesn't usually need to be invoked directly.
              * @param pointer The Pointer to test against.
              * @param gameObjects An array of interactive Game Objects to check.
              * @param camera The Camera which is being tested against.
-             * @param output An array to store the results in. If not given, a new empty array is created.
+             * @param output An array to store the results in. If not given, a new 空 array is created.
              */
             hitTest(pointer: Phaser.Input.Pointer, gameObjects: any[], camera: Phaser.Cameras.Scene2D.Camera, output?: any[]): any[];
 
@@ -62380,7 +62380,7 @@ declare namespace Phaser {
                  * An array of Key Code values that will automatically have `preventDefault` called on them,
                  * as long as the `KeyboardManager.preventDefault` boolean is set to `true`.
                  * 
-                 * By default the array is empty.
+                 * By default the array is 空.
                  * 
                  * The key must be non-modified when pressed in order to be captured.
                  * 
@@ -62414,14 +62414,14 @@ declare namespace Phaser {
                 /**
                  * The Key Down Event handler.
                  * This function is sent the native DOM KeyEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onKeyDown: Function;
 
                 /**
                  * The Key Up Event handler.
                  * This function is sent the native DOM KeyEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onKeyUp: Function;
 
@@ -63796,63 +63796,63 @@ declare namespace Phaser {
                 /**
                  * The Mouse Move Event handler.
                  * This function is sent the native DOM MouseEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onMouseMove: Function;
 
                 /**
                  * The Mouse Down Event handler.
                  * This function is sent the native DOM MouseEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onMouseDown: Function;
 
                 /**
                  * The Mouse Up Event handler.
                  * This function is sent the native DOM MouseEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onMouseUp: Function;
 
                 /**
                  * The Mouse Down Event handler specifically for events on the Window.
                  * This function is sent the native DOM MouseEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onMouseDownWindow: Function;
 
                 /**
                  * The Mouse Up Event handler specifically for events on the Window.
                  * This function is sent the native DOM MouseEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onMouseUpWindow: Function;
 
                 /**
                  * The Mouse Over Event handler.
                  * This function is sent the native DOM MouseEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onMouseOver: Function;
 
                 /**
                  * The Mouse Out Event handler.
                  * This function is sent the native DOM MouseEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onMouseOut: Function;
 
                 /**
                  * The Mouse Wheel Event handler.
                  * This function is sent the native DOM MouseEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onMouseWheel: Function;
 
                 /**
                  * Internal pointerLockChange handler.
                  * This function is sent the native DOM MouseEvent.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 pointerLockChange: Function;
 
@@ -63962,43 +63962,43 @@ declare namespace Phaser {
 
                 /**
                  * The Touch Start event handler function.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onTouchStart: Function;
 
                 /**
                  * The Touch Start event handler function specifically for events on the Window.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onTouchStartWindow: Function;
 
                 /**
                  * The Touch Move event handler function.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onTouchMove: Function;
 
                 /**
                  * The Touch End event handler function.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onTouchEnd: Function;
 
                 /**
                  * The Touch End event handler function specifically for events on the Window.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onTouchEndWindow: Function;
 
                 /**
                  * The Touch Cancel event handler function.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onTouchCancel: Function;
 
                 /**
                  * The Touch Cancel event handler function specifically for events on the Window.
-                 * Initially empty and bound in the `startListeners` method.
+                 * Initially 空 and bound in the `startListeners` method.
                  */
                 onTouchCancelWindow: Function;
 
@@ -64457,7 +64457,7 @@ declare namespace Phaser {
              * They are moved to the `inflight` Set when they start loading, and assuming a successful
              * load, to the `queue` Set for further processing.
              * 
-             * By the end of the load process this Set will be empty.
+             * By the end of the load process this Set will be 空.
              */
             list: Phaser.Structs.Set<Phaser.Loader.File>;
 
@@ -64466,7 +64466,7 @@ declare namespace Phaser {
              * 
              * Upon a successful load they are moved to the `queue` Set.
              * 
-             * By the end of the load process this Set will be empty.
+             * By the end of the load process this Set will be 空.
              */
             inflight: Phaser.Structs.Set<Phaser.Loader.File>;
 
@@ -64476,7 +64476,7 @@ declare namespace Phaser {
              * If the process is successful they are moved to their final destination, which could be
              * a Cache or the Texture Manager.
              * 
-             * At the end of the load process this Set will be empty.
+             * At the end of the load process this Set will be 空.
              */
             queue: Phaser.Structs.Set<Phaser.Loader.File>;
 
@@ -64517,7 +64517,7 @@ declare namespace Phaser {
              * 
              * Once a base URL is set it will affect every file loaded by the Loader from that point on. It does _not_ change any
              * file _already_ being loaded. To reset it, call this method with no arguments.
-             * @param url The URL to use. Leave empty to reset.
+             * @param url The URL to use. Leave 空 to reset.
              */
             setBaseURL(url?: string): this;
 
@@ -64539,7 +64539,7 @@ declare namespace Phaser {
              * 
              * Once a path is set it will then affect every file added to the Loader from that point on. It does _not_ change any
              * file _already_ in the load queue. To reset it, call this method with no arguments.
-             * @param path The path to use. Leave empty to reset.
+             * @param path The path to use. Leave 空 to reset.
              */
             setPath(path?: string): this;
 
@@ -64550,7 +64550,7 @@ declare namespace Phaser {
              * 
              * Once a prefix is set it will then affect every file added to the Loader from that point on. It does _not_ change any
              * file _already_ in the load queue. To reset it, call this method with no arguments.
-             * @param prefix The prefix to use. Leave empty to reset.
+             * @param prefix The prefix to use. Leave 空 to reset.
              */
             setPrefix(prefix?: string): this;
 
@@ -65269,7 +65269,7 @@ declare namespace Phaser {
              * It is available in the default build but can be excluded from custom builds.
              * @param key The key to use for this file, or a file configuration object, or an array of objects.
              * @param jsonURL The absolute or relative URL to load the json file from. Or a well formed JSON object to use instead.
-             * @param audioURL The absolute or relative URL to load the audio file from. If empty it will be obtained by parsing the JSON file.
+             * @param audioURL The absolute or relative URL to load the audio file from. If 空 it will be obtained by parsing the JSON file.
              * @param audioConfig The audio configuration options.
              * @param audioXhrSettings An XHR Settings configuration object for the audio file. Used in replacement of the Loaders default XHR Settings.
              * @param jsonXhrSettings An XHR Settings configuration object for the json file. Used in replacement of the Loaders default XHR Settings.
@@ -67866,7 +67866,7 @@ declare namespace Phaser {
                  * @param loader A reference to the Loader that is responsible for this file.
                  * @param key The key to use for this file, or a file configuration object.
                  * @param jsonURL The absolute or relative URL to load the json file from. Or a well formed JSON object to use instead.
-                 * @param audioURL The absolute or relative URL to load the audio file from. If empty it will be obtained by parsing the JSON file.
+                 * @param audioURL The absolute or relative URL to load the audio file from. If 空 it will be obtained by parsing the JSON file.
                  * @param audioConfig The audio configuration options.
                  * @param audioXhrSettings An XHR Settings configuration object for the audio file. Used in replacement of the Loaders default XHR Settings.
                  * @param jsonXhrSettings An XHR Settings configuration object for the json file. Used in replacement of the Loaders default XHR Settings.
@@ -69655,7 +69655,7 @@ declare namespace Phaser {
          * 
          * For example, in a 6 x 4 grid, index 16 would equal x: 4 y: 2.
          * 
-         * If the given index is out of range an empty Vector2 is returned.
+         * If the given index is out of range an 空 Vector2 is returned.
          * @param index The position within the grid to get the x/y value for.
          * @param width The width of the grid.
          * @param height The height of the grid.
@@ -72254,7 +72254,7 @@ declare namespace Phaser {
                  */
                 target?: any;
                 /**
-                 * `preventDefault` will be called on every non-modified key which has a key code in this array. By default it is empty.
+                 * `preventDefault` will be called on every non-modified key which has a key code in this array. By default it is 空.
                  */
                 capture?: number[] | null;
             };
@@ -72338,7 +72338,7 @@ declare namespace Phaser {
             };
 
             /**
-             * This callback type is completely empty, a no-operation.
+             * This callback type is completely 空, a no-operation.
              */
             type NOOP = ()=>void;
 
@@ -73614,7 +73614,7 @@ declare namespace Phaser {
                      */
                     uvs?: number[];
                     /**
-                     * Optional vertex indicies array. If you don't have one, pass `null` or an empty array.
+                     * Optional vertex indicies array. If you don't have one, pass `null` or an 空 array.
                      */
                     indicies?: number[];
                     /**
@@ -73622,7 +73622,7 @@ declare namespace Phaser {
                      */
                     containsZ?: boolean;
                     /**
-                     * Optional vertex normals array. If you don't have one, pass `null` or an empty array.
+                     * Optional vertex normals array. If you don't have one, pass `null` or an 空 array.
                      */
                     normals?: number[];
                     /**
@@ -75168,7 +75168,7 @@ declare namespace Phaser {
                      */
                     verts: number[];
                     /**
-                     * An array of vertex indexes. This array will be empty if the `tile` parameter was `true`.
+                     * An array of vertex indexes. This array will be 空 if the `tile` parameter was `true`.
                      */
                     indices: number[];
                     /**
@@ -78552,7 +78552,7 @@ declare namespace Phaser {
             /**
              * Can be defined on your own Scenes. Use it to load assets.
              * This method is called by the Scene Manager, after `init()` and before `create()`, only if the Scene has a LoaderPlugin.
-             * After this method completes, if the LoaderPlugin's queue isn't empty, the LoaderPlugin will start automatically.
+             * After this method completes, if the LoaderPlugin's queue isn't 空, the LoaderPlugin will start automatically.
              */
             type ScenePreloadCallback = (this: Phaser.Scene)=>void;
 
@@ -79168,7 +79168,7 @@ declare namespace Phaser {
                 /**
                  * If true, only return tiles that don't have -1 for an index.
                  */
-                isNotEmpty?: boolean;
+                isNot空?: boolean;
                 /**
                  * If true, only return tiles that collide on at least one side.
                  */
@@ -79523,9 +79523,9 @@ declare namespace Phaser {
                  */
                 height?: number;
                 /**
-                 * Controls how empty tiles, tiles with an index of -1,
-                 * in the map data are handled. If `true`, empty locations will get a value of `null`. If `false`,
-                 * empty location will get a Tile object with an index of -1. If you've a large sparsely populated
+                 * Controls how 空 tiles, tiles with an index of -1,
+                 * in the map data are handled. If `true`, 空 locations will get a value of `null`. If `false`,
+                 * 空 location will get a Tile object with an index of -1. If you've a large sparsely populated
                  * map and the tile data doesn't need to change then setting this value to `true` will help with
                  * memory consumption. However if your map is small or you need to update the tiles dynamically,
                  * then leave the default value set.
@@ -81013,7 +81013,7 @@ declare namespace Phaser {
 
                 /**
                  * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-                 * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
                  */
                 resetPipeline(resetData?: boolean): boolean;
 
@@ -81141,7 +81141,7 @@ declare namespace Phaser {
                 /**
                  * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
                  * the `destroy` method on each post pipeline and then clearing the local array.
-                 * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
                  */
                 resetPostPipeline(resetData?: boolean): void;
 
@@ -82912,7 +82912,7 @@ declare namespace Phaser {
 
                 /**
                  * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-                 * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
                  */
                 resetPipeline(resetData?: boolean): boolean;
 
@@ -83040,7 +83040,7 @@ declare namespace Phaser {
                 /**
                  * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
                  * the `destroy` method on each post pipeline and then clearing the local array.
-                 * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
                  */
                 resetPostPipeline(resetData?: boolean): void;
 
@@ -88489,7 +88489,7 @@ declare namespace Phaser {
 
                 /**
                  * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-                 * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
                  */
                 resetPipeline(resetData?: boolean): boolean;
 
@@ -88617,7 +88617,7 @@ declare namespace Phaser {
                 /**
                  * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
                  * the `destroy` method on each post pipeline and then clearing the local array.
-                 * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
                  */
                 resetPostPipeline(resetData?: boolean): void;
 
@@ -90542,7 +90542,7 @@ declare namespace Phaser {
 
                 /**
                  * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-                 * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
                  */
                 resetPipeline(resetData?: boolean): boolean;
 
@@ -90670,7 +90670,7 @@ declare namespace Phaser {
                 /**
                  * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
                  * the `destroy` method on each post pipeline and then clearing the local array.
-                 * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+                 * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
                  */
                 resetPostPipeline(resetData?: boolean): void;
 
@@ -94131,7 +94131,7 @@ declare namespace Phaser {
 
                 /**
                  * Changes the Canvas Rendering Context that all draw operations are performed against.
-                 * @param ctx The new Canvas Rendering Context to draw everything to. Leave empty to reset to the Game Canvas.
+                 * @param ctx The new Canvas Rendering Context to draw everything to. Leave 空 to reset to the Game Canvas.
                  */
                 setContext(ctx?: CanvasRenderingContext2D | undefined): this;
 
@@ -95513,7 +95513,7 @@ declare namespace Phaser {
                 /**
                  * The currently active WebGLTextures, used as part of the batch process.
                  * 
-                 * Reset to empty as part of the bind method.
+                 * Reset to 空 as part of the bind method.
                  * 
                  * Treat this array as read-only.
                  */
@@ -95751,7 +95751,7 @@ declare namespace Phaser {
                 flush(isPostFlush?: boolean): this;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called every time the Pipeline Manager makes this the active pipeline. It is called
                  * at the end of the `WebGLPipeline.bind` method, after the current shader has been set. The current
@@ -95766,7 +95766,7 @@ declare namespace Phaser {
                 onActive(currentShader: Phaser.Renderer.WebGL.WebGLShader): void;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called every time a **Game Object** asks the Pipeline Manager to use this pipeline,
                  * even if the pipeline is already active.
@@ -95779,7 +95779,7 @@ declare namespace Phaser {
                 onBind(gameObject?: Phaser.GameObjects.GameObject): void;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called when the Pipeline Manager needs to rebind this pipeline. This happens after a
                  * pipeline has been cleared, usually when passing control over to a 3rd party WebGL library, like Spine,
@@ -95788,7 +95788,7 @@ declare namespace Phaser {
                 onRebind(): void;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called every time the `batchQuad` or `batchTri` methods are called. If this was
                  * as a result of a Game Object, then the Game Object reference is passed to this hook too.
@@ -95803,7 +95803,7 @@ declare namespace Phaser {
                 onBatch(gameObject?: Phaser.GameObjects.GameObject): void;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called immediately before a **Game Object** is about to add itself to the batch.
                  * @param gameObject The Game Object that invoked this pipeline, if any.
@@ -95811,7 +95811,7 @@ declare namespace Phaser {
                 onPreBatch(gameObject?: Phaser.GameObjects.GameObject): void;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called immediately after a **Game Object** has been added to the batch.
                  * @param gameObject The Game Object that invoked this pipeline, if any.
@@ -95819,7 +95819,7 @@ declare namespace Phaser {
                 onPostBatch(gameObject?: Phaser.GameObjects.GameObject): void;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called once per frame, right before anything has been rendered, but after the canvas
                  * has been cleared. If this pipeline has a render target, it will also have been cleared by this point.
@@ -95827,7 +95827,7 @@ declare namespace Phaser {
                 onPreRender(): void;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called _once per frame_, by every Camera in a Scene that wants to render.
                  * 
@@ -95838,7 +95838,7 @@ declare namespace Phaser {
                 onRender(scene: Phaser.Scene, camera: Phaser.Cameras.Scene2D.Camera): void;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called _once per frame_, after all rendering has happened and snapshots have been taken.
                  * 
@@ -95848,7 +95848,7 @@ declare namespace Phaser {
                 onPostRender(): void;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called every time this pipeline is asked to flush its batch.
                  * 
@@ -95859,7 +95859,7 @@ declare namespace Phaser {
                 onBeforeFlush(isPostFlush?: boolean): void;
 
                 /**
-                 * By default this is an empty method hook that you can override and use in your own custom pipelines.
+                 * By default this is an 空 method hook that you can override and use in your own custom pipelines.
                  * 
                  * This method is called immediately after this pipeline has finished flushing its batch.
                  * 
@@ -97071,7 +97071,7 @@ declare namespace Phaser {
                 resetProgram(): this;
 
                 /**
-                 * Creates a texture from an image source. If the source is not valid it creates an empty texture.
+                 * Creates a texture from an image source. If the source is not valid it creates an 空 texture.
                  * @param source The source of the texture.
                  * @param width The width of the texture.
                  * @param height The height of the texture.
@@ -97081,7 +97081,7 @@ declare namespace Phaser {
                 createTextureFromSource(source: object, width: number, height: number, scaleMode: number, forceClamp?: boolean): Phaser.Renderer.WebGL.Wrappers.WebGLTextureWrapper | null;
 
                 /**
-                 * A wrapper for creating a WebGLTextureWrapper. If no pixel data is passed it will create an empty texture.
+                 * A wrapper for creating a WebGLTextureWrapper. If no pixel data is passed it will create an 空 texture.
                  * @param mipLevel Mip level of the texture.
                  * @param minFilter Filtering of the texture.
                  * @param magFilter Filtering of the texture.
@@ -101602,7 +101602,7 @@ declare namespace Phaser {
             NO_CENTER,
             /**
              * The game canvas is centered both horizontally and vertically within the parent.
-             * To do this, the parent has to have a bounds that can be calculated and not be empty.
+             * To do this, the parent has to have a bounds that can be calculated and not be 空.
              * 
              * Centering is achieved by setting the margin left and top properties of the
              * game canvas, and does not factor in any other CSS styles you may have applied.
@@ -101610,7 +101610,7 @@ declare namespace Phaser {
             CENTER_BOTH,
             /**
              * The game canvas is centered horizontally within the parent.
-             * To do this, the parent has to have a bounds that can be calculated and not be empty.
+             * To do this, the parent has to have a bounds that can be calculated and not be 空.
              * 
              * Centering is achieved by setting the margin left and top properties of the
              * game canvas, and does not factor in any other CSS styles you may have applied.
@@ -101618,7 +101618,7 @@ declare namespace Phaser {
             CENTER_HORIZONTALLY,
             /**
              * The game canvas is centered both vertically within the parent.
-             * To do this, the parent has to have a bounds that can be calculated and not be empty.
+             * To do this, the parent has to have a bounds that can be calculated and not be 空.
              * 
              * Centering is achieved by setting the margin left and top properties of the
              * game canvas, and does not factor in any other CSS styles you may have applied.
@@ -101788,7 +101788,7 @@ declare namespace Phaser {
 
         /**
          * The game canvas is centered both horizontally and vertically within the parent.
-         * To do this, the parent has to have a bounds that can be calculated and not be empty.
+         * To do this, the parent has to have a bounds that can be calculated and not be 空.
          * 
          * Centering is achieved by setting the margin left and top properties of the
          * game canvas, and does not factor in any other CSS styles you may have applied.
@@ -101797,7 +101797,7 @@ declare namespace Phaser {
 
         /**
          * The game canvas is centered horizontally within the parent.
-         * To do this, the parent has to have a bounds that can be calculated and not be empty.
+         * To do this, the parent has to have a bounds that can be calculated and not be 空.
          * 
          * Centering is achieved by setting the margin left and top properties of the
          * game canvas, and does not factor in any other CSS styles you may have applied.
@@ -101806,7 +101806,7 @@ declare namespace Phaser {
 
         /**
          * The game canvas is centered both vertically within the parent.
-         * To do this, the parent has to have a bounds that can be calculated and not be empty.
+         * To do this, the parent has to have a bounds that can be calculated and not be 空.
          * 
          * Centering is achieved by setting the margin left and top properties of the
          * game canvas, and does not factor in any other CSS styles you may have applied.
@@ -102151,7 +102151,7 @@ declare namespace Phaser {
 
             /**
              * This system Scene is created during `bootQueue` and is a default
-             * empty Scene that lives outside of the Scene list, but can be used
+             * 空 Scene that lives outside of the Scene list, but can be used
              * by plugins and managers that need access to a live Scene, without
              * being tied to one.
              */
@@ -104830,67 +104830,67 @@ declare namespace Phaser {
             stopByKey(key: string): number;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             onBlur(): void;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             onFocus(): void;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             onGameBlur(): void;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             onGameFocus(): void;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             pauseAll(): void;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             resumeAll(): void;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             stopAll(): void;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             update(): void;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             setRate(): this;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             setDetune(): this;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             setMute(): void;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             setVolume(): void;
 
             /**
-             * Empty function for the No Audio Sound Manager.
+             * 空 function for the No Audio Sound Manager.
              */
             unlock(): void;
 
@@ -105619,12 +105619,12 @@ declare namespace Phaser {
             readonly length: number;
 
             /**
-             * The first item in the List or `null` for an empty List.
+             * The first item in the List or `null` for an 空 List.
              */
             readonly first: T;
 
             /**
-             * The last item in the List, or `null` for an empty List.
+             * The last item in the List, or `null` for an 空 List.
              */
             readonly last: T;
 
@@ -108030,7 +108030,7 @@ declare namespace Phaser {
              * games.
              * 
              * As of Phaser 3.60 you can use this method to add a sprite sheet to an existing Phaser Texture.
-             * @param key The unique string-based key of the Texture. Give an empty string if you provide a Phaser Texture as the 2nd argument.
+             * @param key The unique string-based key of the Texture. Give an 空 string if you provide a Phaser Texture as the 2nd argument.
              * @param source The source Image element, or a Phaser Texture.
              * @param config The configuration object for this Sprite Sheet.
              * @param dataSource An optional data Image element.
@@ -108621,7 +108621,7 @@ declare namespace Phaser {
          * Create a Tilemap from the given key or data. If neither is given, make a blank Tilemap. When
          * loading from CSV or a 2D array, you should specify the tileWidth & tileHeight. When parsing from
          * a map from Tiled, the tileWidth, tileHeight, width & height will be pulled from the map data. For
-         * an empty map, you should specify tileWidth, tileHeight, width & height.
+         * an 空 map, you should specify tileWidth, tileHeight, width & height.
          * @param scene The Scene to which this Tilemap belongs.
          * @param key The key in the Phaser cache that corresponds to the loaded tilemap data.
          * @param tileWidth The width of a tile in pixels. Default 32.
@@ -108630,8 +108630,8 @@ declare namespace Phaser {
          * @param height The height of the map in tiles. Default 10.
          * @param data Instead of loading from the cache, you can also load directly from
          * a 2D array of tile indexes.
-         * @param insertNull Controls how empty tiles, tiles with an index of -1, in the
-         * map data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+         * @param insertNull Controls how 空 tiles, tiles with an index of -1, in the
+         * map data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
          * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
          * the tile data doesn't need to change then setting this value to `true` will help with memory
          * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -108820,7 +108820,7 @@ declare namespace Phaser {
             tintFill: boolean;
 
             /**
-             * An empty object where physics-engine specific information (e.g. bodies) may be stored.
+             * An 空 object where physics-engine specific information (e.g. bodies) may be stored.
              */
             physics: object;
 
@@ -109340,7 +109340,7 @@ declare namespace Phaser {
             copy(srcTileX: number, srcTileY: number, width: number, height: number, destTileX: number, destTileY: number, recalculateFaces?: boolean, layer?: string | number | Phaser.Tilemaps.TilemapLayer): Phaser.Tilemaps.Tilemap | null;
 
             /**
-             * Creates a new and empty Tilemap Layer. The currently selected layer in the map is set to this new layer.
+             * Creates a new and 空 Tilemap Layer. The currently selected layer in the map is set to this new layer.
              * 
              * Prior to v3.50.0 this method was called `createBlankDynamicLayer`.
              * @param name The name of this layer. Must be unique within the map.
@@ -109697,7 +109697,7 @@ declare namespace Phaser {
              * If no layer is specified, the maps current layer is used.
              * @param tileX X position to get the tile from (given in tile units, not pixels).
              * @param tileY Y position to get the tile from (given in tile units, not pixels).
-             * @param nonNull For empty tiles, return a Tile object with an index of -1 instead of null. Default false.
+             * @param nonNull For 空 tiles, return a Tile object with an index of -1 instead of null. Default false.
              * @param layer The tile layer to use. If not given the current layer is used.
              */
             getTileAt(tileX: number, tileY: number, nonNull?: boolean, layer?: string | number | Phaser.Tilemaps.TilemapLayer): Phaser.Tilemaps.Tile | null;
@@ -109708,7 +109708,7 @@ declare namespace Phaser {
              * If no layer is specified, the maps current layer is used.
              * @param worldX X position to get the tile from (given in pixels)
              * @param worldY Y position to get the tile from (given in pixels)
-             * @param nonNull For empty tiles, return a Tile object with an index of -1 instead of null. Default false.
+             * @param nonNull For 空 tiles, return a Tile object with an index of -1 instead of null. Default false.
              * @param camera The Camera to use when calculating the tile index from the world values.
              * @param layer The tile layer to use. If not given the current layer is used.
              */
@@ -110621,7 +110621,7 @@ declare namespace Phaser {
              * Gets a tile at the given tile coordinates from the given layer.
              * @param tileX X position to get the tile from (given in tile units, not pixels).
              * @param tileY Y position to get the tile from (given in tile units, not pixels).
-             * @param nonNull For empty tiles, return a Tile object with an index of -1 instead of null. Default false.
+             * @param nonNull For 空 tiles, return a Tile object with an index of -1 instead of null. Default false.
              */
             getTileAt(tileX: number, tileY: number, nonNull?: boolean): Phaser.Tilemaps.Tile;
 
@@ -110629,7 +110629,7 @@ declare namespace Phaser {
              * Gets a tile at the given world coordinates from the given layer.
              * @param worldX X position to get the tile from (given in pixels)
              * @param worldY Y position to get the tile from (given in pixels)
-             * @param nonNull For empty tiles, return a Tile object with an index of -1 instead of null. Default false.
+             * @param nonNull For 空 tiles, return a Tile object with an index of -1 instead of null. Default false.
              * @param camera The Camera to use when calculating the tile index from the world values.
              */
             getTileAtWorldXY(worldX: number, worldY: number, nonNull?: boolean, camera?: Phaser.Cameras.Scene2D.Camera): Phaser.Tilemaps.Tile;
@@ -110639,7 +110639,7 @@ declare namespace Phaser {
              * @param worldX X position to get the tile from (given in pixels)
              * @param worldY Y position to get the tile from (given in pixels)
              * @param originTop Which is the active face of the isometric tile? The top (default, true), or the base? (false) Default true.
-             * @param nonNull For empty tiles, return a Tile object with an index of -1 instead of null. Default false.
+             * @param nonNull For 空 tiles, return a Tile object with an index of -1 instead of null. Default false.
              * @param camera The Camera to use when calculating the tile index from the world values.
              */
             getIsoTileAtWorldXY(worldX: number, worldY: number, originTop?: boolean, nonNull?: boolean, camera?: Phaser.Cameras.Scene2D.Camera): Phaser.Tilemaps.Tile;
@@ -111554,7 +111554,7 @@ declare namespace Phaser {
 
             /**
              * Resets the WebGL Pipeline of this Game Object back to the default it was created with.
-             * @param resetData Reset the `pipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `pipelineData` object to being an 空 object? Default false.
              */
             resetPipeline(resetData?: boolean): boolean;
 
@@ -111682,7 +111682,7 @@ declare namespace Phaser {
             /**
              * Resets the WebGL Post Pipelines of this Game Object. It does this by calling
              * the `destroy` method on each post pipeline and then clearing the local array.
-             * @param resetData Reset the `postPipelineData` object to being an empty object? Default false.
+             * @param resetData Reset the `postPipelineData` object to being an 空 object? Default false.
              */
             resetPostPipeline(resetData?: boolean): void;
 
@@ -112340,7 +112340,7 @@ declare namespace Phaser {
              * Gets a tile at the given tile coordinates from the given layer.
              * @param tileX X position to get the tile from (given in tile units, not pixels).
              * @param tileY Y position to get the tile from (given in tile units, not pixels).
-             * @param nonNull For empty tiles, return a Tile object with an index of -1 instead of null.
+             * @param nonNull For 空 tiles, return a Tile object with an index of -1 instead of null.
              * @param layer The Tilemap Layer to act upon.
              */
             function GetTileAt(tileX: number, tileY: number, nonNull: boolean, layer: Phaser.Tilemaps.LayerData): Phaser.Tilemaps.Tile;
@@ -112349,7 +112349,7 @@ declare namespace Phaser {
              * Gets a tile at the given world coordinates from the given layer.
              * @param worldX X position to get the tile from (given in pixels)
              * @param worldY Y position to get the tile from (given in pixels)
-             * @param nonNull For empty tiles, return a Tile object with an index of -1 instead of null.
+             * @param nonNull For 空 tiles, return a Tile object with an index of -1 instead of null.
              * @param camera The Camera to use when calculating the tile index from the world values.
              * @param layer The Tilemap Layer to act upon.
              */
@@ -113365,8 +113365,8 @@ declare namespace Phaser {
              * ignored for Tiled JSON.
              * @param tileHeight The height of a tile in pixels. Required for 2D array and CSV, but
              * ignored for Tiled JSON.
-             * @param insertNull Controls how empty tiles, tiles with an index of -1, in the map
-             * data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+             * @param insertNull Controls how 空 tiles, tiles with an index of -1, in the map
+             * data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
              * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
              * the tile data doesn't need to change then setting this value to `true` will help with memory
              * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -113380,8 +113380,8 @@ declare namespace Phaser {
              * @param data 2D array, CSV string or Tiled JSON object.
              * @param tileWidth The width of a tile in pixels.
              * @param tileHeight The height of a tile in pixels.
-             * @param insertNull Controls how empty tiles, tiles with an index of -1, in the map
-             * data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+             * @param insertNull Controls how 空 tiles, tiles with an index of -1, in the map
+             * data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
              * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
              * the tile data doesn't need to change then setting this value to `true` will help with memory
              * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -113395,8 +113395,8 @@ declare namespace Phaser {
              * @param data CSV string of tile indexes.
              * @param tileWidth The width of a tile in pixels.
              * @param tileHeight The height of a tile in pixels.
-             * @param insertNull Controls how empty tiles, tiles with an index of -1, in the map
-             * data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+             * @param insertNull Controls how 空 tiles, tiles with an index of -1, in the map
+             * data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
              * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
              * the tile data doesn't need to change then setting this value to `true` will help with memory
              * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -113408,7 +113408,7 @@ declare namespace Phaser {
                 /**
                  * Parses all tilemap layers in an Impact JSON object into new LayerData objects.
                  * @param json The Impact JSON object.
-                 * @param insertNull Controls how empty tiles, tiles with an index of -1, in the map
+                 * @param insertNull Controls how 空 tiles, tiles with an index of -1, in the map
                  * data are handled (see {@link Phaser.Tilemaps.Parsers.Tiled.ParseJSONTiled}).
                  */
                 function ParseTileLayers(json: object, insertNull: boolean): Phaser.Tilemaps.LayerData[];
@@ -113423,8 +113423,8 @@ declare namespace Phaser {
                  * Parses a Weltmeister JSON object into a new MapData object.
                  * @param name The name of the tilemap, used to set the name on the MapData.
                  * @param json The Weltmeister JSON object.
-                 * @param insertNull Controls how empty tiles, tiles with an index of -1, in the map
-                 * data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+                 * @param insertNull Controls how 空 tiles, tiles with an index of -1, in the map
+                 * data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
                  * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
                  * the tile data doesn't need to change then setting this value to `true` will help with memory
                  * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -113478,8 +113478,8 @@ declare namespace Phaser {
                  * Parses a Tiled JSON object into a new MapData object.
                  * @param name The name of the tilemap, used to set the name on the MapData.
                  * @param source The original Tiled JSON object. This is deep copied by this function.
-                 * @param insertNull Controls how empty tiles, tiles with an index of -1, in the map
-                 * data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+                 * @param insertNull Controls how 空 tiles, tiles with an index of -1, in the map
+                 * data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
                  * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
                  * the tile data doesn't need to change then setting this value to `true` will help with memory
                  * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -113504,7 +113504,7 @@ declare namespace Phaser {
                 /**
                  * Parses all tilemap layers in a Tiled JSON object into new LayerData objects.
                  * @param json The Tiled JSON object.
-                 * @param insertNull Controls how empty tiles, tiles with an index of -1, in the map
+                 * @param insertNull Controls how 空 tiles, tiles with an index of -1, in the map
                  * data are handled (see {@link Phaser.Tilemaps.Parsers.Tiled.ParseJSONTiled}).
                  */
                 function ParseTileLayers(json: object, insertNull: boolean): Phaser.Tilemaps.LayerData[];
@@ -114362,7 +114362,7 @@ declare namespace Phaser {
              * Returns an array containing this Tween and all Tweens chained to it,
              * in the order in which they will be played.
              * 
-             * If there are no chained Tweens an empty array is returned.
+             * If there are no chained Tweens an 空 array is returned.
              * @param tween The Tween to return the chain from.
              */
             getChainedTweens(tween: Phaser.Tweens.Tween): Phaser.Tweens.Tween[];
@@ -115319,7 +115319,7 @@ declare namespace Phaser {
              * `onUpdate` - When a TweenData updates a property on a source target during playback.
              * @param type The type of callback to set. One of: `onActive`, `onComplete`, `onLoop`, `onPause`, `onRepeat`, `onResume`, `onStart`, `onStop`, `onUpdate` or `onYoyo`.
              * @param callback Your callback that will be invoked.
-             * @param params The parameters to pass to the callback. Pass an empty array if you don't want to define any, but do wish to set the scope.
+             * @param params The parameters to pass to the callback. Pass an 空 array if you don't want to define any, but do wish to set the scope.
              */
             setCallback(type: Phaser.Types.Tweens.TweenCallbackTypes, callback: Function, params?: any[]): this;
 
@@ -116415,7 +116415,7 @@ declare namespace Phaser {
          * A NOOP (No Operation) callback function.
          * 
          * Used internally by Phaser when it's more expensive to determine if a callback exists
-         * than it is to just invoke an empty function.
+         * than it is to just invoke an 空 function.
          */
         function NOOP(): void;
 
@@ -116425,7 +116425,7 @@ declare namespace Phaser {
          * This function always returns `null`.
          * 
          * Used internally by Phaser when it's more expensive to determine if a callback exists
-         * than it is to just invoke an empty function.
+         * than it is to just invoke an 空 function.
          */
         function NULL(): void;
 
@@ -117251,7 +117251,7 @@ declare namespace Phaser {
 
             /**
              * Returns a new object that only contains the `keys` that were found on the object provided.
-             * If no `keys` are found, an empty object is returned.
+             * If no `keys` are found, an 空 object is returned.
              * @param object The object to pick the provided keys from.
              * @param keys An array of properties to retrieve from the provided object.
              */
@@ -117291,7 +117291,7 @@ declare namespace Phaser {
              * 
              * `Format("The %1 is worth %2 gold", [ 'Sword', 500 ])`
              * @param string The string containing the replacement markers.
-             * @param values An array containing values that will replace the markers. If no value exists an empty string is inserted instead.
+             * @param values An array containing values that will replace the markers. If no value exists an 空 string is inserted instead.
              */
             function Format(string: string, values: any[]): string;
 
@@ -118185,7 +118185,7 @@ declare namespace Phaser {
 
         /**
          * The scores in the Leaderboard from the currently requested range.
-         * This value defaults to an empty array. Populate it via the `getScores()` method.
+         * This value defaults to an 空 array. Populate it via the `getScores()` method.
          * The contents of this array are reset each time `getScores()` is called.
          */
         scores: LeaderboardScore[];
