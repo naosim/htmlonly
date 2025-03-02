@@ -3,6 +3,10 @@
  * @typedef {'赤' | '青'} StoneColor
  */
 
+/**
+ * @typedef {{row:number, column:number}} Pos
+ */
+
 class PullStones {
   color;
   count;
@@ -47,15 +51,18 @@ class Stone {
   状態;
   /** @type {StoneColor} */
   色;
+  位置;
   グループID;
 
   /**
    * 
-   * @param {StoneColor} 色 
+   * @param {StoneColor} 色
+   * @param {Pos} 位置 
    * @param {'fixed' | 'falling'} 状態 
    */
-  constructor(色, 状態 = 'fixed') {
+  constructor(色, 位置, 状態 = 'fixed') {
     this.色 = 色;
+    this.位置 = 位置;
     this.状態 = 状態;
   }
 
@@ -102,7 +109,10 @@ class Stone {
  * 空
  */
 class Empty {
-  static instance = new Empty();
+  位置;
+  constructor(位置) {
+    this.位置 = 位置;
+  }
 }
 
 /**
@@ -116,10 +126,17 @@ class StoneOrEmpty {
 
   /**
    * @param {Stone | undefined} 石 
+   * @param {Empty | undefined} 空 
    */
-  constructor(石) {
+  constructor(石, 空) {
+    if(石 && 空) {
+      new Error("石も空もある");
+    }
+    if(!石 && !空) {
+      new Error("石も空もない");
+    }
     this.#石 = 石;
-    this.#空 = 石 ? undefined : Empty.instance;
+    this.#空 = 空;
   }
 
   /**
@@ -130,6 +147,15 @@ class StoneOrEmpty {
       throw new Error("空");
     }
     return this.#石;
+  }
+
+  get 位置() {
+    if(this.#石) {
+      return this.#石.位置;
+    } else if(this.#空) {
+      return this.#空.位置
+    }
+    throw new Error();
   }
 
   /**
@@ -143,18 +169,20 @@ class StoneOrEmpty {
   }
 
   to空() {
+    if(!this.#石) throw new Error("石でない");
+    this.#空 = new Empty(this.#石.位置);
     this.#石 = undefined;
-    this.#空 = Empty.instance;
   }
   /**
    * 
-   * @param {Stone} 石 
+   * @param {StoneColor} 色 
+   * @param {"fixed" | "falling"} 状態
    */
-  to石(石) {
+  to石(色, 状態) {
     if(this.は石である) {
       throw new Error("石");
     }
-    this.#石 = 石;
+    this.#石 = new Stone(色, this.#空?.位置, 状態);
     this.#空 = undefined;
   }
 
@@ -166,23 +194,44 @@ class StoneOrEmpty {
     return !!this.#石;
   }
 
-  static 赤() {
-    return new StoneOrEmpty(new Stone("赤"));
+  /**
+   * 
+   * @param {Pos} 位置 
+   * @returns 
+   */
+  static 赤(位置) {
+    return new StoneOrEmpty(new Stone("赤", 位置), undefined);
   }
-  static 青() {
-    return new StoneOrEmpty(new Stone("青"));
+  /**
+   * 
+   * @param {Pos} 位置 
+   * @returns 
+   */
+  static 青(位置) {
+    return new StoneOrEmpty(new Stone("青", 位置), undefined);
   }
 
-  static 空() {
-    return new StoneOrEmpty(undefined);
+  /**
+   * 
+   * @param {Pos} 位置 
+   * @returns 
+   */
+  static 空(位置) {
+    return new StoneOrEmpty(undefined, new Empty(位置));
   }
-  static テキストから生成(text) {
+  /**
+   * 
+   * @param {string} text 
+   * @param {{row:number, column:number}} pos 
+   * @returns 
+   */
+  static テキストから生成(text, pos) {
     if(text == "赤") {
-      return StoneOrEmpty.赤();
+      return StoneOrEmpty.赤(pos);
     } else if(text == "青") {
-      return StoneOrEmpty.青();
+      return StoneOrEmpty.青(pos);
     } else if(text == "空") {
-      return StoneOrEmpty.空();
+      return StoneOrEmpty.空(pos);
     }
     throw new Error("不明な値");
   }
@@ -201,9 +250,10 @@ class Grid {
     new Array(6).fill("空"),
     new Array(6).fill("空"),
     new Array(6).fill("空"),
-  ].map(row => row.map(cell => StoneOrEmpty.テキストから生成(cell)));
+  ].map((v, row) => v.map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})));
 
-  groupMap;
+  /** @type {{[key:string]:Stone[]}} */
+  groupMap = {};
   constructor() {
     this.grouping();
   }
@@ -242,7 +292,7 @@ class Grid {
     }
     // 落とす
     for(var j = 0; j < pullStones.count; j++) {
-      this.values[i + j][columnNumber].to石(new Stone(pullStones.color, "falling"))
+      this.values[i + j][columnNumber].to石(pullStones.color, "falling")
       // this.values[i + j][columnNumber].color = pullStones.color;
       // this.values[i + j][columnNumber].state = "falling";
     }
@@ -421,7 +471,7 @@ class MagicalDropGame {
     if(!this.pullStones) {
       return;
     }
-    if(this.格子.列がすべて空() || !this.pullStones.同じ色(this.格子.最下部の石(columnNumber))) {
+    if(this.格子.列がすべて空(columnNumber) || !this.pullStones.同じ色(this.格子.最下部の石(columnNumber))) {
       return
     }
     
@@ -446,7 +496,7 @@ class MagicalDropGame {
     this.格子.石だけforEach(v => {if(v.状態 == "falling") disappearGroupIds.add(v.グループID)});
     disappearGroupIds.forEach(v => {
       this.格子.groupMap[v].forEach(stone => {
-        stone.to空();
+        // stone.to空();
       })
     })
     // for(let columnNumber = 0; columnNumber < this.widthCount; columnNumber++) {
