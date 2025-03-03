@@ -7,6 +7,9 @@
  * @typedef {{row:number, column:number}} Pos
  */
 
+/**
+ * 取った石
+ */
 class PullStones {
   color;
   count;
@@ -241,16 +244,27 @@ class StoneOrEmpty {
  * 格子
  */
 class Grid {
-  values = [
-    ["青", "青", "青", "青", "赤", "赤"],
-    ["赤", "赤", "赤", "赤", "青", "青"],
-    ["赤", "赤", "赤", "赤", "青", "青"],
-    new Array(6).fill("空"),
-    new Array(6).fill("空"),
-    new Array(6).fill("空"),
-    new Array(6).fill("空"),
-    new Array(6).fill("空"),
-  ].map((v, row) => v.map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})));
+  values = `
+    青青青青赤赤
+    赤赤赤赤青青
+    赤赤赤赤青青
+    空空空空空空
+    空空空空空空
+    空空空空空空
+    空空空空空空
+    空空空空空空
+    `.trim().split("\n").map(v => v.trim()).map(v => v.split(""))
+    .map((v, row) => v.map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})));
+  // values = [
+  //   ["青", "青", "青", "青", "赤", "赤"],
+  //   ["赤", "赤", "赤", "赤", "青", "青"],
+  //   ["赤", "赤", "赤", "赤", "青", "青"],
+  //   new Array(6).fill("空"),
+  //   new Array(6).fill("空"),
+  //   new Array(6).fill("空"),
+  //   new Array(6).fill("空"),
+  //   new Array(6).fill("空"),
+  // ].map((v, row) => v.map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})));
 
   /** @type {{[key:string]:Stone[]}} */
   groupMap = {};
