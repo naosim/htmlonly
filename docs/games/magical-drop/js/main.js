@@ -164,7 +164,7 @@ function update() {
   }
   if(gamepad.up.isDown) {
     magicalDropGame.置く(columnNumber);
-    magicalDropGame.disappear();
+    magicalDropGame.消す();
   }
 
   格子スプライト.update(magicalDropGame.格子);

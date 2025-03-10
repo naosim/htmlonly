@@ -56,6 +56,10 @@ class Stone {
   色;
   位置;
   グループID;
+  確認済み = false;
+  get 未確認() {
+    return !this.確認済み;
+  }
 
   /**
    * 
@@ -247,7 +251,7 @@ class Grid {
   values = `
     青青青青赤赤
     赤赤赤赤青青
-    赤赤赤赤青青
+    赤赤空空青青
     空空空空空空
     空空空空空空
     空空空空空空
@@ -283,6 +287,10 @@ class Grid {
     }
   }
 
+  空である(row, column) {
+    return this.values[row][column].は空である;
+  }
+
   /**
    * @param {(v:Stone, row:number, column:number) => void} cb 
    */
@@ -296,7 +304,62 @@ class Grid {
     }
   }
 
+  get 石リスト() {
+    var result = [];
+    this.石だけforEach((v) => result.push(v));
+    return result;
+  }
+
+  get 落ちてる石リスト() {
+    return this.石リスト.filter(v => v.状態 == "falling");
+  }
+
+  縦三つが揃っているか(row, column) {
+    return [
+      [row - 2, row - 1, row],
+      [row - 1, row, row + 1],
+      [row, row + 1, row + 2],
+    ].filter(ary => ary.every(v => v >= 0 && v < this.values.length))
+    .filter(ary => ary.every(v => this.values[v][column].は石である))
+    .filter(ary => ary.every(v => this.values[v][column].石.色 == this.values[row][column].石.色))
+    .length > 0;
+  }
+
+  /**
+ * 
+ * @param {Pos} 指定位置 
+ */
+  同じ色の隣を消して指定位置も消す(指定位置) {
+    var 石または空 = this.values[指定位置.row][指定位置.column];
+    if(石または空.は空である) {
+      // throw new Error("空");
+      return;
+    }
+    var 石 = 石または空.石;
+    石.確認済み = true;
+    var 上下左右 = [
+      {row: 指定位置.row - 1, column: 指定位置.column},
+      {row: 指定位置.row + 1, column: 指定位置.column},
+      {row: 指定位置.row, column: 指定位置.column - 1},
+      {row: 指定位置.row, column: 指定位置.column + 1},
+    ].filter(v => v.row >= 0 && v.row < this.values.length && v.column >= 0 && v.column < this.values[0].length)
+    .filter(v => this.values[v.row][v.column].は石である)
+    .filter(v => this.values[v.row][v.column].石.未確認)
+    .filter(v => this.values[v.row][v.column].石.同じ色(石))
+    .forEach(v => this.同じ色の隣を消して指定位置も消す(v))
+
+    石または空.to空(); 
+  }
+
+  確認済みをクリアする() {
+    this.石だけforEach(v => v.確認済み = false);
+    this.石だけforEach(v => v.状態 = "fixed");
+  }
+
+
   drop(columnNumber, pullStones) {
+
+    console.log(this.values);
     // 末端を探す
     for(var i = 0; i < this.values.length; i++) {
       let target = this.values[i][columnNumber];
@@ -450,8 +513,8 @@ class MagicalDropGame {
   widthCount;
   heightCount;
   格子;
-  /** @type {PullStones | undefined} */
-  pullStones = undefined;
+  /** @type {PullStones} */
+  pullStones = new PullStones("空", 0);
   constructor(config) {
     config = config || {};
     this.widthCount = config.widthCount || 6;
@@ -469,11 +532,13 @@ class MagicalDropGame {
       return;
     }
     const 最下部の石 = this.格子.最下部の石(columnNumber);
-    if(!this.pullStones) { 
+    if(!this.pullStones || this.pullStones.は空である) { 
       this.pullStones = this.格子.pull(columnNumber);
     } else if(this.pullStones.同じ色(最下部の石)) {
       this.pullStones.add(this.格子.pull(columnNumber))
     }
+
+    console.log(this.格子.values);
   }
 
   /**
@@ -482,46 +547,30 @@ class MagicalDropGame {
    * @returns 
    */
   置く(columnNumber) {
-    if(!this.pullStones) {
+    if(this.pullStones.は空である) {
       return;
     }
-    if(this.格子.列がすべて空(columnNumber) || !this.pullStones.同じ色(this.格子.最下部の石(columnNumber))) {
+    if(this.格子.列がすべて空(columnNumber)) {
       return
     }
-    
-    //   if(this.pullStones.color !== this.格子.getLastColor(columnNumber)) {
-    //   return;
-    // }
-    
+        
     this.格子.drop(columnNumber, this.pullStones);
     this.pullStones.clear();
+
+    console.log(this.格子.values);
   }
 
-  // disappearWithColumnNumber(columnNumber) {
-  //   // falling以外は処理対象外
-  //   if(this.格子.getLastStone().state !== "falling") {
-  //     return;
-  //   }
-  // }
-
-  disappear() {
-    this.格子.grouping();
-    var disappearGroupIds = new Set();
-    this.格子.石だけforEach(v => {if(v.状態 == "falling") disappearGroupIds.add(v.グループID)});
-    disappearGroupIds.forEach(v => {
-      this.格子.groupMap[v].forEach(stone => {
-        // stone.to空();
-      })
-    })
-    // for(let columnNumber = 0; columnNumber < this.widthCount; columnNumber++) {
-    //   this.dosappearWithColumnNumber(columnNumber);
-    // }
-    // fallingsを探す
-
-    // ヒットしたらタテに3つつながっているか判定する
-
-    // つながっていたら、横とのつながりも見る
-    // 消す
+  消す() {
+    this.格子.落ちてる石リスト.forEach(v => {
+      if(this.格子.空である(v.位置.row, v.位置.column)) {
+        return;
+      }
+      if(this.格子.縦三つが揃っているか(v.位置.row, v.位置.column)) {
+        // TODO: つながってる石を消す
+        this.格子.同じ色の隣を消して指定位置も消す(v.位置)
+      }
+    });
+    this.格子.確認済みをクリアする()
   }
 
   step() {}
