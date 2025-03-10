@@ -251,7 +251,7 @@ class Grid {
   values = `
     青青青青赤赤
     赤赤赤赤青青
-    赤赤空空青青
+    青赤空空青青
     空空空空空空
     空空空空空空
     空空空空空空
@@ -355,6 +355,27 @@ class Grid {
     this.石だけforEach(v => v.確認済み = false);
     this.石だけforEach(v => v.状態 = "fixed");
   }
+
+  落ちる石を決める() {
+    for(let column = 0; column < this.values[0].length; column++) {
+      let 空を見つけた = false;
+      for(let row = 0; row < this.values.length; row++) {
+        if(!空を見つけた && this.values[row][column].は空である) {
+          空を見つけた = true;
+        }
+        if(空を見つけた && this.values[row][column].は石である) {
+          this.values[row][column].石.状態 = "falling";
+        }
+      }
+    }
+  }
+
+  // 落ちる() {
+  //   for(let column = 0; column < this.values[0].length; column++) {
+
+  //   }
+      
+  // }
 
 
   drop(columnNumber, pullStones) {
@@ -571,7 +592,12 @@ class MagicalDropGame {
       }
     });
     this.格子.確認済みをクリアする()
+
+    this.格子.落ちる石を決める();
+    console.log(this.格子.values);
   }
 
-  step() {}
+  落ちる() {
+    this.格子.落ちる()
+  }
 }

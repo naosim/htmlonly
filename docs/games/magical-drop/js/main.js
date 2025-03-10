@@ -15,6 +15,12 @@ class Player {
   constructor(gamepad) {
     this.gamepad = gamepad;
   }
+  get x() {
+    return this.gameObject?.x;
+  }
+  get y() {
+    return this.gameObject?.y;
+  }
   create(scene) {
     this.scene = scene;
     const player = this.gameObject = scene.add.rectangle(gridHalfSize, 300, gridSize, 28, 0xffff00);
@@ -35,6 +41,35 @@ class Player {
     } else {
       this.pressed = false;
     }
+  }
+}
+
+/**
+ * 補助線
+ */
+class AdditionalLineForPlayer {
+  /** @type {Player} */
+  player;
+  line;
+  constructor(player) {
+    this.player = player;
+  }
+
+  create(scene) {
+    this.line = scene.add.line(
+      0, 
+      0,
+      0,
+      0,
+      0,
+      600,
+      0xff0000
+    );
+    scene.events.on('update', this.update, this);
+  }
+
+  update() {
+    this.line.x = this.player.x;
   }
 }
 
@@ -138,6 +173,7 @@ var config = {
 };
 const gamepad = GamepadWrapper.init();
 const player = new Player(gamepad);
+const 補助線 = new AdditionalLineForPlayer(player);
 const magicalDropGame = new MagicalDropGame();
 const 格子スプライト = new GridSprite();
 var game = new Phaser.Game(config);
@@ -147,12 +183,11 @@ function preload() {
 }
 // var stones
 function create() {
-  player.create(this);
-
-  // stones = new Stones();
-
   格子スプライト.create(this);
   格子スプライト.update(magicalDropGame.格子);
+
+  補助線.create(this);
+  player.create(this);
 
   gamepad.createAll(this, {joystickPos:{x:100, y:300}, buttonPos:{x:300, y:300}});
 }
