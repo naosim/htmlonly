@@ -252,7 +252,7 @@ class Grid {
     青青青青赤赤
     赤赤赤赤青青
     青赤空空青青
-    空空空空空空
+    空空空空空青
     空空空空空空
     空空空空空空
     空空空空空空
@@ -530,10 +530,55 @@ class Grid {
   }
 }
 
+class StateTransition {
+  /**
+   * @type {"通常" | "置く" | "消せるか確認する" | "消す" | "落ちる"}
+   */
+  値;
+  get が通常() { return this.値 == "通常"; }
+  get が置く() { return this.値 == "置く"; }
+  get が消せるか確認する() { return this.値 == "消せるか確認する"; }
+  get が消す() { return this.値 == "消す"; }
+  get が落ちる() { return this.値 == "落ちる"; }
+  /**
+   * @type {()=>boolean}
+   */
+    消せるか確認する関数;
+  /**
+   * 
+   * @param {()=>boolean} 消せるか確認する関数 
+   */
+  constructor(消せるか確認する関数) {
+    this.値 = "通常";
+    this.消せるか確認する関数 = 消せるか確認する関数;
+  }
+
+  置く() {
+    if(this.が通常) {
+      this.値 = "置く";
+    } else {
+      throw new Error("状態遷移がおかしい");
+    }
+  }
+
+  次へ() {
+    if(this.が置く) {
+      this.値 = "消せるか確認する";
+    } else if(this.が消せるか確認する) {
+      this.値 = this.消せるか確認する関数() ? "消す" : "通常";
+    } else if(this.が消す) {
+      this.値 = "落ちる";
+    } else if(this.が落ちる) {
+      this.値 = "消せるか確認する";
+    }
+  }
+}
+
 class MagicalDropGame {
   widthCount;
   heightCount;
   格子;
+  状態 = new StateTransition(() => this.消せるか確認する());
   /** @type {PullStones} */
   pullStones = new PullStones("空", 0);
   constructor(config) {
@@ -542,6 +587,20 @@ class MagicalDropGame {
     this.heightCount = config.heightCount || 8;
 
     this.格子 = new Grid();
+  }
+
+
+  消せるか確認する() {
+    var 結果 = false;
+    this.格子.落ちてる石リスト.forEach(v => {
+      if(this.格子.空である(v.位置.row, v.位置.column)) {
+        return;
+      }
+      if(this.格子.縦三つが揃っているか(v.位置.row, v.位置.column)) {
+        結果 = true;
+      }
+    });
+    return 結果;
   }
 
   /**
@@ -579,6 +638,7 @@ class MagicalDropGame {
     this.pullStones.clear();
 
     console.log(this.格子.values);
+    this.状態.置く();
   }
 
   消す() {
@@ -599,5 +659,21 @@ class MagicalDropGame {
 
   落ちる() {
     this.格子.落ちる()
+  }
+
+  step = 0;
+  update() {
+    this.step = (this.step + 1) % 10;
+    if(this.step != 0) {
+      return;
+    }
+    if(this.状態.が消す) {
+      this.消す();
+    }
+    if(this.状態.が落ちる) {
+      // this.落ちる();
+    }
+    this.状態.次へ();
+    
   }
 }
