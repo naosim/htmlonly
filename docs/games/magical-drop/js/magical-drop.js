@@ -370,14 +370,6 @@ class Grid {
     }
   }
 
-  // 落ちる() {
-  //   for(let column = 0; column < this.values[0].length; column++) {
-
-  //   }
-      
-  // }
-
-
   drop(columnNumber, pullStones) {
 
     console.log(this.values);
@@ -526,6 +518,22 @@ class Grid {
   最下部の石の色(columnNumber) {
     return this.最下部の石(columnNumber).色;
   }
+
+  列を取得する(columnNumber) {
+    const result = [];
+    for(let row = 0; row < this.values.length; row++) {
+      result.push(this.values[row][columnNumber]);
+    }
+    return result;
+  }
+
+  落ちる() {
+    console.log(this.values);
+    for(let column = 0; column < this.values[0].length; column++) {
+      
+//todo
+    }
+  }
   update() {
   }
 }
@@ -671,7 +679,7 @@ class MagicalDropGame {
       this.消す();
     }
     if(this.状態.が落ちる) {
-      // this.落ちる();
+      this.落ちる();
     }
     this.状態.次へ();
     
