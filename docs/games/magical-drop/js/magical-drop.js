@@ -11,15 +11,17 @@
  * 取った石
  */
 class PullStones {
-  color;
-  count;
-  constructor(color, count) {
-    this.color = color;
-    this.count = count;
+  /** @type {StoneColor | "空"} */
+  色;
+  /** @type {number} */
+  数;
+  constructor(色, 数) {
+    this.色 = 色;
+    this.数 = 数;
   }
   clear() {
-    this.color = "空";
-    this.count = 0;
+    this.色 = "空";
+    this.数 = 0;
   }
   /**
    * 
@@ -27,30 +29,35 @@ class PullStones {
    * @returns 
    */
   同じ色(stone) {
-    return this.color == stone.色;
+    return this.色 == stone.色;
   }
+  /**
+   * 
+   * @param {PullStones} other 
+   * @returns 
+   */
   add(other) {
     if(!other) {
       return;
     }
-    if(this.color != other.color) {
+    if(this.色 != other.色) {
       throw new Error("色が合わない")
     }
-    this.count += other.count;
+    this.数 += other.数;
   }
   countUp() {
-    this.count++;
+    this.数++;
   }
   get は空である() {
-    return this.color == "空";
+    return this.色 == "空";
   }
   get は空でない() {
-    return this.color !== "空";
+    return this.色 !== "空";
   }
 }
 
 class Stone {
-  /** @type {'fixed' | 'falling'} */
+  /** @type {'固定' | '落ちてる'} */
   状態;
   /** @type {StoneColor} */
   色;
@@ -65,9 +72,9 @@ class Stone {
    * 
    * @param {StoneColor} 色
    * @param {Pos} 位置 
-   * @param {'fixed' | 'falling'} 状態 
+   * @param {'固定' | '落ちてる'} 状態 
    */
-  constructor(色, 位置, 状態 = 'fixed') {
+  constructor(色, 位置, 状態 = '固定') {
     this.色 = 色;
     this.位置 = 位置;
     this.状態 = 状態;
@@ -183,7 +190,7 @@ class StoneOrEmpty {
   /**
    * 
    * @param {StoneColor} 色 
-   * @param {"fixed" | "falling"} 状態
+   * @param {'固定' | '落ちてる'} 状態
    */
   to石(色, 状態) {
     if(this.は石である) {
@@ -310,11 +317,11 @@ class Grid {
   }
 
   get 落ちてる石リスト() {
-    return this.石リスト.filter(v => v.状態 == "falling");
+    return this.石リスト.filter(v => v.状態 == "落ちてる");
   }
 
   列にある落ちてる石リスト(columnNumber) {
-    return this.列を取得する(columnNumber).filter(v => v.は石である && v.石.状態 == "falling").map(v => v.石);
+    return this.列を取得する(columnNumber).filter(v => v.は石である && v.石.状態 == "落ちてる").map(v => v.石);
   }
 
   縦三つが揃っているか(row, column) {
@@ -356,7 +363,7 @@ class Grid {
 
   確認済みをクリアする() {
     this.石だけforEach(v => v.確認済み = false);
-    this.石だけforEach(v => v.状態 = "fixed");
+    this.石だけforEach(v => v.状態 = "固定");
   }
 
   落ちる石を決める() {
@@ -367,12 +374,17 @@ class Grid {
           空を見つけた = true;
         }
         if(空を見つけた && this.values[row][column].は石である) {
-          this.values[row][column].石.状態 = "falling";
+          this.values[row][column].石.状態 = "落ちてる";
         }
       }
     }
   }
 
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @param {PullStones} pullStones 
+   */
   drop(columnNumber, pullStones) {
 
     console.log(this.values);
@@ -384,8 +396,8 @@ class Grid {
       }
     }
     // 落とす
-    for(var j = 0; j < pullStones.count; j++) {
-      this.values[i + j][columnNumber].to石(pullStones.color, "falling")
+    for(var j = 0; j < pullStones.数; j++) {
+      this.values[i + j][columnNumber].to石(pullStones.色, "落ちてる")
     }
   }
 
@@ -472,7 +484,7 @@ class Grid {
         /** @type {Stone} */
         // @ts-ignore
         var 落ちてる石 = 列にある落ちてる石リスト.shift();
-        this.values[row][column].to石(落ちてる石.色, "falling");
+        this.values[row][column].to石(落ちてる石.色, "落ちてる");
         this.values[落ちてる石.位置.row][落ちてる石.位置.column].to空();
       }
 //todo
