@@ -252,7 +252,7 @@ class Grid {
     青青青青赤赤
     赤赤赤赤青青
     青赤空空青青
-    空空空空空青
+    青空空空空青
     空空空空空空
     空空空空空空
     空空空空空空
@@ -312,6 +312,10 @@ class Grid {
 
   get 落ちてる石リスト() {
     return this.石リスト.filter(v => v.状態 == "falling");
+  }
+
+  列にある落ちてる石リスト(columnNumber) {
+    return this.列を取得する(columnNumber).filter(v => v.は石である && v.石.状態 == "falling").map(v => v.石);
   }
 
   縦三つが揃っているか(row, column) {
@@ -530,7 +534,20 @@ class Grid {
   落ちる() {
     console.log(this.values);
     for(let column = 0; column < this.values[0].length; column++) {
-      
+      var 列にある落ちてる石リスト = this.列にある落ちてる石リスト(column);
+      if(列にある落ちてる石リスト.length == 0) {
+        continue;
+      }
+      for(let row = 0; row < this.values.length && 列にある落ちてる石リスト.length > 0; row++) {
+        if(this.values[row][column].は石である) {
+          continue;
+        }
+        /** @type {Stone} */
+        // @ts-ignore
+        var 落ちてる石 = 列にある落ちてる石リスト.shift();
+        this.values[row][column].to石(落ちてる石.色, "falling");
+        this.values[落ちてる石.位置.row][落ちてる石.位置.column].to空();
+      }
 //todo
     }
   }
