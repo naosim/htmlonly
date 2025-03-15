@@ -273,7 +273,6 @@ class Grid {
   /** @type {{[key:string]:Stone[]}} */
   groupMap = {};
   constructor() {
-    this.grouping();
   }
 
   /**
@@ -387,8 +386,6 @@ class Grid {
     // 落とす
     for(var j = 0; j < pullStones.count; j++) {
       this.values[i + j][columnNumber].to石(pullStones.color, "falling")
-      // this.values[i + j][columnNumber].color = pullStones.color;
-      // this.values[i + j][columnNumber].state = "falling";
     }
   }
 
@@ -397,7 +394,7 @@ class Grid {
    * @param {number} columnNumber 
    * @returns 
    */
-  pull(columnNumber) {
+  取る(columnNumber) {
     if(this.列がすべて空(columnNumber)) {
       return undefined;
     }
@@ -419,76 +416,6 @@ class Grid {
       }
     }
     return result;
-  }
-  disappear(columnNumber) {
-    // fallingsを探す
-
-    // ヒットしたらタテに3つつながっているか判定する
-
-    // つながっていたら、横とのつながりも見る
-    // 消す
-  }
-
-  grouping() {
-    // clear
-    this.forEach((v) => v.もし石ならば(s => {
-      s.グループIDをクリアする()
-    }));
-
-    var グループID = 1;
-    /** @type {{[key:string]:Stone[]}} */
-    const groupMap = {};
-    this.forEach((対象の石または空, row, column) => {
-      if(対象の石または空.は空である || 対象の石または空.石.グループIDがすでにある) {
-        return;
-      }
-      const 対象の石 = 対象の石または空.石;
-      対象の石.グループID = グループID;
-      var グループ = [対象の石];
-      groupMap[グループID] = グループ;
-      var targets = [];
-      // up
-      if(row > 0) {
-        targets.push(this.values[row - 1][column]);
-      }
-      // down
-      if(row < this.values.length - 1) {
-        targets.push(this.values[row + 1][column]);
-      }
-      // left
-      if(column > 0) {
-        targets.push(this.values[row][column - 1]);
-      }
-      // right
-      if(column < this.values[0].length - 1) {
-        targets.push(this.values[row][column + 1]);
-      }
-
-      // groupIdがあるものだけ残す
-      targets = targets
-        .filter(t => t.は石である)
-        .map(t => t.石)
-        .filter(t => t.グループIDがすでにある
-          && t.グループIDが違う(グループID)
-          && 対象の石.同じ色(t));
-      targets.forEach(t => {
-          // マージする
-          var otherGroupId = t.グループID;
-          if(グループID == otherGroupId) {
-            return;
-          }
-          groupMap[otherGroupId].forEach(p => {
-            p.グループID = グループID;
-            グループ.push(p);
-          })
-          delete groupMap[otherGroupId];
-          
-        });
-      グループID++;
-    });
-
-    console.log(groupMap);
-    this.groupMap = groupMap;
   }
 
   /**
@@ -605,7 +532,7 @@ class MagicalDropGame {
   格子;
   状態 = new StateTransition(() => this.消せるか確認する());
   /** @type {PullStones} */
-  pullStones = new PullStones("空", 0);
+  持ってる石 = new PullStones("空", 0);
   constructor(config) {
     config = config || {};
     this.widthCount = config.widthCount || 6;
@@ -637,10 +564,10 @@ class MagicalDropGame {
       return;
     }
     const 最下部の石 = this.格子.最下部の石(columnNumber);
-    if(!this.pullStones || this.pullStones.は空である) { 
-      this.pullStones = this.格子.pull(columnNumber);
-    } else if(this.pullStones.同じ色(最下部の石)) {
-      this.pullStones.add(this.格子.pull(columnNumber))
+    if(!this.持ってる石 || this.持ってる石.は空である) { 
+      this.持ってる石 = this.格子.取る(columnNumber);
+    } else if(this.持ってる石.同じ色(最下部の石)) {
+      this.持ってる石.add(this.格子.取る(columnNumber))
     }
 
     console.log(this.格子.values);
@@ -652,15 +579,15 @@ class MagicalDropGame {
    * @returns 
    */
   置く(columnNumber) {
-    if(this.pullStones.は空である) {
+    if(this.持ってる石.は空である) {
       return;
     }
     if(this.格子.列がすべて空(columnNumber)) {
       return
     }
         
-    this.格子.drop(columnNumber, this.pullStones);
-    this.pullStones.clear();
+    this.格子.drop(columnNumber, this.持ってる石);
+    this.持ってる石.clear();
 
     console.log(this.格子.values);
     this.状態.置く();
