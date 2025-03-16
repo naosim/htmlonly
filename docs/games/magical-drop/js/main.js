@@ -1,8 +1,31 @@
 (function() { // startprogram
-const gridSize = 24;
+const gridSize = 32;
 const gridHalfSize = gridSize / 2;
 function create2DArray(rowCount, columnCount, factory) {
   return new Array(rowCount).fill(null).map((_, row) => new Array(columnCount).fill(null).map((_, column) => factory(row, column)))
+}
+
+class ColorConverter {
+  /**
+   * 
+   * @param {StoneColor} 色 
+   * @returns 
+   */
+  static システム色値に変換(色) {
+    if(色 === '赤') {
+      return 0xff0000;
+    }
+    if(色 === '青') {
+      return 0x0000ff;
+    }
+    if(色 === '緑') {
+      return 0x00aa00;
+    }
+    if(色 === '黄') {
+      return 0xffff00;
+    }
+    return 0x000000;
+  }
 }
 
 /** 
@@ -23,7 +46,7 @@ class Player {
   }
   create(scene) {
     this.scene = scene;
-    const player = this.gameObject = scene.add.rectangle(gridHalfSize, 300, gridSize, 28, 0xffff00);
+    const player = this.gameObject = scene.add.rectangle(gridHalfSize, 400, gridSize, 28, 0xffff00);
     scene.events.on('update', this.update, this);
   }
   pressed = false;
@@ -50,11 +73,26 @@ class Player {
 class AdditionalLineForPlayer {
   /** @type {Player} */
   player;
+  /**@type {Phaser.GameObjects.Line} */
+  // @ts-ignore
   line;
-  constructor(player) {
+
+  /** @type {MagicalDropGame} */
+  game;
+  /**
+   * 
+   * @param {*} player 
+   * @param {MagicalDropGame} game 
+   */
+  constructor(player, game) {
     this.player = player;
+    this.game = game;
   }
 
+  /**
+   * 
+   * @param {Phaser.Scene} scene 
+   */
   create(scene) {
     this.line = scene.add.line(
       0, 
@@ -62,7 +100,7 @@ class AdditionalLineForPlayer {
       0,
       0,
       0,
-      600,
+      800,
       0xff0000
     );
     scene.events.on('update', this.update, this);
@@ -70,6 +108,12 @@ class AdditionalLineForPlayer {
 
   update() {
     this.line.x = this.player.x;
+    if(this.game.持ってる石.は空である) {
+      this.line.strokeColor = 0xffffff;
+    } else {
+      this.line.strokeColor = ColorConverter.システム色値に変換(this.game.持ってる石.色);
+    }
+    
   }
 }
 
@@ -79,11 +123,16 @@ class AdditionalLineForPlayer {
 class GridSprite {
   /** @type {StoneSprite[][]} */
   gameObjects;
-  constructor() {
-    
+  game;
+  /**
+   * 
+   * @param {MagicalDropGame} game 
+   */
+  constructor(game) {
+    this.game = game;
   }
   create(scene) {
-    this.gameObjects = create2DArray(12, 6, (r, c) => new StoneSprite().create(scene).setPos(c*gridSize, r*gridSize));
+    this.gameObjects = create2DArray(12, this.game.列数, (r, c) => new StoneSprite().create(scene).setPos(c*gridSize, r*gridSize));
   }
 
   /**
@@ -109,25 +158,17 @@ class StoneSprite {
    */
   set color(value) {
     this.#color = value;
-    if(this.childGameObject) {
-      var colorValue = null;
-      if(value === '赤') {
-        colorValue = 0xff0000;
-      }
-      if(value === '青') {
-        colorValue = 0x0000ff;
-      }
-      if(value === '緑') {
-        colorValue = 0x00aa00;
-      }
-      if(value === '黄') {
-        colorValue = 0xffff00;
-      }
-      if(!value) {
-        colorValue = 0x000000;
-      }
-      this.childGameObject.setFillStyle(colorValue);
+    if(!this.childGameObject) {
+      return;
     }
+    if(!value) {
+      this.gameObject.visible = false;
+      return;
+    }
+    var colorValue = ColorConverter.システム色値に変換(value);
+    this.childGameObject.setFillStyle(colorValue);
+    this.gameObject.visible = true;
+    
   }
   get color() {
     return this.#color;
@@ -163,7 +204,7 @@ var config = {
   parent: "phaser-example",
   type: Phaser.AUTO,
   width: 400,
-  height: 400,
+  height: 640,
   physics: {
     default: "arcade",
     arcade: {
@@ -177,11 +218,11 @@ var config = {
     update: update
   }
 };
+const magicalDropGame = new MagicalDropGame();
 const gamepad = GamepadWrapper.init();
 const player = new Player(gamepad);
-const 補助線 = new AdditionalLineForPlayer(player);
-const magicalDropGame = new MagicalDropGame();
-const 格子スプライト = new GridSprite();
+const 補助線 = new AdditionalLineForPlayer(player, magicalDropGame);
+const 格子スプライト = new GridSprite(magicalDropGame);
 var game = new Phaser.Game(config);
 function preload() {
   this.load.spritesheet('gamepad', 
@@ -189,24 +230,24 @@ function preload() {
 }
 // var stones
 function create() {
+  補助線.create(this);
   格子スプライト.create(this);
   格子スプライト.update(magicalDropGame.格子);
 
-  補助線.create(this);
+  
   player.create(this);
 
-  gamepad.createAll(this, {joystickPos:{x:100, y:300}, buttonPos:{x:300, y:300}});
+  gamepad.createAll(this, {joystickPos:{x:100, y:500}, buttonPos:{x:300, y:500}});
 }
 
 var gameStep = 0;
 function update() {
   const columnNumber = (player.gameObject.x - gridHalfSize) / gridSize;
-  if(gamepad.button.isPressed) {
+  if(gamepad.button.isPressed || gamepad.down.isDown) {
     magicalDropGame.取る(columnNumber);
   }
   if(gamepad.up.isDown) {
     magicalDropGame.置く(columnNumber);
-    // magicalDropGame.消す();
   }
   gameStep = (gameStep + 1) % 10;
   if(gameStep === 0) {

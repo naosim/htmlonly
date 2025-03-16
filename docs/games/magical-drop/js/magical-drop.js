@@ -299,6 +299,10 @@ class StoneOrEmpty {
       return StoneOrEmpty.赤(pos);
     } else if(text == "青") {
       return StoneOrEmpty.青(pos);
+    } else if(text == "緑") {
+      return StoneOrEmpty.緑(pos);
+    } else if(text == "黄") {
+      return StoneOrEmpty.黄(pos);
     } else if(text == "空") {
       return StoneOrEmpty.空(pos);
     }
@@ -310,22 +314,21 @@ class StoneOrEmpty {
  * 格子
  */
 class Grid {
-  values = `
-    青青青青赤赤
-    赤赤赤赤青青
-    青赤空空青青
-    青空空空空青
-    空空空空空空
-    空空空空空空
-    空空空空空空
-    空空空空空空
-    `.trim().split("\n").map(v => v.trim()).map(v => v.split(""))
-    .map((v, row) => v.map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})));
+  /** @type { StoneOrEmpty[][]} */
+  values;
 
   /** @type {{[key:string]:Stone[]}} */
   groupMap = {};
-  constructor() {
+  /**
+   * 
+   * @param {InicialGrid} 初期格子 
+   */
+  constructor(初期格子) {
+    this.values = 初期格子.value.trim().split("\n").map(v => v.trim()).map(v => v.split(""))
+    .map((v, row) => v.map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})));
   }
+
+  get 列数() { return this.values[0].length; }
 
   /**
    * @param {(v:StoneOrEmpty, row:number, column:number) => void} cb 
@@ -605,19 +608,54 @@ class StateTransition {
   }
 }
 
+class InicialGrid {
+  /** @type {string} */
+  // @ts-ignore
+  value;
+  constructor(value) {
+    this.value = value;
+  }
+
+  static 開発用() {
+    const value = `
+      青青青青赤赤黄緑
+      赤赤赤赤青青黄緑
+      青赤空空青青黄緑
+      青空空空空青空空
+      空空空空空空空空
+      空空空空空空空空
+      空空空空空空空空
+      空空空空空空空空
+    `;
+    return new InicialGrid(value);
+  }
+
+  static ランダム(列数) {
+    var 行数 = 12;
+    var 色リスト = ["赤", "青", "緑", "黄"];
+    var value = new Array(行数).fill(0).map((_, row) => { 
+      if(row >= 4) {
+        return new Array(列数).fill(0).map(v => "空").join("");
+      }
+      return new Array(列数).fill(0).map(v => 色リスト[Math.floor(Math.random() * 4)]).join("");
+    }).join("\n");
+    console.log(value);
+    return new InicialGrid(value);
+  }
+}
+
 class MagicalDropGame {
   widthCount;
   heightCount;
   格子;
+  get 列数() { return this.格子.列数; }
   状態 = new StateTransition(() => this.消せるか確認する());
   /** @type {PullStones} */
   持ってる石 = PullStones.空();
   constructor(config) {
     config = config || {};
-    this.widthCount = config.widthCount || 6;
-    this.heightCount = config.heightCount || 8;
-
-    this.格子 = new Grid();
+    config.初期格子 = config.初期格子 || InicialGrid.ランダム(12);
+    this.格子 = new Grid(config.初期格子);
   }
 
 
