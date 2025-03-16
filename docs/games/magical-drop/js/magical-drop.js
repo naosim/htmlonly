@@ -326,6 +326,9 @@ class Grid {
   constructor(初期格子) {
     this.values = 初期格子.value.trim().split("\n").map(v => v.trim()).map(v => v.split(""))
     .map((v, row) => v.map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})));
+
+    this.values = [...this.values, ...new Array(this.values.length).fill("空空空空空空空空空空空空")
+      .map((v, row) => v.split("").map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})))];
   }
 
   get 列数() { return this.values[0].length; }
@@ -435,7 +438,7 @@ class Grid {
    */
   置く(columnNumber, pullStones) {
 
-    console.log(this.values);
+    //console.log(this.values);
     // 末端を探す
     for(var i = 0; i < this.values.length; i++) {
       let target = this.values[i][columnNumber];
@@ -444,7 +447,7 @@ class Grid {
       }
     }
     // 落とす
-    for(var j = 0; j < pullStones.数; j++) {
+    for(var j = 0; j < pullStones.数 && i + j < this.values.length; j++) {
       this.values[i + j][columnNumber].to石(pullStones.色, "落ちてる")
     }
   }
@@ -626,6 +629,10 @@ class InicialGrid {
       空空空空空空空空
       空空空空空空空空
       空空空空空空空空
+      空空空空空空空空
+      空空空空空空空空
+      空空空空空空空空
+      空空空空空空空空
     `;
     return new InicialGrid(value);
   }
@@ -649,7 +656,43 @@ class InicialGrid {
   }
 }
 
-/** @typedef {{初期格子:InicialGrid}} MagicalDropGameConfig */
+/** @interface
+ * @typedef {{setGame: (game:MagicalDropGame) => void, update: () => void}} ModeController
+ */
+
+/**
+ * ステージを管理する
+ * @implements {ModeController}
+ * */
+class BasicModeController {
+  /** @type {MagicalDropGame} */
+  game;
+
+  step = 0;
+
+  /**
+   * 
+   * @param {MagicalDropGame} game 
+   */
+  setGame(game) {
+    this.game = game;
+  }
+
+  update() {
+    this.step = (this.step + 1) % 50;
+    if(this.step == 0) {
+      if(this.game.格子.行を追加できる()) {
+        this.game.最上部に1行追加する();
+      } else {
+        alert("ゲームオーバー")
+      }
+    }
+  }
+}
+
+
+
+/** @typedef {{初期格子:InicialGrid, モード:ModeController}} MagicalDropGameConfig */
 
 class MagicalDropGame {
   widthCount;
@@ -659,13 +702,15 @@ class MagicalDropGame {
   状態 = new StateTransition(() => this.消せるか確認する());
   /** @type {PullStones} */
   持ってる石 = PullStones.空();
-
+  モード;
   /**
    * 
    * @param {MagicalDropGameConfig} config 
    */
   constructor(config) {
     this.格子 = new Grid(config.初期格子);
+    this.モード = config.モード;
+    this.モード.setGame(this);
   }
 
 
@@ -755,13 +800,6 @@ class MagicalDropGame {
     }
     this.状態.次へ();
 
-    this.step = (this.step + 1) % 50;
-    if(this.step == 0) {
-      if(this.格子.行を追加できる()) {
-        this.最上部に1行追加する();
-      } else {
-        alert("ゲームオーバー")
-      }
-    }
+    this.モード.update();
   }
 }
