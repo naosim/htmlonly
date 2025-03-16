@@ -226,6 +226,7 @@ var config = {
     update: update
   }
 };
+
 const magicalDropGame = new MagicalDropGame({
   初期格子: InicialGrid.ランダム({行数, 列数}),
   モード: new BasicModeController(),
@@ -249,11 +250,14 @@ function create() {
 
   
   player.create(this);
-  gamepad.createArrowKeys(this, {joystickPos:{x:this.sys.canvas.width / 2, y:500}});
+  gamepad.createArrowKeys(this, {joystickPos:{x:this.sys.canvas.width / 2, y:520}, joystickScale:1.8});
 }
 
 var gameStep = 0;
 function update() {
+  if(magicalDropGame.ゲームオーバー) {
+    return;
+  }
   const columnNumber = (player.gameObject.x - gridHalfSize) / gridSize;
   if(gamepad.down.isDown) {
     magicalDropGame.取る(columnNumber);
@@ -267,6 +271,10 @@ function update() {
   }
   
   格子スプライト.update(magicalDropGame.格子);
+
+  if(magicalDropGame.ゲームオーバー) {
+    alert("ゲームオーバー");
+  }
 }
 
 })(); // endprogram

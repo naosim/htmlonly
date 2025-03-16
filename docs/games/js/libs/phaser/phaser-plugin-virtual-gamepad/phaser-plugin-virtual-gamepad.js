@@ -261,12 +261,12 @@ this.GamepadWrapper = class GamepadWrapper {
   /**
    * 
    * @param {*} scene 
-   * @param {{joystickPos:{x:number, y:number}}} config 
+   * @param {{joystickPos:{x:number, y:number}, joystickScale?:number}} config 
    */
   createArrowKeys(scene, config) {
     this.create(scene);
     this.vgamepad.create(scene);
-    this.vgamepad.addJoystick(config.joystickPos.x, config.joystickPos.y, 1.2, 'gamepad');
+    this.vgamepad.addJoystick(config.joystickPos.x, config.joystickPos.y, config.joystickScale || 1.2, 'gamepad');
   }
 
   static init() {
