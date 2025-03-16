@@ -1,6 +1,7 @@
 (function() { // startprogram
 const gridSize = 32;
 const gridHalfSize = gridSize / 2;
+const 列数 = 12;
 function create2DArray(rowCount, columnCount, factory) {
   return new Array(rowCount).fill(null).map((_, row) => new Array(columnCount).fill(null).map((_, column) => factory(row, column)))
 }
@@ -54,11 +55,17 @@ class Player {
     if (this.gamepad.left.isDown) {
       if(!this.pressed) {
         this.gameObject.x -= gridSize;
+        if(this.gameObject.x < 0) {
+          this.gameObject.x = this.scene.sys.canvas.width - gridHalfSize;
+        }
         this.pressed = true;
       }
     } else if (this.gamepad.right.isDown) {
       if(!this.pressed) {
         this.gameObject.x += gridSize;
+        if(this.gameObject.x >= this.scene.sys.canvas.width) {
+          this.gameObject.x = gridHalfSize;
+        }
         this.pressed = true;
       }
     } else {
@@ -203,7 +210,7 @@ class StoneSprite {
 var config = {
   parent: "phaser-example",
   type: Phaser.AUTO,
-  width: 400,
+  width: gridSize * 列数,
   height: 640,
   physics: {
     default: "arcade",
@@ -218,7 +225,7 @@ var config = {
     update: update
   }
 };
-const magicalDropGame = new MagicalDropGame({初期格子: InicialGrid.ランダム(12)});
+const magicalDropGame = new MagicalDropGame({初期格子: InicialGrid.ランダム(列数)});
 const gamepad = GamepadWrapper.init();
 const player = new Player(gamepad);
 const 補助線 = new AdditionalLineForPlayer(player, magicalDropGame);
@@ -236,7 +243,7 @@ function create() {
 
   
   player.create(this);
-  gamepad.createArrowKeys(this, {joystickPos:{x:200, y:500}});
+  gamepad.createArrowKeys(this, {joystickPos:{x:this.sys.canvas.width / 2, y:500}});
 }
 
 var gameStep = 0;
