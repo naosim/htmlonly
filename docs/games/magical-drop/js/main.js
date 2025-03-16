@@ -147,7 +147,7 @@ class GridSprite {
    * @param {Grid} 格子 
    */
   update(格子) {
-    for(let i = 0; i < 格子.values.length; i++) {
+    for(let i = 0; i < Math.min(格子.values.length, 12); i++) {
       for(let j = 0; j < 格子.values[0].length; j++) {
           this.gameObjects[i][j].update(格子.values[i][j]);
       }
@@ -225,7 +225,10 @@ var config = {
     update: update
   }
 };
-const magicalDropGame = new MagicalDropGame({初期格子: InicialGrid.ランダム(列数)});
+const magicalDropGame = new MagicalDropGame({
+  初期格子: InicialGrid.ランダム(列数),
+  モード: new BasicModeController()
+});
 const gamepad = GamepadWrapper.init();
 const player = new Player(gamepad);
 const 補助線 = new AdditionalLineForPlayer(player, magicalDropGame);
