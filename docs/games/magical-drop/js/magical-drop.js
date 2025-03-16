@@ -658,11 +658,12 @@ class BasicModeController {
   update() {
     this.step = (this.step + 1) % 50;
     if(this.step == 0) {
-      if(this.game.格子.最下部の石の行() < this.game.行数 - 1) {
-        this.game.最上部に1行追加する();
-      } else {
-        alert("ゲームオーバー")
-      }
+      this.game.最上部に1行追加する();
+      // if(this.game.格子.最下部の石の行() < this.game.行数 - 1) {
+      //   this.game.最上部に1行追加する();
+      // } else {
+      //   alert("ゲームオーバー")
+      // }
     }
   }
 }
@@ -677,6 +678,7 @@ class MagicalDropGame {
   /** @type {PullStones} */
   持ってる石 = PullStones.空();
   モード;
+  ゲームオーバー = false;
   /**
    * 
    * @param {MagicalDropGameConfig} config 
@@ -774,6 +776,10 @@ class MagicalDropGame {
 
   step = 0;
   update() {
+    if(this.ゲームオーバー) {
+      return;
+    }
+
     if(this.状態.が消す) {
       this.消す();
     }
@@ -783,5 +789,8 @@ class MagicalDropGame {
     this.状態.次へ();
 
     this.モード.update();
+    if(this.格子.最下部の石の行() > this.行数 - 1) {
+      this.ゲームオーバー = true;
+    }
   }
 }
