@@ -189,6 +189,18 @@ class StoneOrEmpty {
 
   /**
    * 
+   * @param {number} row 
+   */
+  行を更新する(row) {
+    if(this.#石) {
+      this.#石.位置.row = row;
+    } else if(this.#空) {
+      this.#空.位置.row = row;
+    }
+  }
+
+  /**
+   * 
    * @param {(v:Stone) => void} cb 
    */
   もし石ならば(cb) {
@@ -221,6 +233,14 @@ class StoneOrEmpty {
 
   get は石である() {
     return !!this.#石;
+  }
+
+  static ランダムな石(位置) {
+    var factories = [
+      () => StoneOrEmpty.赤(位置), 
+      () => StoneOrEmpty.青(位置), 
+    ];
+    return factories[Math.floor(Math.random() * factories.length)]();
   }
 
   /**
@@ -390,7 +410,7 @@ class Grid {
    * @param {number} columnNumber 
    * @param {PullStones} pullStones 
    */
-  drop(columnNumber, pullStones) {
+  置く(columnNumber, pullStones) {
 
     console.log(this.values);
     // 末端を探す
@@ -450,6 +470,19 @@ class Grid {
     throw new Error("石がない");
   }
 
+  行を追加できる() {
+    var max = 0;
+    for(let column = 0; column < this.values[0].length; column++) {
+      if(this.列がすべて空(column)) {
+        max = Math.max(max, 0);
+      } else {
+        max = Math.max(max, this.最下部の石(column).位置.row);
+      }
+    }
+    return max < this.values.length - 1;
+  }
+
+
   列がすべて空(columnNumber) {
     return !this.列に石がある(columnNumber);
   }
@@ -492,11 +525,17 @@ class Grid {
         this.values[row][column].to石(落ちてる石.色, "落ちてる");
         this.values[落ちてる石.位置.row][落ちてる石.位置.column].to空();
       }
-//todo
     }
   }
-  update() {
+
+  最上部に1行追加する() {
+    var 行数 = this.values.length;
+    var 追加する行 = new Array(this.values[0].length).fill(0).map((v, i) => StoneOrEmpty.ランダムな石({row: 0, column: i}));
+    this.values = [追加する行, ...this.values].slice(0, 行数);
+    this.values.forEach((v, row) => v.forEach((cell, column) => cell.行を更新する(row)));
+    console.log("行数", this.values.length);
   }
+  
 }
 
 /**
@@ -606,7 +645,7 @@ class MagicalDropGame {
       return
     }
         
-    this.格子.drop(columnNumber, this.持ってる石);
+    this.格子.置く(columnNumber, this.持ってる石);
     this.持ってる石.clear();
 
     console.log(this.格子.values);
@@ -633,6 +672,11 @@ class MagicalDropGame {
     this.格子.落ちる()
   }
 
+
+  最上部に1行追加する() {
+    this.格子.最上部に1行追加する();
+  }
+
   step = 0;
   update() {
     if(this.状態.が消す) {
@@ -642,5 +686,14 @@ class MagicalDropGame {
       this.落ちる();
     }
     this.状態.次へ();
+
+    this.step = (this.step + 1) % 50;
+    if(this.step == 0) {
+      if(this.格子.行を追加できる()) {
+        this.最上部に1行追加する();
+      } else {
+        alert("ゲームオーバー")
+      }
+    }
   }
 }
