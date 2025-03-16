@@ -630,6 +630,11 @@ class InicialGrid {
     return new InicialGrid(value);
   }
 
+  /**
+   * 
+   * @param {number} 列数 
+   * @returns 
+   */
   static ランダム(列数) {
     var 行数 = 12;
     var 色リスト = ["赤", "青", "緑", "黄"];
@@ -644,6 +649,8 @@ class InicialGrid {
   }
 }
 
+/** @typedef {{初期格子:InicialGrid}} MagicalDropGameConfig */
+
 class MagicalDropGame {
   widthCount;
   heightCount;
@@ -652,9 +659,12 @@ class MagicalDropGame {
   状態 = new StateTransition(() => this.消せるか確認する());
   /** @type {PullStones} */
   持ってる石 = PullStones.空();
+
+  /**
+   * 
+   * @param {MagicalDropGameConfig} config 
+   */
   constructor(config) {
-    config = config || {};
-    config.初期格子 = config.初期格子 || InicialGrid.ランダム(12);
     this.格子 = new Grid(config.初期格子);
   }
 

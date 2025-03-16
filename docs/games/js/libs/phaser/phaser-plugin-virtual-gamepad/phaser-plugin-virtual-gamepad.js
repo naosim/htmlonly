@@ -123,9 +123,12 @@ this.VirtualGamepad = class VirtualGamepad {
 
     // Check for pointer interaction with joystick or button
     let lastButton = this.button.isDown;
-    this.buttonSprite.isDown = false;
-    this.button.isDown = false;
-    this.buttonSprite.setFrame(0);
+    if(this.buttonSprite) {
+      this.buttonSprite.isDown = false;
+      this.button.isDown = false;
+      this.buttonSprite.setFrame(0);
+    }
+    
     this.scene.input.manager.pointers.forEach((pointer) => {
       resetJoystick = this.testDistance(pointer);
     });
@@ -161,11 +164,13 @@ this.VirtualGamepad = class VirtualGamepad {
     }
 
     // See if the pointer is over the button
-    const buttonDistance = Phaser.Math.Distance.Between(this.buttonPoint.x, this.buttonPoint.y, pointer.x, pointer.y);
-    if (pointer.isDown && buttonDistance < this.buttonRadius) {
-        this.buttonSprite.isDown = true;
-        this.button.isDown = true;
-        this.buttonSprite.setFrame(1);
+    if(this.buttonSprite) {
+      const buttonDistance = Phaser.Math.Distance.Between(this.buttonPoint.x, this.buttonPoint.y, pointer.x, pointer.y);
+      if (pointer.isDown && buttonDistance < this.buttonRadius) {
+          this.buttonSprite.isDown = true;
+          this.button.isDown = true;
+          this.buttonSprite.setFrame(1);
+      }
     }
 
     return reset;
@@ -253,10 +258,19 @@ this.GamepadWrapper = class GamepadWrapper {
     this.vgamepad.addButton(config.buttonPos.x, config.buttonPos.y, 1.0, 'gamepad');
   }
 
+  /**
+   * 
+   * @param {*} scene 
+   * @param {{joystickPos:{x:number, y:number}}} config 
+   */
+  createArrowKeys(scene, config) {
+    this.create(scene);
+    this.vgamepad.create(scene);
+    this.vgamepad.addJoystick(config.joystickPos.x, config.joystickPos.y, 1.2, 'gamepad');
+  }
+
   static init() {
     return new GamepadWrapper(new VirtualGamepad());
   }
 }
-
-
 })()

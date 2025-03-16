@@ -218,7 +218,7 @@ var config = {
     update: update
   }
 };
-const magicalDropGame = new MagicalDropGame();
+const magicalDropGame = new MagicalDropGame({初期格子: InicialGrid.ランダム(12)});
 const gamepad = GamepadWrapper.init();
 const player = new Player(gamepad);
 const 補助線 = new AdditionalLineForPlayer(player, magicalDropGame);
@@ -236,14 +236,13 @@ function create() {
 
   
   player.create(this);
-
-  gamepad.createAll(this, {joystickPos:{x:100, y:500}, buttonPos:{x:300, y:500}});
+  gamepad.createArrowKeys(this, {joystickPos:{x:200, y:500}});
 }
 
 var gameStep = 0;
 function update() {
   const columnNumber = (player.gameObject.x - gridHalfSize) / gridSize;
-  if(gamepad.button.isPressed || gamepad.down.isDown) {
+  if(gamepad.down.isDown) {
     magicalDropGame.取る(columnNumber);
   }
   if(gamepad.up.isDown) {
