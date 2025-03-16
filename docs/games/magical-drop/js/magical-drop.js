@@ -789,7 +789,7 @@ class MagicalDropGame {
     this.状態.次へ();
 
     this.モード.update();
-    if(this.格子.最下部の石の行() > this.行数 - 1) {
+    if(this.状態.が通常 && this.格子.最下部の石の行() > this.行数 - 1) {
       this.ゲームオーバー = true;
     }
   }
