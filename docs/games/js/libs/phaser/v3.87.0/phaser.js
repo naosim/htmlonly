@@ -5865,7 +5865,7 @@ var AnimationState = new Class({
      * @method Phaser.Animations.AnimationState#getName
      * @since 3.50.0
      *
-     * @return {string} The key of the Animation currently loaded into this component, or an empty string if none loaded.
+     * @return {string} The key of the Animation currently loaded into this component, or an 空 string if none loaded.
      */
     getName: function ()
     {
@@ -5878,7 +5878,7 @@ var AnimationState = new Class({
      * @method Phaser.Animations.AnimationState#getFrameName
      * @since 3.50.0
      *
-     * @return {string} The key of the Animation Frame currently displayed by this component, or an empty string if no animation has been loaded.
+     * @return {string} The key of the Animation Frame currently displayed by this component, or an 空 string if no animation has been loaded.
      */
     getFrameName: function ()
     {
@@ -8470,7 +8470,7 @@ var BaseCamera = new Class({
         this.id = 0;
 
         /**
-         * The name of the Camera. This is left empty for your own use.
+         * The name of the Camera. This is left 空 for your own use.
          *
          * @name Phaser.Cameras.Scene2D.BaseCamera#name
          * @type {string}
@@ -9357,7 +9357,7 @@ var BaseCamera = new Class({
 
         this.dirty = true;
 
-        this._bounds.setEmpty();
+        this._bounds.set空();
 
         return this;
     },
@@ -9464,7 +9464,7 @@ var BaseCamera = new Class({
     /**
      * Returns a rectangle containing the bounds of the Camera.
      *
-     * If the Camera does not have any bounds the rectangle will be empty.
+     * If the Camera does not have any bounds the rectangle will be 空.
      *
      * The rectangle is a copy of the bounds, so is safe to modify.
      *
@@ -16024,7 +16024,7 @@ var Config = new Class({
         this.inputKeyboardEventTarget = GetValue(config, 'input.keyboard.target', window);
 
         /**
-         * @const {?number[]} Phaser.Core.Config#inputKeyboardCapture - `preventDefault` will be called on every non-modified key which has a key code in this array. By default, it is empty.
+         * @const {?number[]} Phaser.Core.Config#inputKeyboardCapture - `preventDefault` will be called on every non-modified key which has a key code in this array. By default, it is 空.
          */
         this.inputKeyboardCapture = GetValue(config, 'input.keyboard.capture', []);
 
@@ -21762,7 +21762,7 @@ var Path = new Class({
 
         /**
          * The name of this Path.
-         * Empty by default and never populated by Phaser, this is left for developers to use.
+         * 空 by default and never populated by Phaser, this is left for developers to use.
          *
          * @name Phaser.Curves.Path#name
          * @type {string}
@@ -21816,7 +21816,7 @@ var Path = new Class({
         /**
          * The starting point of the Path.
          *
-         * This is not necessarily equivalent to the starting point of the first Curve in the Path. In an empty Path, it's also treated as the ending point.
+         * This is not necessarily equivalent to the starting point of the first Curve in the Path. In an 空 Path, it's also treated as the ending point.
          *
          * @name Phaser.Curves.Path#startPoint
          * @type {Phaser.Math.Vector2}
@@ -21857,7 +21857,7 @@ var Path = new Class({
     /**
      * Appends a Curve to the end of the Path.
      *
-     * The Curve does not have to start where the Path ends or, for an empty Path, at its defined starting point.
+     * The Curve does not have to start where the Path ends or, for an 空 Path, at its defined starting point.
      *
      * @method Phaser.Curves.Path#add
      * @since 3.0.0
@@ -21897,7 +21897,7 @@ var Path = new Class({
      *
      * A closed Path starts and ends at the same point. If the Path is not closed, a straight Line Curve will be created from the ending point directly to the starting point. During the check, the actual starting point of the Path, i.e. the starting point of the first Curve, will be used as opposed to the Path's defined {@link startPoint}, which could differ.
      *
-     * Calling this method on an empty Path will result in an error.
+     * Calling this method on an 空 Path will result in an error.
      *
      * @method Phaser.Curves.Path#closePath
      * @since 3.0.0
@@ -22228,7 +22228,7 @@ var Path = new Class({
     /**
      * Returns the ending point of the Path.
      *
-     * A Path's ending point is equivalent to the ending point of the last Curve in the Path. For an empty Path, the ending point is at the Path's defined {@link #startPoint}.
+     * A Path's ending point is equivalent to the ending point of the last Curve in the Path. For an 空 Path, the ending point is at the Path's defined {@link #startPoint}.
      *
      * @method Phaser.Curves.Path#getEndPoint
      * @since 3.0.0
@@ -34499,7 +34499,7 @@ var GameObject = new Class({
 
         /**
          * The name of this Game Object.
-         * Empty by default and never populated by Phaser, this is left for developers to use.
+         * 空 by default and never populated by Phaser, this is left for developers to use.
          *
          * @name Phaser.GameObjects.GameObject#name
          * @type {string}
@@ -36277,7 +36277,7 @@ module.exports = BatchChar;
  * @param {(Phaser.GameObjects.DynamicBitmapText|Phaser.GameObjects.BitmapText)} src - The BitmapText to calculate the bounds values for.
  * @param {boolean} [round=false] - Whether to round the positions to the nearest integer.
  * @param {boolean} [updateOrigin=false] - Whether to update the origin of the BitmapText after bounds calculations?
- * @param {object} [out] - Object to store the results in, to save constant object creation. If not provided an empty object is returned.
+ * @param {object} [out] - Object to store the results in, to save constant object creation. If not provided an 空 object is returned.
  *
  * @return {Phaser.Types.GameObjects.BitmapText.BitmapTextSize} The calculated bounds values of the BitmapText.
  */
@@ -42051,7 +42051,7 @@ var FX = new Class({
          * have been added to this FX Component. They are processed in
          * the order they are added.
          *
-         * This array is empty if this is a Post FX Component.
+         * This array is 空 if this is a Post FX Component.
          *
          * @name Phaser.GameObjects.Components.FX#list
          * @type {Phaser.FX.Controller[]}
@@ -44310,7 +44310,7 @@ var Pipeline = {
      * @webglOnly
      * @since 3.0.0
      *
-     * @param {boolean} [resetData=false] - Reset the `pipelineData` object to being an empty object?
+     * @param {boolean} [resetData=false] - Reset the `pipelineData` object to being an 空 object?
      *
      * @return {boolean} `true` if the pipeline was reset successfully, otherwise `false`.
      */
@@ -44597,7 +44597,7 @@ var PostPipeline = {
      *
      * @param {(string|function|Phaser.Renderer.WebGL.Pipelines.PostFXPipeline)} pipeline - The string-based name of the pipeline, or a pipeline class.
      *
-     * @return {(Phaser.Renderer.WebGL.Pipelines.PostFXPipeline|Phaser.Renderer.WebGL.Pipelines.PostFXPipeline[])} An array of all the Post Pipelines matching the name. This array will be empty if there was no match. If there was only one single match, that pipeline is returned directly, not in an array.
+     * @return {(Phaser.Renderer.WebGL.Pipelines.PostFXPipeline|Phaser.Renderer.WebGL.Pipelines.PostFXPipeline[])} An array of all the Post Pipelines matching the name. This array will be 空 if there was no match. If there was only one single match, that pipeline is returned directly, not in an array.
      */
     getPostPipeline: function (pipeline)
     {
@@ -44628,7 +44628,7 @@ var PostPipeline = {
      * @webglOnly
      * @since 3.60.0
      *
-     * @param {boolean} [resetData=false] - Reset the `postPipelineData` object to being an empty object?
+     * @param {boolean} [resetData=false] - Reset the `postPipelineData` object to being an 空 object?
      */
     resetPostPipeline: function (resetData)
     {
@@ -47981,7 +47981,7 @@ var Container = new Class({
             var tempRect = new Rectangle();
             var hasSetFirst = false;
 
-            output.setEmpty();
+            output.set空();
 
             for (var i = 0; i < children.length; i++)
             {
@@ -48257,7 +48257,7 @@ var Container = new Class({
      * @param {number} [startIndex=0] - An optional start index.
      * @param {number} [length] - An optional length, the total number of elements (from the startIndex) to choose from.
      *
-     * @return {?Phaser.GameObjects.GameObject} A random child from the Container, or `null` if the Container is empty.
+     * @return {?Phaser.GameObjects.GameObject} A random child from the Container, or `null` if the Container is 空.
      */
     getRandom: function (startIndex, length)
     {
@@ -48908,7 +48908,7 @@ var Container = new Class({
     },
 
     /**
-     * Returns the first Game Object within the Container, or `null` if it is empty.
+     * Returns the first Game Object within the Container, or `null` if it is 空.
      *
      * You can move the cursor by calling `Container.next` and `Container.previous`.
      *
@@ -48936,7 +48936,7 @@ var Container = new Class({
     },
 
     /**
-     * Returns the last Game Object within the Container, or `null` if it is empty.
+     * Returns the last Game Object within the Container, or `null` if it is 空.
      *
      * You can move the cursor by calling `Container.next` and `Container.previous`.
      *
@@ -48964,7 +48964,7 @@ var Container = new Class({
     },
 
     /**
-     * Returns the next Game Object within the Container, or `null` if it is empty.
+     * Returns the next Game Object within the Container, or `null` if it is 空.
      *
      * You can move the cursor by calling `Container.next` and `Container.previous`.
      *
@@ -48992,7 +48992,7 @@ var Container = new Class({
     },
 
     /**
-     * Returns the previous Game Object within the Container, or `null` if it is empty.
+     * Returns the previous Game Object within the Container, or `null` if it is 空.
      *
      * You can move the cursor by calling `Container.next` and `Container.previous`.
      *
@@ -50102,7 +50102,7 @@ var DOMElement = new Class({
 
         this.node = target;
 
-        //  style can be empty, a string or a plain object
+        //  style can be 空, a string or a plain object
         if (style && IsPlainObject(style))
         {
             for (var key in style)
@@ -51622,7 +51622,7 @@ var Render = __webpack_require__(84503);
  * @classdesc
  * A Graphics object is a way to draw primitive shapes to your game. Primitives include forms of geometry, such as
  * Rectangles, Circles, and Polygons. They also include lines, arcs and curves. When you initially create a Graphics
- * object it will be empty.
+ * object it will be 空.
  *
  * To draw to it you must first specify a line style or fill style (or both), draw shapes using paths, and finally
  * fill or stroke them. For example:
@@ -54048,7 +54048,7 @@ var Group = new Class({
 
         /**
          * The name of this group.
-         * Empty by default and never populated by Phaser, this is left for developers to use.
+         * 空 by default and never populated by Phaser, this is left for developers to use.
          *
          * @name Phaser.GameObjects.Group#name
          * @type {string}
@@ -54709,7 +54709,7 @@ var Group = new Class({
      * @param {number} [startIndex] - An optional start index to search from.
      * @param {number} [endIndex] - An optional end index to search to.
      *
-     * @return {any[]} An array of matching Group members. The array will be empty if nothing matched.
+     * @return {any[]} An array of matching Group members. The array will be 空 if nothing matched.
      */
     getMatching: function (property, value, startIndex, endIndex)
     {
@@ -56370,7 +56370,7 @@ var Layer = new Class({
 
         /**
          * The name of this Game Object.
-         * Empty by default and never populated by Phaser, this is left for developers to use.
+         * 空 by default and never populated by Phaser, this is left for developers to use.
          *
          * @name Phaser.GameObjects.Layer#name
          * @type {string}
@@ -58483,9 +58483,9 @@ var Vertex = __webpack_require__(39318);
  * @param {string|number} [frame] - An optional frame from the Texture this Game Object is rendering with.
  * @param {number[]} [vertices] - The vertices array. Either `xy` pairs, or `xyz` if the `containsZ` parameter is `true` (but see note).
  * @param {number[]} [uvs] - The UVs pairs array.
- * @param {number[]} [indicies] - Optional vertex indicies array. If you don't have one, pass `null` or an empty array.
+ * @param {number[]} [indicies] - Optional vertex indicies array. If you don't have one, pass `null` or an 空 array.
  * @param {boolean} [containsZ=false] - Does the vertices data include a `z` component? Note: If not, it will be assumed `z=0`, see method `panZ` or `setOrtho`.
- * @param {number[]} [normals] - Optional vertex normals array. If you don't have one, pass `null` or an empty array.
+ * @param {number[]} [normals] - Optional vertex normals array. If you don't have one, pass `null` or an 空 array.
  * @param {number|number[]} [colors=0xffffff] - An array of colors, one per vertex, or a single color value applied to all vertices.
  * @param {number|number[]} [alphas=1] - An array of alpha values, one per vertex, or a single alpha value applied to all vertices.
  */
@@ -58993,7 +58993,7 @@ var Mesh = new Class({
 
         if (!parsedData || parsedData.verts.length === 0)
         {
-            console.warn('Mesh.addVerticesFromObj data empty:', key);
+            console.warn('Mesh.addVerticesFromObj data 空:', key);
         }
 
         return this;
@@ -59140,9 +59140,9 @@ var Mesh = new Class({
      *
      * @param {number[]} vertices - The vertices array. Either `xy` pairs, or `xyz` if the `containsZ` parameter is `true`.
      * @param {number[]} uvs - The UVs pairs array.
-     * @param {number[]} [indicies] - Optional vertex indicies array. If you don't have one, pass `null` or an empty array.
+     * @param {number[]} [indicies] - Optional vertex indicies array. If you don't have one, pass `null` or an 空 array.
      * @param {boolean} [containsZ=false] - Does the vertices data include a `z` component? If not, it will be assumed `z=0`, see methods `panZ` or `setOrtho`.
-     * @param {number[]} [normals] - Optional vertex normals array. If you don't have one, pass `null` or an empty array.
+     * @param {number[]} [normals] - Optional vertex normals array. If you don't have one, pass `null` or an 空 array.
      * @param {number|number[]} [colors=0xffffff] - An array of colors, one per vertex, or a single color value applied to all vertices.
      * @param {number|number[]} [alphas=1] - An array of alpha values, one per vertex, or a single alpha value applied to all vertices.
      *
@@ -59159,7 +59159,7 @@ var Mesh = new Class({
         }
         else
         {
-            console.warn('Mesh.addVertices data empty or invalid');
+            console.warn('Mesh.addVertices data 空 or invalid');
         }
 
         this.dirtyCache[9] = -1;
@@ -59914,9 +59914,9 @@ var GameObjectFactory = __webpack_require__(39429);
  * @param {string|number} [frame] - An optional frame from the Texture this Game Object is rendering with.
  * @param {number[]} [vertices] - The vertices array. Either `xy` pairs, or `xyz` if the `containsZ` parameter is `true`.
  * @param {number[]} [uvs] - The UVs pairs array.
- * @param {number[]} [indicies] - Optional vertex indicies array. If you don't have one, pass `null` or an empty array.
+ * @param {number[]} [indicies] - Optional vertex indicies array. If you don't have one, pass `null` or an 空 array.
  * @param {boolean} [containsZ=false] - Does the vertices data include a `z` component?
- * @param {number[]} [normals] - Optional vertex normals array. If you don't have one, pass `null` or an empty array.
+ * @param {number[]} [normals] - Optional vertex normals array. If you don't have one, pass `null` or an 空 array.
  * @param {number|number[]} [colors=0xffffff] - An array of colors, one per vertex, or a single color value applied to all vertices.
  * @param {number|number[]} [alphas=1] - An array of alpha values, one per vertex, or a single alpha value applied to all vertices.
  *
@@ -64565,7 +64565,7 @@ var ParticleEmitter = new Class({
          *
          * When set this overrides the `particleBringToTop` setting.
          *
-         * To reset this and disable sorting, so this property to an empty string.
+         * To reset this and disable sorting, so this property to an 空 string.
          *
          * @name Phaser.GameObjects.Particles.ParticleEmitter#sortProperty
          * @type {string}
@@ -66602,7 +66602,7 @@ var ParticleEmitter = new Class({
      * to see if it intersects with any currently alive Particle in this Emitter.
      *
      * Overlapping particles are returned in an array, where you can perform further
-     * processing on them. If nothing overlaps then the array will be empty.
+     * processing on them. If nothing overlaps then the array will be 空.
      *
      * @method Phaser.GameObjects.Particles.ParticleEmitter#overlap
      * @since 3.60.0
@@ -72804,7 +72804,7 @@ var Shader = new Class({
 
         /**
          * The underlying shader object being used.
-         * Empty by default and set during a call to the `setShader` method.
+         * 空 by default and set during a call to the `setShader` method.
          *
          * @name Phaser.GameObjects.Shader#shader
          * @type {Phaser.Display.BaseShader}
@@ -73879,7 +73879,7 @@ var Shader = new Class({
 
     /**
      * A NOOP method so you can pass a Shader to a Container.
-     * Calling this method will do nothing. It is intentionally empty.
+     * Calling this method will do nothing. It is intentionally 空.
      *
      * @method Phaser.GameObjects.Shader#setAlpha
      * @private
@@ -73891,7 +73891,7 @@ var Shader = new Class({
 
     /**
      * A NOOP method so you can pass a Shader to a Container.
-     * Calling this method will do nothing. It is intentionally empty.
+     * Calling this method will do nothing. It is intentionally 空.
      *
      * @method Phaser.GameObjects.Shader#setBlendMode
      * @private
@@ -85650,7 +85650,7 @@ var Video = new Class({
         /**
          * The key of the current video as stored in the Video cache.
          *
-         * If the video did not come from the cache this will be an empty string.
+         * If the video did not come from the cache this will be an 空 string.
          *
          * @name Phaser.GameObjects.Video#cacheKey
          * @type {string}
@@ -85821,7 +85821,7 @@ var Video = new Class({
     /**
      * Returns the key of the currently played video, as stored in the Video Cache.
      *
-     * If the video did not come from the cache this will return an empty string.
+     * If the video did not come from the cache this will return an 空 string.
      *
      * @method Phaser.GameObjects.Video#getVideoKey
      * @since 3.20.0
@@ -88057,7 +88057,7 @@ var Zone = new Class({
 
     /**
      * A NOOP method so you can pass a Zone to a Container.
-     * Calling this method will do nothing. It is intentionally empty.
+     * Calling this method will do nothing. It is intentionally 空.
      *
      * @method Phaser.GameObjects.Zone#setAlpha
      * @private
@@ -88069,7 +88069,7 @@ var Zone = new Class({
 
     /**
      * A NOOP method so you can pass a Zone to a Container in Canvas.
-     * Calling this method will do nothing. It is intentionally empty.
+     * Calling this method will do nothing. It is intentionally 空.
      *
      * @method Phaser.GameObjects.Zone#setBlendMode
      * @private
@@ -88423,15 +88423,15 @@ var Circle = new Class({
     },
 
     /**
-     * Sets this Circle to be empty with a radius of zero.
+     * Sets this Circle to be 空 with a radius of zero.
      * Does not change its position.
      *
-     * @method Phaser.Geom.Circle#setEmpty
+     * @method Phaser.Geom.Circle#set空
      * @since 3.0.0
      *
      * @return {this} This Circle object.
      */
-    setEmpty: function ()
+    set空: function ()
     {
         this._radius = 0;
         this._diameter = 0;
@@ -88461,14 +88461,14 @@ var Circle = new Class({
     },
 
     /**
-     * Checks to see if the Circle is empty: has a radius of zero.
+     * Checks to see if the Circle is 空: has a radius of zero.
      *
-     * @method Phaser.Geom.Circle#isEmpty
+     * @method Phaser.Geom.Circle#は空である
      * @since 3.0.0
      *
-     * @return {boolean} True if the Circle is empty, otherwise false.
+     * @return {boolean} True if the Circle is 空, otherwise false.
      */
-    isEmpty: function ()
+    は空である: function ()
     {
         return (this._radius <= 0);
     },
@@ -89275,7 +89275,7 @@ module.exports = GEOM_CONST;
  */
 var Area = function (ellipse)
 {
-    if (ellipse.isEmpty())
+    if (ellipse.は空である())
     {
         return 0;
     }
@@ -89735,15 +89735,15 @@ var Ellipse = new Class({
     },
 
     /**
-     * Sets this Ellipse to be empty with a width and height of zero.
+     * Sets this Ellipse to be 空 with a width and height of zero.
      * Does not change its position.
      *
-     * @method Phaser.Geom.Ellipse#setEmpty
+     * @method Phaser.Geom.Ellipse#set空
      * @since 3.0.0
      *
      * @return {this} This Ellipse object.
      */
-    setEmpty: function ()
+    set空: function ()
     {
         this.width = 0;
         this.height = 0;
@@ -89795,14 +89795,14 @@ var Ellipse = new Class({
     },
 
     /**
-     * Checks to see if the Ellipse is empty: has a width or height equal to zero.
+     * Checks to see if the Ellipse is 空: has a width or height equal to zero.
      *
-     * @method Phaser.Geom.Ellipse#isEmpty
+     * @method Phaser.Geom.Ellipse#は空である
      * @since 3.0.0
      *
-     * @return {boolean} True if the Ellipse is empty, otherwise false.
+     * @return {boolean} True if the Ellipse is 空, otherwise false.
      */
-    isEmpty: function ()
+    は空である: function ()
     {
         return (this.width <= 0 || this.height <= 0);
     },
@@ -90393,7 +90393,7 @@ var CircleToCircle = __webpack_require__(2044);
  * @param {Phaser.Geom.Circle} circleB - The second Circle to check for intersection.
  * @param {array} [out] - An optional array in which to store the points of intersection.
  *
- * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
+ * @return {array} An array with the points of intersection if objects intersect, otherwise an 空 array.
  */
 var GetCircleToCircle = function (circleA, circleB, out)
 {
@@ -90489,7 +90489,7 @@ var CircleToRectangle = __webpack_require__(81491);
  * @param {Phaser.Geom.Rectangle} rect - The rectangle to be checked.
  * @param {array} [out] - An optional array in which to store the points of intersection.
  *
- * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
+ * @return {array} An array with the points of intersection if objects intersect, otherwise an 空 array.
  */
 var GetCircleToRectangle = function (circle, rect, out)
 {
@@ -90540,7 +90540,7 @@ var LineToCircle = __webpack_require__(80462);
  * @param {Phaser.Geom.Circle} circle - The circle to check against the line.
  * @param {array} [out] - An optional array in which to store the points of intersection.
  *
- * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
+ * @return {array} An array with the points of intersection if objects intersect, otherwise an 空 array.
  */
 var GetLineToCircle = function (line, circle, out)
 {
@@ -90908,7 +90908,7 @@ var LineToRectangle = __webpack_require__(92773);
  * @param {(Phaser.Geom.Rectangle|object)} rect - The Rectangle to check for intersection.
  * @param {array} [out] - An optional array in which to store the points of intersection.
  *
- * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
+ * @return {array} An array with the points of intersection if objects intersect, otherwise an 空 array.
  */
 var GetLineToRectangle = function (line, rect, out)
 {
@@ -90991,7 +90991,7 @@ function SortIntersects (a, b)
  *
  * If the rays intersect with the polygons, the points of intersection are returned in an array.
  *
- * If no intersections are found, the returned array will be empty.
+ * If no intersections are found, the returned array will be 空.
  *
  * Each Vector4 intersection result has the following properties:
  *
@@ -91062,7 +91062,7 @@ var RectangleToRectangle = __webpack_require__(59996);
 /**
  * Checks if two Rectangle shapes intersect and returns the area of this intersection as Rectangle object.
  *
- * If optional `output` parameter is omitted, new Rectangle object is created and returned. If there is intersection, it will contain intersection area. If there is no intersection, it wil be empty Rectangle (all values set to zero).
+ * If optional `output` parameter is omitted, new Rectangle object is created and returned. If there is intersection, it will contain intersection area. If there is no intersection, it wil be 空 Rectangle (all values set to zero).
  *
  * If Rectangle object is passed as `output` and there is intersection, then intersection area data will be loaded into it and it will be returned. If there is no intersection, it will be returned without any change.
  *
@@ -91073,7 +91073,7 @@ var RectangleToRectangle = __webpack_require__(59996);
  *
  * @param {Phaser.Geom.Rectangle} rectA - The first Rectangle object.
  * @param {Phaser.Geom.Rectangle} rectB - The second Rectangle object.
- * @param {Phaser.Geom.Rectangle} [output] - Optional Rectangle object. If given, the intersection data will be loaded into it (in case of no intersection, it will be left unchanged). Otherwise, new Rectangle object will be created and returned with either intersection data or empty (all values set to zero), if there is no intersection.
+ * @param {Phaser.Geom.Rectangle} [output] - Optional Rectangle object. If given, the intersection data will be loaded into it (in case of no intersection, it will be left unchanged). Otherwise, new Rectangle object will be created and returned with either intersection data or 空 (all values set to zero), if there is no intersection.
  *
  * @return {Phaser.Geom.Rectangle} A rectangle object with intersection data.
  */
@@ -91122,7 +91122,7 @@ var RectangleToRectangle = __webpack_require__(59996);
  * @param {Phaser.Geom.Rectangle} rectB - The second Rectangle to check for intersection.
  * @param {array} [out] - An optional array in which to store the points of intersection.
  *
- * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
+ * @return {array} An array with the points of intersection if objects intersect, otherwise an 空 array.
  */
 var GetRectangleToRectangle = function (rectA, rectB, out)
 {
@@ -91173,7 +91173,7 @@ var GetLineToRectangle = __webpack_require__(60646);
  * @param {Phaser.Geom.Triangle} triangle - Triangle object to test.
  * @param {array} [out] - An optional array in which to store the points of intersection.
  *
- * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
+ * @return {array} An array with the points of intersection if objects intersect, otherwise an 空 array.
  */
 var GetRectangleToTriangle = function (rect, triangle, out)
 {
@@ -91223,7 +91223,7 @@ var TriangleToCircle = __webpack_require__(67636);
  * @param {Phaser.Geom.Circle} circle - The Circle to check for intersection.
  * @param {array} [out] - An optional array in which to store the points of intersection.
  *
- * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
+ * @return {array} An array with the points of intersection if objects intersect, otherwise an 空 array.
  */
 var GetTriangleToCircle = function (triangle, circle, out)
 {
@@ -91274,7 +91274,7 @@ var LineToLine = __webpack_require__(76112);
  * @param {Phaser.Geom.Line} line - The Line to check with.
  * @param {array} [out] - An optional array in which to store the points of intersection.
  *
- * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
+ * @return {array} An array with the points of intersection if objects intersect, otherwise an 空 array.
  */
 var GetTriangleToLine = function (triangle, line, out)
 {
@@ -91333,7 +91333,7 @@ var GetTriangleToLine = __webpack_require__(13882);
  * @param {Phaser.Geom.Triangle} triangleB - The second Triangle to check for intersection.
  * @param {array} [out] - An optional array in which to store the points of intersection.
  *
- * @return {array} An array with the points of intersection if objects intersect, otherwise an empty array.
+ * @return {array} An array with the points of intersection if objects intersect, otherwise an 空 array.
  */
 var GetTriangleToTriangle = function (triangleA, triangleB, out)
 {
@@ -94944,9 +94944,9 @@ var Vertex = __webpack_require__(39318);
  *
  * @param {number[]} vertices - The vertices array. Either `xy` pairs, or `xyz` if the `containsZ` parameter is `true`.
  * @param {number[]} uvs - The UVs pairs array.
- * @param {number[]} [indicies] - Optional vertex indicies array. If you don't have one, pass `null` or an empty array.
+ * @param {number[]} [indicies] - Optional vertex indicies array. If you don't have one, pass `null` or an 空 array.
  * @param {boolean} [containsZ=false] - Does the vertices data include a `z` component?
- * @param {number[]} [normals] - Optional vertex normals array. If you don't have one, pass `null` or an empty array.
+ * @param {number[]} [normals] - Optional vertex normals array. If you don't have one, pass `null` or an 空 array.
  * @param {number|number[]} [colors=0xffffff] - An array of colors, one per vertex, or a single color value applied to all vertices.
  * @param {number|number[]} [alphas=1] - An array of alpha values, one per vertex, or a single alpha value applied to all vertices.
  * @param {boolean} [flipUV=false] - Flip the UV coordinates?
@@ -96182,7 +96182,7 @@ var GetCentroid = function (points, out)
 
     if (len < 1)
     {
-        throw new Error('GetCentroid points array must not be empty');
+        throw new Error('GetCentroid points array must not be 空');
     }
     else if (len === 1)
     {
@@ -99450,7 +99450,7 @@ var Intersection = function (rectA, rectB, out)
     }
     else
     {
-        out.setEmpty();
+        out.set空();
     }
 
     return out;
@@ -100218,12 +100218,12 @@ var Rectangle = new Class({
     /**
      * Resets the position, width, and height of the Rectangle to 0.
      *
-     * @method Phaser.Geom.Rectangle#setEmpty
+     * @method Phaser.Geom.Rectangle#set空
      * @since 3.0.0
      *
      * @return {this} This Rectangle object.
      */
-    setEmpty: function ()
+    set空: function ()
     {
         return this.setTo(0, 0, 0, 0);
     },
@@ -100271,14 +100271,14 @@ var Rectangle = new Class({
     },
 
     /**
-     * Determines if the Rectangle is empty. A Rectangle is empty if its width or height is less than or equal to 0.
+     * Determines if the Rectangle is 空. A Rectangle is 空 if its width or height is less than or equal to 0.
      *
-     * @method Phaser.Geom.Rectangle#isEmpty
+     * @method Phaser.Geom.Rectangle#は空である
      * @since 3.0.0
      *
-     * @return {boolean} `true` if the Rectangle is empty. A Rectangle object is empty if its width or height is less than or equal to 0.
+     * @return {boolean} `true` if the Rectangle is 空. A Rectangle object is 空 if its width or height is less than or equal to 0.
      */
-    isEmpty: function ()
+    は空である: function ()
     {
         return (this.width <= 0 || this.height <= 0);
     },
@@ -101271,12 +101271,12 @@ module.exports = Contains;
 //  http://www.blackpawn.com/texts/pointinpoly/
 
 //  points is an array of Point-like objects with public x/y properties
-//  returns an array containing all points that are within the triangle, or an empty array if none
+//  returns an array containing all points that are within the triangle, or an 空 array if none
 //  if 'returnFirst' is true it will return after the first point within the triangle is found
 
 /**
  * Filters an array of point-like objects to only those contained within a triangle.
- * If `returnFirst` is true, will return an array containing only the first point in the provided array that is within the triangle (or an empty array if there are no such points).
+ * If `returnFirst` is true, will return an array containing only the first point in the provided array that is within the triangle (or an 空 array if there are no such points).
  *
  * @function Phaser.Geom.Triangle.ContainsArray
  * @since 3.0.0
@@ -103468,7 +103468,7 @@ var InputManager = new Class({
      * The Game Objects are culled against the camera, and then the coordinates are translated into the local camera space
      * and used to determine if they fall within the remaining Game Objects hit areas or not.
      *
-     * If nothing is matched an empty array is returned.
+     * If nothing is matched an 空 array is returned.
      *
      * This method is called automatically by InputPlugin.hitTestPointer and doesn't usually need to be invoked directly.
      *
@@ -103478,7 +103478,7 @@ var InputManager = new Class({
      * @param {Phaser.Input.Pointer} pointer - The Pointer to test against.
      * @param {array} gameObjects - An array of interactive Game Objects to check.
      * @param {Phaser.Cameras.Scene2D.Camera} camera - The Camera which is being tested against.
-     * @param {array} [output] - An array to store the results in. If not given, a new empty array is created.
+     * @param {array} [output] - An array to store the results in. If not given, a new 空 array is created.
      *
      * @return {array} An array of the Game Objects that were hit during this hit test.
      */
@@ -113077,7 +113077,7 @@ var KeyboardManager = new Class({
          * An array of Key Code values that will automatically have `preventDefault` called on them,
          * as long as the `KeyboardManager.preventDefault` boolean is set to `true`.
          *
-         * By default the array is empty.
+         * By default the array is 空.
          *
          * The key must be non-modified when pressed in order to be captured.
          *
@@ -113124,7 +113124,7 @@ var KeyboardManager = new Class({
         /**
          * The Key Down Event handler.
          * This function is sent the native DOM KeyEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Keyboard.KeyboardManager#onKeyDown
          * @type {function}
@@ -113135,7 +113135,7 @@ var KeyboardManager = new Class({
         /**
          * The Key Up Event handler.
          * This function is sent the native DOM KeyEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Keyboard.KeyboardManager#onKeyUp
          * @type {function}
@@ -116790,7 +116790,7 @@ var MouseManager = new Class({
         /**
          * The Mouse Move Event handler.
          * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Mouse.MouseManager#onMouseMove
          * @type {function}
@@ -116801,7 +116801,7 @@ var MouseManager = new Class({
         /**
          * The Mouse Down Event handler.
          * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Mouse.MouseManager#onMouseDown
          * @type {function}
@@ -116812,7 +116812,7 @@ var MouseManager = new Class({
         /**
          * The Mouse Up Event handler.
          * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Mouse.MouseManager#onMouseUp
          * @type {function}
@@ -116823,7 +116823,7 @@ var MouseManager = new Class({
         /**
          * The Mouse Down Event handler specifically for events on the Window.
          * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Mouse.MouseManager#onMouseDownWindow
          * @type {function}
@@ -116834,7 +116834,7 @@ var MouseManager = new Class({
         /**
          * The Mouse Up Event handler specifically for events on the Window.
          * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Mouse.MouseManager#onMouseUpWindow
          * @type {function}
@@ -116845,7 +116845,7 @@ var MouseManager = new Class({
         /**
          * The Mouse Over Event handler.
          * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Mouse.MouseManager#onMouseOver
          * @type {function}
@@ -116856,7 +116856,7 @@ var MouseManager = new Class({
         /**
          * The Mouse Out Event handler.
          * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Mouse.MouseManager#onMouseOut
          * @type {function}
@@ -116867,7 +116867,7 @@ var MouseManager = new Class({
         /**
          * The Mouse Wheel Event handler.
          * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Mouse.MouseManager#onMouseWheel
          * @type {function}
@@ -116878,7 +116878,7 @@ var MouseManager = new Class({
         /**
          * Internal pointerLockChange handler.
          * This function is sent the native DOM MouseEvent.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Mouse.MouseManager#pointerLockChange
          * @type {function}
@@ -117350,7 +117350,7 @@ var TouchManager = new Class({
 
         /**
          * The Touch Start event handler function.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Touch.TouchManager#onTouchStart
          * @type {function}
@@ -117360,7 +117360,7 @@ var TouchManager = new Class({
 
         /**
          * The Touch Start event handler function specifically for events on the Window.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Touch.TouchManager#onTouchStartWindow
          * @type {function}
@@ -117370,7 +117370,7 @@ var TouchManager = new Class({
 
         /**
          * The Touch Move event handler function.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Touch.TouchManager#onTouchMove
          * @type {function}
@@ -117380,7 +117380,7 @@ var TouchManager = new Class({
 
         /**
          * The Touch End event handler function.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Touch.TouchManager#onTouchEnd
          * @type {function}
@@ -117390,7 +117390,7 @@ var TouchManager = new Class({
 
         /**
          * The Touch End event handler function specifically for events on the Window.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Touch.TouchManager#onTouchEndWindow
          * @type {function}
@@ -117400,7 +117400,7 @@ var TouchManager = new Class({
 
         /**
          * The Touch Cancel event handler function.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Touch.TouchManager#onTouchCancel
          * @type {function}
@@ -117410,7 +117410,7 @@ var TouchManager = new Class({
 
         /**
          * The Touch Cancel event handler function specifically for events on the Window.
-         * Initially empty and bound in the `startListeners` method.
+         * Initially 空 and bound in the `startListeners` method.
          *
          * @name Phaser.Input.Touch.TouchManager#onTouchCancelWindow
          * @type {function}
@@ -118701,7 +118701,7 @@ var LoaderPlugin = new Class({
          * They are moved to the `inflight` Set when they start loading, and assuming a successful
          * load, to the `queue` Set for further processing.
          *
-         * By the end of the load process this Set will be empty.
+         * By the end of the load process this Set will be 空.
          *
          * @name Phaser.Loader.LoaderPlugin#list
          * @type {Phaser.Structs.Set.<Phaser.Loader.File>}
@@ -118714,7 +118714,7 @@ var LoaderPlugin = new Class({
          *
          * Upon a successful load they are moved to the `queue` Set.
          *
-         * By the end of the load process this Set will be empty.
+         * By the end of the load process this Set will be 空.
          *
          * @name Phaser.Loader.LoaderPlugin#inflight
          * @type {Phaser.Structs.Set.<Phaser.Loader.File>}
@@ -118728,7 +118728,7 @@ var LoaderPlugin = new Class({
          * If the process is successful they are moved to their final destination, which could be
          * a Cache or the Texture Manager.
          *
-         * At the end of the load process this Set will be empty.
+         * At the end of the load process this Set will be 空.
          *
          * @name Phaser.Loader.LoaderPlugin#queue
          * @type {Phaser.Structs.Set.<Phaser.Loader.File>}
@@ -118849,7 +118849,7 @@ var LoaderPlugin = new Class({
      * @method Phaser.Loader.LoaderPlugin#setBaseURL
      * @since 3.0.0
      *
-     * @param {string} [url] - The URL to use. Leave empty to reset.
+     * @param {string} [url] - The URL to use. Leave 空 to reset.
      *
      * @return {this} This Loader object.
      */
@@ -118889,7 +118889,7 @@ var LoaderPlugin = new Class({
      * @method Phaser.Loader.LoaderPlugin#setPath
      * @since 3.0.0
      *
-     * @param {string} [path] - The path to use. Leave empty to reset.
+     * @param {string} [path] - The path to use. Leave 空 to reset.
      *
      * @return {this} This Loader object.
      */
@@ -118918,7 +118918,7 @@ var LoaderPlugin = new Class({
      * @method Phaser.Loader.LoaderPlugin#setPrefix
      * @since 3.7.0
      *
-     * @param {string} [prefix] - The prefix to use. Leave empty to reset.
+     * @param {string} [prefix] - The prefix to use. Leave 空 to reset.
      *
      * @return {this} This Loader object.
      */
@@ -122075,7 +122075,7 @@ var MultiFile = __webpack_require__(26430);
  * @param {Phaser.Loader.LoaderPlugin} loader - A reference to the Loader that is responsible for this file.
  * @param {(string|Phaser.Types.Loader.FileTypes.AudioSpriteFileConfig)} key - The key to use for this file, or a file configuration object.
  * @param {string} jsonURL - The absolute or relative URL to load the json file from. Or a well formed JSON object to use instead.
- * @param {{(string|string[])}} [audioURL] - The absolute or relative URL to load the audio file from. If empty it will be obtained by parsing the JSON file.
+ * @param {{(string|string[])}} [audioURL] - The absolute or relative URL to load the audio file from. If 空 it will be obtained by parsing the JSON file.
  * @param {any} [audioConfig] - The audio configuration options.
  * @param {Phaser.Types.Loader.XHRSettingsObject} [audioXhrSettings] - An XHR Settings configuration object for the audio file. Used in replacement of the Loaders default XHR Settings.
  * @param {Phaser.Types.Loader.XHRSettingsObject} [jsonXhrSettings] - An XHR Settings configuration object for the json file. Used in replacement of the Loaders default XHR Settings.
@@ -122279,7 +122279,7 @@ var AudioSpriteFile = new Class({
  *
  * @param {(string|Phaser.Types.Loader.FileTypes.AudioSpriteFileConfig|Phaser.Types.Loader.FileTypes.AudioSpriteFileConfig[])} key - The key to use for this file, or a file configuration object, or an array of objects.
  * @param {string} jsonURL - The absolute or relative URL to load the json file from. Or a well formed JSON object to use instead.
- * @param {(string|string[])} [audioURL] - The absolute or relative URL to load the audio file from. If empty it will be obtained by parsing the JSON file.
+ * @param {(string|string[])} [audioURL] - The absolute or relative URL to load the audio file from. If 空 it will be obtained by parsing the JSON file.
  * @param {any} [audioConfig] - The audio configuration options.
  * @param {Phaser.Types.Loader.XHRSettingsObject} [audioXhrSettings] - An XHR Settings configuration object for the audio file. Used in replacement of the Loaders default XHR Settings.
  * @param {Phaser.Types.Loader.XHRSettingsObject} [jsonXhrSettings] - An XHR Settings configuration object for the json file. Used in replacement of the Loaders default XHR Settings.
@@ -134262,7 +134262,7 @@ var Vector2 = __webpack_require__(26099);
  *
  * For example, in a 6 x 4 grid, index 16 would equal x: 4 y: 2.
  *
- * If the given index is out of range an empty Vector2 is returned.
+ * If the given index is out of range an 空 Vector2 is returned.
  *
  * @function Phaser.Math.ToXY
  * @since 3.19.0
@@ -140410,7 +140410,7 @@ var RandomDataGenerator = new Class({
 
         for (b = a = ''; a++ < 36; b += ~a % 5 | a * 3 & 4 ? (a ^ 15 ? 8 ^ this.frac() * (a ^ 20 ? 16 : 4) : 4).toString(16) : '-')
         {
-            // eslint-disable-next-line no-empty
+            // eslint-disable-next-line no-空
         }
 
         return b;
@@ -148497,7 +148497,7 @@ var World = new Class({
          * @type {Phaser.Types.Tilemaps.FilteringOptions}
          * @since 3.60.0
          */
-        this.tileFilterOptions = { isColliding: true, isNotEmpty: true, hasInterestingFace: true };
+        this.tileFilterOptions = { isColliding: true, isNot空: true, hasInterestingFace: true };
 
         if (this.drawDebug)
         {
@@ -173515,7 +173515,7 @@ var CanvasRenderer = new Class({
      * @method Phaser.Renderer.Canvas.CanvasRenderer#setContext
      * @since 3.12.0
      *
-     * @param {?CanvasRenderingContext2D} [ctx] - The new Canvas Rendering Context to draw everything to. Leave empty to reset to the Game Canvas.
+     * @param {?CanvasRenderingContext2D} [ctx] - The new Canvas Rendering Context to draw everything to. Leave 空 to reset to the Game Canvas.
      *
      * @return {this} The Canvas Renderer instance.
      */
@@ -177331,7 +177331,7 @@ var WebGLPipeline = new Class({
         /**
          * The currently active WebGLTextures, used as part of the batch process.
          *
-         * Reset to empty as part of the bind method.
+         * Reset to 空 as part of the bind method.
          *
          * Treat this array as read-only.
          *
@@ -178369,7 +178369,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called every time the Pipeline Manager makes this the active pipeline. It is called
      * at the end of the `WebGLPipeline.bind` method, after the current shader has been set. The current
@@ -178390,7 +178390,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called every time a **Game Object** asks the Pipeline Manager to use this pipeline,
      * even if the pipeline is already active.
@@ -178409,7 +178409,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called when the Pipeline Manager needs to rebind this pipeline. This happens after a
      * pipeline has been cleared, usually when passing control over to a 3rd party WebGL library, like Spine,
@@ -178423,7 +178423,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called every time the `batchQuad` or `batchTri` methods are called. If this was
      * as a result of a Game Object, then the Game Object reference is passed to this hook too.
@@ -178444,7 +178444,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called immediately before a **Game Object** is about to add itself to the batch.
      *
@@ -178458,7 +178458,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called immediately after a **Game Object** has been added to the batch.
      *
@@ -178472,7 +178472,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called once per frame, right before anything has been rendered, but after the canvas
      * has been cleared. If this pipeline has a render target, it will also have been cleared by this point.
@@ -178485,7 +178485,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called _once per frame_, by every Camera in a Scene that wants to render.
      *
@@ -178502,7 +178502,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called _once per frame_, after all rendering has happened and snapshots have been taken.
      *
@@ -178517,7 +178517,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called every time this pipeline is asked to flush its batch.
      *
@@ -178534,7 +178534,7 @@ var WebGLPipeline = new Class({
     },
 
     /**
-     * By default this is an empty method hook that you can override and use in your own custom pipelines.
+     * By default this is an 空 method hook that you can override and use in your own custom pipelines.
      *
      * This method is called immediately after this pipeline has finished flushing its batch.
      *
@@ -181704,7 +181704,7 @@ var WebGLRenderer = new Class({
     },
 
     /**
-     * Creates a texture from an image source. If the source is not valid it creates an empty texture.
+     * Creates a texture from an image source. If the source is not valid it creates an 空 texture.
      *
      * @method Phaser.Renderer.WebGL.WebGLRenderer#createTextureFromSource
      * @since 3.0.0
@@ -181763,7 +181763,7 @@ var WebGLRenderer = new Class({
     },
 
     /**
-     * A wrapper for creating a WebGLTextureWrapper. If no pixel data is passed it will create an empty texture.
+     * A wrapper for creating a WebGLTextureWrapper. If no pixel data is passed it will create an 空 texture.
      *
      * @method Phaser.Renderer.WebGL.WebGLRenderer#createTexture2D
      * @since 3.0.0
@@ -196082,7 +196082,7 @@ module.exports = {
 
     /**
      * The game canvas is centered both horizontally and vertically within the parent.
-     * To do this, the parent has to have a bounds that can be calculated and not be empty.
+     * To do this, the parent has to have a bounds that can be calculated and not be 空.
      *
      * Centering is achieved by setting the margin left and top properties of the
      * game canvas, and does not factor in any other CSS styles you may have applied.
@@ -196096,7 +196096,7 @@ module.exports = {
 
     /**
      * The game canvas is centered horizontally within the parent.
-     * To do this, the parent has to have a bounds that can be calculated and not be empty.
+     * To do this, the parent has to have a bounds that can be calculated and not be 空.
      *
      * Centering is achieved by setting the margin left and top properties of the
      * game canvas, and does not factor in any other CSS styles you may have applied.
@@ -196110,7 +196110,7 @@ module.exports = {
 
     /**
      * The game canvas is centered both vertically within the parent.
-     * To do this, the parent has to have a bounds that can be calculated and not be empty.
+     * To do this, the parent has to have a bounds that can be calculated and not be 空.
      *
      * Centering is achieved by setting the margin left and top properties of the
      * game canvas, and does not factor in any other CSS styles you may have applied.
@@ -197279,7 +197279,7 @@ var SceneManager = new Class({
 
         /**
          * This system Scene is created during `bootQueue` and is a default
-         * empty Scene that lives outside of the Scene list, but can be used
+         * 空 Scene that lives outside of the Scene list, but can be used
          * by plugins and managers that need access to a live Scene, without
          * being tied to one.
          *
@@ -202646,7 +202646,7 @@ var BaseSoundManager = new Class({
      *
      * @param {string} [key] - Optional asset key. If given, only Sound instances with this key will be returned.
      *
-     * @return {Phaser.Sound.BaseSound[]} - The sounds, or an empty array.
+     * @return {Phaser.Sound.BaseSound[]} - The sounds, or an 空 array.
      */
     getAll: function (key)
     {
@@ -202671,7 +202671,7 @@ var BaseSoundManager = new Class({
      * @generic {Phaser.Sound.BaseSound} T
      * @genericUse {T[]} - [$return]
      *
-     * @return {Phaser.Sound.BaseSound[]} - All currently playing sounds, or an empty array.
+     * @return {Phaser.Sound.BaseSound[]} - All currently playing sounds, or an 空 array.
      */
     getAllPlaying: function ()
     {
@@ -206191,7 +206191,7 @@ var NoAudioSoundManager = new Class({
      *
      * @param {string} key - Sound asset key.
      *
-     * @return {Phaser.Sound.BaseSound[]} - The sounds, or an empty array.
+     * @return {Phaser.Sound.BaseSound[]} - The sounds, or an 空 array.
      */
     getAll: function (key)
     {
@@ -206294,7 +206294,7 @@ var NoAudioSoundManager = new Class({
     },
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#onBlur
      * @since 3.0.0
@@ -206302,7 +206302,7 @@ var NoAudioSoundManager = new Class({
     onBlur: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#onFocus
      * @since 3.0.0
@@ -206310,7 +206310,7 @@ var NoAudioSoundManager = new Class({
     onFocus: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#onGameBlur
      * @since 3.0.0
@@ -206318,7 +206318,7 @@ var NoAudioSoundManager = new Class({
     onGameBlur: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#onGameFocus
      * @since 3.0.0
@@ -206326,7 +206326,7 @@ var NoAudioSoundManager = new Class({
     onGameFocus: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#pauseAll
      * @since 3.0.0
@@ -206334,7 +206334,7 @@ var NoAudioSoundManager = new Class({
     pauseAll: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#resumeAll
      * @since 3.0.0
@@ -206342,7 +206342,7 @@ var NoAudioSoundManager = new Class({
     resumeAll: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#stopAll
      * @since 3.0.0
@@ -206350,7 +206350,7 @@ var NoAudioSoundManager = new Class({
     stopAll: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#update
      * @since 3.0.0
@@ -206358,7 +206358,7 @@ var NoAudioSoundManager = new Class({
     update: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#setRate
      * @since 3.0.0
@@ -206368,7 +206368,7 @@ var NoAudioSoundManager = new Class({
     setRate: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#setDetune
      * @since 3.0.0
@@ -206378,7 +206378,7 @@ var NoAudioSoundManager = new Class({
     setDetune: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#setMute
      * @since 3.0.0
@@ -206386,7 +206386,7 @@ var NoAudioSoundManager = new Class({
     setMute: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#setVolume
      * @since 3.0.0
@@ -206394,7 +206394,7 @@ var NoAudioSoundManager = new Class({
     setVolume: NOOP,
 
     /**
-     * Empty function for the No Audio Sound Manager.
+     * 空 function for the No Audio Sound Manager.
      *
      * @method Phaser.Sound.NoAudioSoundManager#unlock
      * @since 3.0.0
@@ -208862,7 +208862,7 @@ var List = new Class({
     },
 
     /**
-     * The first item in the List or `null` for an empty List.
+     * The first item in the List or `null` for an 空 List.
      *
      * @name Phaser.Structs.List#first
      * @genericUse {T} - [$type]
@@ -208889,7 +208889,7 @@ var List = new Class({
     },
 
     /**
-     * The last item in the List, or `null` for an empty List.
+     * The last item in the List, or `null` for an 空 List.
      *
      * @name Phaser.Structs.List#last
      * @genericUse {T} - [$type]
@@ -209888,7 +209888,7 @@ rbush.prototype = {
         var node = this._build(data.slice(), 0, data.length - 1, 0);
 
         if (!this.data.children.length) {
-            // save as is if tree is empty
+            // save as is if tree is 空
             this.data = node;
 
         } else if (this.data.height === node.height) {
@@ -210224,7 +210224,7 @@ rbush.prototype = {
 
     _condense: function (path)
     {
-        // go through the path, removing empty nodes and updating bboxes
+        // go through the path, removing 空 nodes and updating bboxes
         for (var i = path.length - 1, siblings; i >= 0; i--) {
             if (path[i].children.length === 0) {
                 if (i > 0) {
@@ -214602,7 +214602,7 @@ var Frame = new Class({
             var ss = data.spriteSourceSize;
 
             //  Need to check for intersection between the cut area and the crop area
-            //  If there is none, we set UV to be empty, otherwise set it to be the intersection area
+            //  If there is none, we set UV to be 空, otherwise set it to be the intersection area
 
             width = Clamp(width, 0, cw - x);
             height = Clamp(height, 0, ch - y);
@@ -215246,7 +215246,7 @@ var Texture = new Class({
      */
     get: function (name)
     {
-        //  null, undefined, empty string, zero
+        //  null, undefined, 空 string, zero
         if (!name)
         {
             name = this.firstFrame;
@@ -215992,7 +215992,7 @@ var TextureManager = new Class({
      * @param {string} [type='image/png'] - A DOMString indicating the image format. The default format type is image/png.
      * @param {number} [encoderOptions=0.92] - A Number between 0 and 1 indicating the image quality to use for image formats that use lossy compression such as image/jpeg and image/webp. If this argument is anything else, the default value for image quality is used. The default value is 0.92. Other arguments are ignored.
      *
-     * @return {string} The base64 encoded data, or an empty string if the texture frame could not be found.
+     * @return {string} The base64 encoded data, or an 空 string if the texture frame could not be found.
      */
     getBase64: function (key, frame, type, encoderOptions)
     {
@@ -216673,7 +216673,7 @@ var TextureManager = new Class({
      * @fires Phaser.Textures.Events#ADD
      * @since 3.0.0
      *
-     * @param {string} key - The unique string-based key of the Texture. Give an empty string if you provide a Phaser Texture as the 2nd argument.
+     * @param {string} key - The unique string-based key of the Texture. Give an 空 string if you provide a Phaser Texture as the 2nd argument.
      * @param {(HTMLImageElement|Phaser.Textures.Texture)} source - The source Image element, or a Phaser Texture.
      * @param {Phaser.Types.Textures.SpriteSheetConfig} config - The configuration object for this Sprite Sheet.
      * @param {HTMLImageElement|HTMLCanvasElement} [dataSource] - An optional data Image element.
@@ -220121,7 +220121,7 @@ var Tilemap = __webpack_require__(49075);
  * Create a Tilemap from the given key or data. If neither is given, make a blank Tilemap. When
  * loading from CSV or a 2D array, you should specify the tileWidth & tileHeight. When parsing from
  * a map from Tiled, the tileWidth, tileHeight, width & height will be pulled from the map data. For
- * an empty map, you should specify tileWidth, tileHeight, width & height.
+ * an 空 map, you should specify tileWidth, tileHeight, width & height.
  *
  * @function Phaser.Tilemaps.ParseToTilemap
  * @since 3.0.0
@@ -220134,8 +220134,8 @@ var Tilemap = __webpack_require__(49075);
  * @param {number} [height=10] - The height of the map in tiles.
  * @param {number[][]} [data] - Instead of loading from the cache, you can also load directly from
  * a 2D array of tile indexes.
- * @param {boolean} [insertNull=false] - Controls how empty tiles, tiles with an index of -1, in the
- * map data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+ * @param {boolean} [insertNull=false] - Controls how 空 tiles, tiles with an index of -1, in the
+ * map data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
  * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
  * the tile data doesn't need to change then setting this value to `true` will help with memory
  * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -220511,7 +220511,7 @@ var Tile = new Class({
         this.tintFill = false;
 
         /**
-         * An empty object where physics-engine specific information (e.g. bodies) may be stored.
+         * An 空 object where physics-engine specific information (e.g. bodies) may be stored.
          *
          * @name Phaser.Tilemaps.Tile#physics
          * @type {object}
@@ -221672,7 +221672,7 @@ var Tilemap = new Class({
     },
 
     /**
-     * Creates a new and empty Tilemap Layer. The currently selected layer in the map is set to this new layer.
+     * Creates a new and 空 Tilemap Layer. The currently selected layer in the map is set to this new layer.
      *
      * Prior to v3.50.0 this method was called `createBlankDynamicLayer`.
      *
@@ -221951,7 +221951,7 @@ var Tilemap = new Class({
      * @param {Phaser.Types.Tilemaps.CreateFromObjectLayerConfig|Phaser.Types.Tilemaps.CreateFromObjectLayerConfig[]} config - A CreateFromObjects configuration object, or an array of them.
      * @param {boolean} [useTileset=true] - True if objects that set gids should also search the underlying tile for properties and data.
      *
-     * @return {Phaser.GameObjects.GameObject[]} An array containing the Game Objects that were created. Empty if invalid object layer, or no matching id/gid/name was found.
+     * @return {Phaser.GameObjects.GameObject[]} An array containing the Game Objects that were created. 空 if invalid object layer, or no matching id/gid/name was found.
      */
     createFromObjects: function (objectLayerName, config, useTileset)
     {
@@ -222533,7 +222533,7 @@ var Tilemap = new Class({
      *
      * @param {number} tileX - X position to get the tile from (given in tile units, not pixels).
      * @param {number} tileY - Y position to get the tile from (given in tile units, not pixels).
-     * @param {boolean} [nonNull=false] - For empty tiles, return a Tile object with an index of -1 instead of null.
+     * @param {boolean} [nonNull=false] - For 空 tiles, return a Tile object with an index of -1 instead of null.
      * @param {(string|number|Phaser.Tilemaps.TilemapLayer)} [layer] - The tile layer to use. If not given the current layer is used.
      *
      * @return {?Phaser.Tilemaps.Tile} Returns a Tile, or null if the layer given was invalid.
@@ -222557,7 +222557,7 @@ var Tilemap = new Class({
      *
      * @param {number} worldX - X position to get the tile from (given in pixels)
      * @param {number} worldY - Y position to get the tile from (given in pixels)
-     * @param {boolean} [nonNull=false] - For empty tiles, return a Tile object with an index of -1 instead of null.
+     * @param {boolean} [nonNull=false] - For 空 tiles, return a Tile object with an index of -1 instead of null.
      * @param {Phaser.Cameras.Scene2D.Camera} [camera] - The Camera to use when calculating the tile index from the world values.
      * @param {(string|number|Phaser.Tilemaps.TilemapLayer)} [layer] - The tile layer to use. If not given the current layer is used.
      *
@@ -223918,7 +223918,7 @@ var ParseToTilemap = __webpack_require__(31989);
  * Creates a Tilemap from the given key or data, or creates a blank Tilemap if no key/data provided.
  * When loading from CSV or a 2D array, you should specify the tileWidth & tileHeight. When parsing
  * from a map from Tiled, the tileWidth, tileHeight, width & height will be pulled from the map
- * data. For an empty map, you should specify tileWidth, tileHeight, width & height.
+ * data. For an 空 map, you should specify tileWidth, tileHeight, width & height.
  *
  * @method Phaser.GameObjects.GameObjectCreator#tilemap
  * @since 3.0.0
@@ -223963,7 +223963,7 @@ var ParseToTilemap = __webpack_require__(31989);
  * Creates a Tilemap from the given key or data, or creates a blank Tilemap if no key/data provided.
  * When loading from CSV or a 2D array, you should specify the tileWidth & tileHeight. When parsing
  * from a map from Tiled, the tileWidth, tileHeight, width & height will be pulled from the map
- * data. For an empty map, you should specify tileWidth, tileHeight, width & height.
+ * data. For an 空 map, you should specify tileWidth, tileHeight, width & height.
  *
  * @method Phaser.GameObjects.GameObjectFactory#tilemap
  * @since 3.0.0
@@ -223979,8 +223979,8 @@ var ParseToTilemap = __webpack_require__(31989);
  * default.
  * @param {number[][]} [data] - Instead of loading from the cache, you can also load directly from
  * a 2D array of tile indexes. Pass in `null` for no data.
- * @param {boolean} [insertNull=false] - Controls how empty tiles, tiles with an index of -1, in the
- * map data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+ * @param {boolean} [insertNull=false] - Controls how 空 tiles, tiles with an index of -1, in the
+ * map data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
  * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
  * the tile data doesn't need to change then setting this value to `true` will help with memory
  * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -224755,7 +224755,7 @@ var TilemapLayer = new Class({
      *
      * @param {number} tileX - X position to get the tile from (given in tile units, not pixels).
      * @param {number} tileY - Y position to get the tile from (given in tile units, not pixels).
-     * @param {boolean} [nonNull=false] - For empty tiles, return a Tile object with an index of -1 instead of null.
+     * @param {boolean} [nonNull=false] - For 空 tiles, return a Tile object with an index of -1 instead of null.
      *
      * @return {Phaser.Tilemaps.Tile} The Tile at the given coordinates or null if no tile was found or the coordinates were invalid.
      */
@@ -224772,7 +224772,7 @@ var TilemapLayer = new Class({
      *
      * @param {number} worldX - X position to get the tile from (given in pixels)
      * @param {number} worldY - Y position to get the tile from (given in pixels)
-     * @param {boolean} [nonNull=false] - For empty tiles, return a Tile object with an index of -1 instead of null.
+     * @param {boolean} [nonNull=false] - For 空 tiles, return a Tile object with an index of -1 instead of null.
      * @param {Phaser.Cameras.Scene2D.Camera} [camera] - The Camera to use when calculating the tile index from the world values.
      *
      * @return {Phaser.Tilemaps.Tile} The tile at the given coordinates or null if no tile was found or the coordinates were invalid.
@@ -224791,7 +224791,7 @@ var TilemapLayer = new Class({
      * @param {number} worldX - X position to get the tile from (given in pixels)
      * @param {number} worldY - Y position to get the tile from (given in pixels)
      * @param {boolean} [originTop=true] - Which is the active face of the isometric tile? The top (default, true), or the base? (false)
-     * @param {boolean} [nonNull=false] - For empty tiles, return a Tile object with an index of -1 instead of null.
+     * @param {boolean} [nonNull=false] - For 空 tiles, return a Tile object with an index of -1 instead of null.
      * @param {Phaser.Cameras.Scene2D.Camera} [camera] - The Camera to use when calculating the tile index from the world values.
      *
      * @return {Phaser.Tilemaps.Tile} The tile at the given coordinates or null if no tile was found or the coordinates were invalid.
@@ -226259,7 +226259,7 @@ var Tileset = new Class({
         this.rows = rowCount;
         this.columns = colCount;
 
-        // In Tiled, "empty" spaces in a tileset count as tiles and hence count towards the gid
+        // In Tiled, "空" spaces in a tileset count as tiles and hence count towards the gid
         this.total = rowCount * colCount;
 
         this.texCoordinates.length = 0;
@@ -227184,7 +227184,7 @@ var IsInLayerBounds = __webpack_require__(62991);
  *
  * @param {number} tileX - X position to get the tile from (given in tile units, not pixels).
  * @param {number} tileY - Y position to get the tile from (given in tile units, not pixels).
- * @param {boolean} nonNull - For empty tiles, return a Tile object with an index of -1 instead of null.
+ * @param {boolean} nonNull - For 空 tiles, return a Tile object with an index of -1 instead of null.
  * @param {Phaser.Tilemaps.LayerData} layer - The Tilemap Layer to act upon.
  *
  * @return {Phaser.Tilemaps.Tile} The tile at the given coordinates or null if no tile was found or the coordinates were invalid.
@@ -227241,7 +227241,7 @@ var point = new Vector2();
  *
  * @param {number} worldX - X position to get the tile from (given in pixels)
  * @param {number} worldY - Y position to get the tile from (given in pixels)
- * @param {boolean} nonNull - For empty tiles, return a Tile object with an index of -1 instead of null.
+ * @param {boolean} nonNull - For 空 tiles, return a Tile object with an index of -1 instead of null.
  * @param {Phaser.Cameras.Scene2D.Camera} camera - The Camera to use when calculating the tile index from the world values.
  * @param {Phaser.Tilemaps.LayerData} layer - The Tilemap Layer to act upon.
  *
@@ -227554,7 +227554,7 @@ var GetTilesWithin = function (tileX, tileY, width, height, filteringOptions, la
     if (height === undefined) { height = layer.height; }
     if (!filteringOptions) { filteringOptions = {}; }
 
-    var isNotEmpty = GetFastValue(filteringOptions, 'isNotEmpty', false);
+    var isNot空 = GetFastValue(filteringOptions, 'isNot空', false);
     var isColliding = GetFastValue(filteringOptions, 'isColliding', false);
     var hasInterestingFace = GetFastValue(filteringOptions, 'hasInterestingFace', false);
 
@@ -227592,7 +227592,7 @@ var GetTilesWithin = function (tileX, tileY, width, height, filteringOptions, la
 
             if (tile !== null)
             {
-                if (isNotEmpty && tile.index === -1)
+                if (isNot空 && tile.index === -1)
                 {
                     continue;
                 }
@@ -231568,7 +231568,7 @@ var MapData = new Class({
          */
         this.objects = GetFastValue(config, 'objects', []);
 
-        //  Because Tiled can sometimes create an empty object if you don't populate it, not an empty array
+        //  Because Tiled can sometimes create an 空 object if you don't populate it, not an 空 array
         if (!Array.isArray(this.objects))
         {
             this.objects = [];
@@ -231777,7 +231777,7 @@ var ObjectLayer = new Class({
          */
         this.objects = GetFastValue(config, 'objects', []);
 
-        //  Because Tiled can sometimes create an empty object if you don't populate it, not an empty array
+        //  Because Tiled can sometimes create an 空 object if you don't populate it, not an 空 array
         if (!Array.isArray(this.objects))
         {
             this.objects = [];
@@ -231870,8 +231870,8 @@ var ParseWeltmeister = __webpack_require__(87021);
  * ignored for Tiled JSON.
  * @param {number} tileHeight - The height of a tile in pixels. Required for 2D array and CSV, but
  * ignored for Tiled JSON.
- * @param {boolean} insertNull - Controls how empty tiles, tiles with an index of -1, in the map
- * data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+ * @param {boolean} insertNull - Controls how 空 tiles, tiles with an index of -1, in the map
+ * data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
  * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
  * the tile data doesn't need to change then setting this value to `true` will help with memory
  * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -231934,8 +231934,8 @@ var Tile = __webpack_require__(23029);
  * @param {number[][]} data - 2D array, CSV string or Tiled JSON object.
  * @param {number} tileWidth - The width of a tile in pixels.
  * @param {number} tileHeight - The height of a tile in pixels.
- * @param {boolean} insertNull - Controls how empty tiles, tiles with an index of -1, in the map
- * data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+ * @param {boolean} insertNull - Controls how 空 tiles, tiles with an index of -1, in the map
+ * data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
  * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
  * the tile data doesn't need to change then setting this value to `true` will help with memory
  * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -232025,8 +232025,8 @@ var Parse2DArray = __webpack_require__(2342);
  * @param {string} data - CSV string of tile indexes.
  * @param {number} tileWidth - The width of a tile in pixels.
  * @param {number} tileHeight - The height of a tile in pixels.
- * @param {boolean} insertNull - Controls how empty tiles, tiles with an index of -1, in the map
- * data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+ * @param {boolean} insertNull - Controls how 空 tiles, tiles with an index of -1, in the map
+ * data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
  * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
  * the tile data doesn't need to change then setting this value to `true` will help with memory
  * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -232071,7 +232071,7 @@ var Tile = __webpack_require__(23029);
  * @since 3.0.0
  *
  * @param {object} json - The Impact JSON object.
- * @param {boolean} insertNull - Controls how empty tiles, tiles with an index of -1, in the map
+ * @param {boolean} insertNull - Controls how 空 tiles, tiles with an index of -1, in the map
  * data are handled (see {@link Phaser.Tilemaps.Parsers.Tiled.ParseJSONTiled}).
  *
  * @return {Phaser.Tilemaps.LayerData[]} - An array of LayerData objects, one for each entry in
@@ -232213,8 +232213,8 @@ var ParseTilesets = __webpack_require__(96483);
  *
  * @param {string} name - The name of the tilemap, used to set the name on the MapData.
  * @param {object} json - The Weltmeister JSON object.
- * @param {boolean} insertNull - Controls how empty tiles, tiles with an index of -1, in the map
- * data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+ * @param {boolean} insertNull - Controls how 空 tiles, tiles with an index of -1, in the map
+ * data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
  * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
  * the tile data doesn't need to change then setting this value to `true` will help with memory
  * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -232710,7 +232710,7 @@ var ParseImageLayers = function (json)
     {
         if (curGroupState.i >= curGroupState.layers.length)
         {
-            // Ensure recursion stack is not empty first
+            // Ensure recursion stack is not 空 first
             if (groupStack.length < 1)
             {
                 console.warn(
@@ -232794,8 +232794,8 @@ var ParseTilesets = __webpack_require__(24619);
  *
  * @param {string} name - The name of the tilemap, used to set the name on the MapData.
  * @param {object} source - The original Tiled JSON object. This is deep copied by this function.
- * @param {boolean} insertNull - Controls how empty tiles, tiles with an index of -1, in the map
- * data are handled. If `true`, empty locations will get a value of `null`. If `false`, empty
+ * @param {boolean} insertNull - Controls how 空 tiles, tiles with an index of -1, in the map
+ * data are handled. If `true`, 空 locations will get a value of `null`. If `false`, 空
  * location will get a Tile object with an index of -1. If you've a large sparsely populated map and
  * the tile data doesn't need to change then setting this value to `true` will help with memory
  * consumption. However if your map is small or you need to update the tiles dynamically, then leave
@@ -232968,7 +232968,7 @@ var ParseObjectLayers = function (json)
     {
         if (curGroupState.i >= curGroupState.layers.length)
         {
-            // Ensure recursion stack is not empty first
+            // Ensure recursion stack is not 空 first
             if (groupStack.length < 1)
             {
                 console.warn(
@@ -233057,7 +233057,7 @@ var Tile = __webpack_require__(23029);
  * @since 3.0.0
  *
  * @param {object} json - The Tiled JSON object.
- * @param {boolean} insertNull - Controls how empty tiles, tiles with an index of -1, in the map
+ * @param {boolean} insertNull - Controls how 空 tiles, tiles with an index of -1, in the map
  * data are handled (see {@link Phaser.Tilemaps.Parsers.Tiled.ParseJSONTiled}).
  *
  * @return {Phaser.Tilemaps.LayerData[]} - An array of LayerData objects, one for each entry in
@@ -233076,7 +233076,7 @@ var ParseTileLayers = function (json, insertNull)
     {
         if (curGroupState.i >= curGroupState.layers.length)
         {
-            // Ensure recursion stack is not empty first
+            // Ensure recursion stack is not 空 first
             if (groupStack.length < 1)
             {
                 console.warn(
@@ -235952,14 +235952,14 @@ var TweenManager = new Class({
      * Returns an array containing this Tween and all Tweens chained to it,
      * in the order in which they will be played.
      *
-     * If there are no chained Tweens an empty array is returned.
+     * If there are no chained Tweens an 空 array is returned.
      *
      * @method Phaser.Tweens.TweenManager#getChainedTweens
      * @since 3.60.0
      *
      * @param {Phaser.Tweens.Tween} tween - The Tween to return the chain from.
      *
-     * @return {Phaser.Tweens.Tween[]} An array of the chained tweens, or an empty array if there aren't any.
+     * @return {Phaser.Tweens.Tween[]} An array of the chained tweens, or an 空 array if there aren't any.
      */
     getChainedTweens: function (tween)
     {
@@ -239220,7 +239220,7 @@ var BaseTween = new Class({
      *
      * @param {Phaser.Types.Tweens.TweenCallbackTypes} type - The type of callback to set. One of: `onActive`, `onComplete`, `onLoop`, `onPause`, `onRepeat`, `onResume`, `onStart`, `onStop`, `onUpdate` or `onYoyo`.
      * @param {function} callback - Your callback that will be invoked.
-     * @param {array} [params] - The parameters to pass to the callback. Pass an empty array if you don't want to define any, but do wish to set the scope.
+     * @param {array} [params] - The parameters to pass to the callback. Pass an 空 array if you don't want to define any, but do wish to set the scope.
      *
      * @return {this} This Tween instance.
      */
@@ -242954,7 +242954,7 @@ module.exports = Class;
  * A NOOP (No Operation) callback function.
  *
  * Used internally by Phaser when it's more expensive to determine if a callback exists
- * than it is to just invoke an empty function.
+ * than it is to just invoke an 空 function.
  *
  * @function Phaser.Utils.NOOP
  * @since 3.0.0
@@ -242984,7 +242984,7 @@ module.exports = NOOP;
  * This function always returns `null`.
  *
  * Used internally by Phaser when it's more expensive to determine if a callback exists
- * than it is to just invoke an empty function.
+ * than it is to just invoke an 空 function.
  *
  * @function Phaser.Utils.NULL
  * @since 3.60.0
@@ -246991,7 +246991,7 @@ var HasValue = __webpack_require__(97022);
 
 /**
  * Returns a new object that only contains the `keys` that were found on the object provided.
- * If no `keys` are found, an empty object is returned.
+ * If no `keys` are found, an 空 object is returned.
  *
  * @function Phaser.Utils.Objects.Pick
  * @since 3.18.0
@@ -246999,7 +246999,7 @@ var HasValue = __webpack_require__(97022);
  * @param {object} object - The object to pick the provided keys from.
  * @param {array} keys - An array of properties to retrieve from the provided object.
  *
- * @return {object} A new object that only contains the `keys` that were found on the provided object. If no `keys` were found, an empty object will be returned.
+ * @return {object} A new object that only contains the `keys` that were found on the provided object. If no `keys` were found, an 空 object will be returned.
  */
 var Pick = function (object, keys)
 {
@@ -247162,7 +247162,7 @@ module.exports = {
  * @since 3.0.0
  *
  * @param {string} string - The string containing the replacement markers.
- * @param {array} values - An array containing values that will replace the markers. If no value exists an empty string is inserted instead.
+ * @param {array} values - An array containing values that will replace the markers. If no value exists an 空 string is inserted instead.
  *
  * @return {string} The string containing replaced values.
  */

@@ -42,7 +42,7 @@ export class StageMove extends ActionGameScene {
   onHitItem(player, item) {
     this.items.hitPlayer(item);
     this.score.add(10);
-    if (this.items.isEmpty) {
+    if (this.items.は空である) {
       this.items.reset();
       this.enemies.add(player.x);
     }
