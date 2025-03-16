@@ -1,6 +1,6 @@
 
 /**
- * @typedef {'赤' | '青'} StoneColor
+ * @typedef {'赤' | '青' | '緑' | '黄'} StoneColor
  */
 
 /**
@@ -239,6 +239,8 @@ class StoneOrEmpty {
     var factories = [
       () => StoneOrEmpty.赤(位置), 
       () => StoneOrEmpty.青(位置), 
+      () => StoneOrEmpty.緑(位置), 
+      () => StoneOrEmpty.黄(位置), 
     ];
     return factories[Math.floor(Math.random() * factories.length)]();
   }
@@ -258,6 +260,24 @@ class StoneOrEmpty {
    */
   static 青(位置) {
     return new StoneOrEmpty(new Stone("青", 位置), undefined);
+  }
+
+  /**
+   * 
+   * @param {Pos} 位置 
+   * @returns 
+   */
+  static 緑(位置) {
+    return new StoneOrEmpty(new Stone("緑", 位置), undefined);
+  }
+
+  /**
+   * 
+   * @param {Pos} 位置 
+   * @returns 
+   */
+  static 黄(位置) {
+    return new StoneOrEmpty(new Stone("黄", 位置), undefined);
   }
 
   /**

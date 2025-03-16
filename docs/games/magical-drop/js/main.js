@@ -117,6 +117,12 @@ class StoneSprite {
       if(value === '青') {
         colorValue = 0x0000ff;
       }
+      if(value === '緑') {
+        colorValue = 0x00aa00;
+      }
+      if(value === '黄') {
+        colorValue = 0xffff00;
+      }
       if(!value) {
         colorValue = 0x000000;
       }
