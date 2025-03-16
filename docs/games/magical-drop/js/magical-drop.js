@@ -77,7 +77,6 @@ class Stone {
   /** @type {StoneColor} */
   色;
   位置;
-  グループID;
   確認済み = false;
   get 未確認() {
     return !this.確認済み;
@@ -93,36 +92,6 @@ class Stone {
     this.色 = 色;
     this.位置 = 位置;
     this.状態 = 状態;
-  }
-
-  グループIDをクリアする() {
-    this.グループID = null;
-  }
-
-  /**
-   * 
-   * @param {number | string} グループID 
-   * @returns 
-   */
-  グループIDが同じ(グループID) {
-    if(!this.グループID) {
-      throw new Error("グループIDがない");
-    }
-
-    return this.グループID == グループID;
-  }
-
-  /**
-   * 
-   * @param {number | string} グループID 
-   * @returns 
-   */
-  グループIDが違う(グループID) {
-    return !this.グループIDが同じ(グループID);
-  }
-
-  get グループIDがすでにある() {
-    return this.グループID !== null;
   }
 
   /**
@@ -316,9 +285,7 @@ class StoneOrEmpty {
 class Grid {
   /** @type { StoneOrEmpty[][]} */
   values;
-
-  /** @type {{[key:string]:Stone[]}} */
-  groupMap = {};
+  
   /**
    * 
    * @param {InicialGrid} 初期格子 
