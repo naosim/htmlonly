@@ -93,12 +93,7 @@ class GridSprite {
   update(格子) {
     for(let i = 0; i < 格子.values.length; i++) {
       for(let j = 0; j < 格子.values[0].length; j++) {
-        try {
           this.gameObjects[i][j].update(格子.values[i][j]);
-        } catch(e) {
-          console.error(e);
-        }
-        
       }
     }
   }
