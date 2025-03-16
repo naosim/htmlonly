@@ -250,7 +250,7 @@ function create() {
 
   
   player.create(this);
-  gamepad.createArrowKeys(this, {joystickPos:{x:this.sys.canvas.width / 2, y:500}});
+  gamepad.createArrowKeys(this, {joystickPos:{x:this.sys.canvas.width / 2, y:520}, joystickScale:1.8});
 }
 
 var gameStep = 0;
