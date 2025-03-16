@@ -12,16 +12,31 @@
  */
 class PullStones {
   /** @type {StoneColor | "空"} */
-  色;
-  /** @type {number} */
-  数;
-  constructor(色, 数) {
-    this.色 = 色;
-    this.数 = 数;
+  #色;
+  /**
+   * 石の色。空の場合は例外を投げる
+   * @returns {StoneColor}
+   */
+  get 色() {
+    if(this.#色 == "空") {
+      throw new Error("空");
+    }
+    return this.#色;
   }
+  /** @type {number} */
+  #数;
+  get 数() { return this.#数 }
+  constructor(色, 数) {
+    this.#色 = 色;
+    this.#数 = 数;
+  }
+  static 空() {
+    return new PullStones("空", 0);
+  }
+
   clear() {
-    this.色 = "空";
-    this.数 = 0;
+    this.#色 = "空";
+    this.#数 = 0;
   }
   /**
    * 
@@ -37,22 +52,22 @@ class PullStones {
    * @returns 
    */
   add(other) {
-    if(!other) {
+    if(!other || other.は空である) {
       return;
     }
-    if(this.色 != other.色) {
+    if(this.#色 != other.#色) {
       throw new Error("色が合わない")
     }
-    this.数 += other.数;
+    this.#数 += other.#数;
   }
   countUp() {
-    this.数++;
+    this.#数++;
   }
   get は空である() {
-    return this.色 == "空";
+    return this.#色 == "空";
   }
   get は空でない() {
-    return this.色 !== "空";
+    return this.#色 !== "空";
   }
 }
 
@@ -266,16 +281,6 @@ class Grid {
     空空空空空空
     `.trim().split("\n").map(v => v.trim()).map(v => v.split(""))
     .map((v, row) => v.map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})));
-  // values = [
-  //   ["青", "青", "青", "青", "赤", "赤"],
-  //   ["赤", "赤", "赤", "赤", "青", "青"],
-  //   ["赤", "赤", "赤", "赤", "青", "青"],
-  //   new Array(6).fill("空"),
-  //   new Array(6).fill("空"),
-  //   new Array(6).fill("空"),
-  //   new Array(6).fill("空"),
-  //   new Array(6).fill("空"),
-  // ].map((v, row) => v.map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})));
 
   /** @type {{[key:string]:Stone[]}} */
   groupMap = {};
@@ -408,7 +413,7 @@ class Grid {
    */
   取る(columnNumber) {
     if(this.列がすべて空(columnNumber)) {
-      return undefined;
+      throw new Error("石がない");
     }
     const 最下部の石 = this.最下部の石(columnNumber);
     const 最下部の石の色 = 最下部の石.色;
@@ -494,16 +499,19 @@ class Grid {
   }
 }
 
+/**
+ * 状態遷移
+ */
 class StateTransition {
   /**
    * @type {"通常" | "置く" | "消せるか確認する" | "消す" | "落ちる"}
    */
-  値;
-  get が通常() { return this.値 == "通常"; }
-  get が置く() { return this.値 == "置く"; }
-  get が消せるか確認する() { return this.値 == "消せるか確認する"; }
-  get が消す() { return this.値 == "消す"; }
-  get が落ちる() { return this.値 == "落ちる"; }
+  #値;
+  get が通常() { return this.#値 == "通常"; }
+  get が置く() { return this.#値 == "置く"; }
+  get が消せるか確認する() { return this.#値 == "消せるか確認する"; }
+  get が消す() { return this.#値 == "消す"; }
+  get が落ちる() { return this.#値 == "落ちる"; }
   /**
    * @type {()=>boolean}
    */
@@ -513,13 +521,13 @@ class StateTransition {
    * @param {()=>boolean} 消せるか確認する関数 
    */
   constructor(消せるか確認する関数) {
-    this.値 = "通常";
+    this.#値 = "通常";
     this.消せるか確認する関数 = 消せるか確認する関数;
   }
 
   置く() {
     if(this.が通常) {
-      this.値 = "置く";
+      this.#値 = "置く";
     } else {
       throw new Error("状態遷移がおかしい");
     }
@@ -527,13 +535,13 @@ class StateTransition {
 
   次へ() {
     if(this.が置く) {
-      this.値 = "消せるか確認する";
+      this.#値 = "消せるか確認する";
     } else if(this.が消せるか確認する) {
-      this.値 = this.消せるか確認する関数() ? "消す" : "通常";
+      this.#値 = this.消せるか確認する関数() ? "消す" : "通常";
     } else if(this.が消す) {
-      this.値 = "落ちる";
+      this.#値 = "落ちる";
     } else if(this.が落ちる) {
-      this.値 = "消せるか確認する";
+      this.#値 = "消せるか確認する";
     }
   }
 }
@@ -544,7 +552,7 @@ class MagicalDropGame {
   格子;
   状態 = new StateTransition(() => this.消せるか確認する());
   /** @type {PullStones} */
-  持ってる石 = new PullStones("空", 0);
+  持ってる石 = PullStones.空();
   constructor(config) {
     config = config || {};
     this.widthCount = config.widthCount || 6;
@@ -627,10 +635,6 @@ class MagicalDropGame {
 
   step = 0;
   update() {
-    this.step = (this.step + 1) % 10;
-    if(this.step != 0) {
-      return;
-    }
     if(this.状態.が消す) {
       this.消す();
     }
@@ -638,6 +642,5 @@ class MagicalDropGame {
       this.落ちる();
     }
     this.状態.次へ();
-    
   }
 }

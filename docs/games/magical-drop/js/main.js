@@ -192,6 +192,7 @@ function create() {
   gamepad.createAll(this, {joystickPos:{x:100, y:300}, buttonPos:{x:300, y:300}});
 }
 
+var gameStep = 0;
 function update() {
   const columnNumber = (player.gameObject.x - gridHalfSize) / gridSize;
   if(gamepad.button.isPressed) {
@@ -201,8 +202,11 @@ function update() {
     magicalDropGame.置く(columnNumber);
     // magicalDropGame.消す();
   }
-  magicalDropGame.update();
-
+  gameStep = (gameStep + 1) % 10;
+  if(gameStep === 0) {
+    magicalDropGame.update();
+  }
+  
   格子スプライト.update(magicalDropGame.格子);
 }
 
