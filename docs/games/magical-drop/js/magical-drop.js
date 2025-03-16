@@ -285,7 +285,7 @@ class StoneOrEmpty {
 class Grid {
   /** @type { StoneOrEmpty[][]} */
   values;
-  
+
   /**
    * 
    * @param {InicialGrid} 初期格子 
@@ -463,6 +463,17 @@ class Grid {
     throw new Error("石がない");
   }
 
+  最下部の石の行() {
+    var result = 0;
+    for(let column = 0; column < this.values[0].length; column++) {
+      if(this.列がすべて空(column)) {
+        continue;
+      }
+      result = Math.max(result, this.最下部の石(column).位置.row);
+    }
+    return result;
+  }
+
   行を追加できる() {
     var max = 0;
     for(let column = 0; column < this.values[0].length; column++) {
@@ -588,29 +599,28 @@ class InicialGrid {
 
   static 開発用() {
     const value = `
-      青青青青赤赤黄緑
-      赤赤赤赤青青黄緑
-      青赤空空青青黄緑
-      青空空空空青空空
-      空空空空空空空空
-      空空空空空空空空
-      空空空空空空空空
-      空空空空空空空空
-      空空空空空空空空
-      空空空空空空空空
-      空空空空空空空空
-      空空空空空空空空
+      青青青青赤赤黄緑赤赤黄緑
+      赤赤赤赤青青黄緑青青黄緑
+      青赤空空青青黄緑青青黄緑
+      青空空空空青空空空青空空
+      空空空空空空空空空空空空
+      空空空空空空空空空空空空
+      空空空空空空空空空空空空
+      空空空空空空空空空空空空
+      空空空空空空空空空空空空
+      空空空空空空空空空空空空
+      空空空空空空空空空空空空
+      空空空空空空空空空空空空
     `;
     return new InicialGrid(value);
   }
 
   /**
    * 
-   * @param {number} 列数 
+   * @param {{行数:number, 列数:number}} param0
    * @returns 
    */
-  static ランダム(列数) {
-    var 行数 = 12;
+  static ランダム({行数, 列数}) {
     var 色リスト = ["赤", "青", "緑", "黄"];
     var value = new Array(行数).fill(0).map((_, row) => { 
       if(row >= 4) {
@@ -648,7 +658,7 @@ class BasicModeController {
   update() {
     this.step = (this.step + 1) % 50;
     if(this.step == 0) {
-      if(this.game.格子.行を追加できる()) {
+      if(this.game.格子.最下部の石の行() < this.game.行数 - 1) {
         this.game.最上部に1行追加する();
       } else {
         alert("ゲームオーバー")
@@ -659,13 +669,10 @@ class BasicModeController {
 
 
 
-/** @typedef {{初期格子:InicialGrid, モード:ModeController}} MagicalDropGameConfig */
+/** @typedef {{初期格子:InicialGrid, モード:ModeController, 行数:number, 列数:number}} MagicalDropGameConfig */
 
 class MagicalDropGame {
-  widthCount;
-  heightCount;
   格子;
-  get 列数() { return this.格子.列数; }
   状態 = new StateTransition(() => this.消せるか確認する());
   /** @type {PullStones} */
   持ってる石 = PullStones.空();
@@ -678,6 +685,14 @@ class MagicalDropGame {
     this.格子 = new Grid(config.初期格子);
     this.モード = config.モード;
     this.モード.setGame(this);
+    this.列数 = config.列数;
+    this.行数 = config.行数;
+
+    if(this.格子.列数 != this.列数) {
+      throw new Error("列数が一致しない");
+    }
+
+
   }
 
 

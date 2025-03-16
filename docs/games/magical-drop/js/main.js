@@ -2,6 +2,7 @@
 const gridSize = 32;
 const gridHalfSize = gridSize / 2;
 const 列数 = 12;
+const 行数 = 12;
 function create2DArray(rowCount, columnCount, factory) {
   return new Array(rowCount).fill(null).map((_, row) => new Array(columnCount).fill(null).map((_, column) => factory(row, column)))
 }
@@ -226,8 +227,9 @@ var config = {
   }
 };
 const magicalDropGame = new MagicalDropGame({
-  初期格子: InicialGrid.ランダム(列数),
-  モード: new BasicModeController()
+  初期格子: InicialGrid.ランダム({行数, 列数}),
+  モード: new BasicModeController(),
+  行数, 列数
 });
 const gamepad = GamepadWrapper.init();
 const player = new Player(gamepad);
@@ -241,6 +243,7 @@ function preload() {
 // var stones
 function create() {
   補助線.create(this);
+  this.add.line(this.sys.canvas.width/2, gridSize * 行数, 0, 0, this.sys.canvas.width, 0, 0x888888);// 超えたらゲームオーバーになる線
   格子スプライト.create(this);
   格子スプライト.update(magicalDropGame.格子);
 
