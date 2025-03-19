@@ -30,6 +30,85 @@ class ColorConverter {
   }
 }
 
+
+
+class MagicalDropVirtualGamePad {
+  right = {isDown:false};
+  left = {isDown:false};
+  up = {isDown:false};
+  down = {isDown:false};
+  /**
+   * 
+   * @param {Phaser.Scene} scene 
+   */
+  create(scene) {
+    const buttonWidth = 100;
+    const buttonHeight = 60;
+    const rightButton = scene.add.rectangle(
+      scene.sys.canvas.width / 2 + 40, 
+      scene.sys.canvas.height - 160, 
+      buttonWidth, buttonHeight, 0xffffff).setOrigin(0, 0);
+    rightButton.setInteractive();
+    rightButton.on('pointerdown', () => { this.right.isDown = true });
+    scene.add.text(rightButton.x + 10, rightButton.y + 10, '>', {fontSize: '44px', color: '#000000'});
+
+    const leftButton = scene.add.rectangle(
+      scene.sys.canvas.width / 2 - 40 - buttonWidth, 
+      scene.sys.canvas.height - 160, 
+      buttonWidth, buttonHeight, 0xffffff).setOrigin(0, 0);
+    leftButton.setInteractive();
+    leftButton.on('pointerdown', () => { this.left.isDown = true });
+    scene.add.text(leftButton.x + 10, leftButton.y + 10, '<', {fontSize: '44px', color: '#000000'});
+
+    const upButton = scene.add.rectangle(
+      scene.sys.canvas.width / 2 - buttonWidth / 2, 
+      scene.sys.canvas.height - 160 - buttonHeight, 
+      buttonWidth, buttonHeight, 0xffffff).setOrigin(0, 0);
+    upButton.setInteractive();
+    upButton.on('pointerdown', () => { this.up.isDown = true });
+    scene.add.text(upButton.x + 10, upButton.y + 10, 'おく', {fontSize: '24px', color: '#000000'});
+
+    const downButton = scene.add.rectangle(
+      scene.sys.canvas.width / 2 - buttonWidth / 2, 
+      scene.sys.canvas.height - 160 + buttonHeight, 
+      buttonWidth, buttonHeight, 0xffffff).setOrigin(0, 0);
+    downButton.setInteractive();
+    downButton.on('pointerdown', () => { this.down.isDown = true });
+    scene.add.text(downButton.x + 10, downButton.y + 10, 'とる', {fontSize: '24px', color: '#000000'});
+
+    scene.events.on('postupdate', this.postUpdate, this);
+  }
+  postUpdate() {
+    this.right.isDown = false;
+    this.left.isDown = false;
+    this.up.isDown = false;
+    this.down.isDown = false;
+  }
+}
+
+class GameKey {
+  constructor(cursors, vgamepad, key) {
+    this.cursors = cursors;
+    this.vgamepad = vgamepad;
+    this.key = key;
+  }
+  get isDown() {
+    return this.cursors[this.key].isDown || this.vgamepad[this.key].isDown;
+  }
+}
+
+class MagicalDropGamePad {
+  #vgamePad = new MagicalDropVirtualGamePad();
+  create(scene) {
+    this.#vgamePad.create(scene);
+    this.cursors = scene.input.keyboard.createCursorKeys();
+    this.up = new GameKey(this.cursors, this.#vgamePad, "up");
+    this.down = new GameKey(this.cursors, this.#vgamePad, "down");
+    this.right = new GameKey(this.cursors, this.#vgamePad, "right");
+    this.left = new GameKey(this.cursors, this.#vgamePad, "left");
+  }
+}
+
 /** 
  * プレイヤー。矢印で操作できる
  */
@@ -37,6 +116,11 @@ class Player {
   gameObject;
   gamepad;// cursorsから変更
   pullStones = new PullStones("空", 0);
+
+  /**
+   * 
+   * @param {{right:{isDown:boolean}, left:{isDown:boolean}}} gamepad 
+   */
   constructor(gamepad) {
     this.gamepad = gamepad;
   }
@@ -232,8 +316,9 @@ const magicalDropGame = new MagicalDropGame({
   モード: new BasicModeController(),
   行数, 列数
 });
-const gamepad = GamepadWrapper.init();
-const player = new Player(gamepad);
+const magicalDropGamePad = new MagicalDropGamePad();
+// const gamepad = GamepadWrapper.init();
+const player = new Player(magicalDropGamePad);
 const 補助線 = new AdditionalLineForPlayer(player, magicalDropGame);
 const 格子スプライト = new GridSprite(magicalDropGame);
 var game = new Phaser.Game(config);
@@ -250,7 +335,9 @@ function create() {
 
   
   player.create(this);
-  gamepad.createArrowKeys(this, {joystickPos:{x:this.sys.canvas.width / 2, y:520}, joystickScale:1.8});
+  // gamepad.createArrowKeys(this, {joystickPos:{x:this.sys.canvas.width / 2, y:520}, joystickScale:1.8});
+
+  magicalDropGamePad.create(this);
 }
 
 var gameStep = 0;
@@ -259,10 +346,10 @@ function update() {
     return;
   }
   const columnNumber = (player.gameObject.x - gridHalfSize) / gridSize;
-  if(gamepad.down.isDown) {
+  if(magicalDropGamePad.down.isDown) {
     magicalDropGame.取る(columnNumber);
   }
-  if(gamepad.up.isDown) {
+  if(magicalDropGamePad.up.isDown) {
     magicalDropGame.置く(columnNumber);
   }
   gameStep = (gameStep + 1) % 10;
