@@ -98,6 +98,18 @@ class GameKey {
 }
 
 class MagicalDropGamePad {
+  /** @type {GameKey} */
+  // @ts-ignore
+  up;
+  /** @type {GameKey} */
+  // @ts-ignore
+  down;
+  /** @type {GameKey} */
+  // @ts-ignore
+  right;
+  /** @type {GameKey} */
+  // @ts-ignore
+  left;
   #vgamePad = new MagicalDropVirtualGamePad();
   create(scene) {
     this.#vgamePad.create(scene);
@@ -114,6 +126,7 @@ class MagicalDropGamePad {
  */
 class Player {
   gameObject;
+  game;
   gamepad;// cursorsから変更
   pullStones = new PullStones("空", 0);
 
@@ -121,7 +134,8 @@ class Player {
    * 
    * @param {{right:{isDown:boolean}, left:{isDown:boolean}}} gamepad 
    */
-  constructor(gamepad) {
+  constructor(game, gamepad) {
+    this.game = game;
     this.gamepad = gamepad;
   }
   get x() {
@@ -132,7 +146,7 @@ class Player {
   }
   create(scene) {
     this.scene = scene;
-    const player = this.gameObject = scene.add.rectangle(gridHalfSize, 400, gridSize, 28, 0xffff00);
+    const player = this.gameObject = scene.add.rectangle(gridHalfSize, 400, gridSize, 28, 0xffffff);
     scene.events.on('update', this.update, this);
   }
   pressed = false;
@@ -155,6 +169,12 @@ class Player {
       }
     } else {
       this.pressed = false;
+    }
+
+    if(this.game.持ってる石.は空である) {
+      this.gameObject.fillColor = 0xffffff;
+    } else {
+      this.gameObject.fillColor = ColorConverter.システム色値に変換(this.game.持ってる石.色);
     }
   }
 }
@@ -205,7 +225,6 @@ class AdditionalLineForPlayer {
     } else {
       this.line.strokeColor = ColorConverter.システム色値に変換(this.game.持ってる石.色);
     }
-    
   }
 }
 
@@ -318,7 +337,7 @@ const magicalDropGame = new MagicalDropGame({
 });
 const magicalDropGamePad = new MagicalDropGamePad();
 // const gamepad = GamepadWrapper.init();
-const player = new Player(magicalDropGamePad);
+const player = new Player(magicalDropGame, magicalDropGamePad);
 const 補助線 = new AdditionalLineForPlayer(player, magicalDropGame);
 const 格子スプライト = new GridSprite(magicalDropGame);
 var game = new Phaser.Game(config);

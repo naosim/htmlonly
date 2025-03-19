@@ -643,27 +643,22 @@ class InicialGrid {
  * */
 class BasicModeController {
   /** @type {MagicalDropGame} */
-  game;
+  #game;
 
-  step = 0;
+  #step = 0;
 
   /**
    * 
    * @param {MagicalDropGame} game 
    */
   setGame(game) {
-    this.game = game;
+    this.#game = game;
   }
 
   update() {
-    this.step = (this.step + 1) % 50;
-    if(this.step == 0) {
-      this.game.最上部に1行追加する();
-      // if(this.game.格子.最下部の石の行() < this.game.行数 - 1) {
-      //   this.game.最上部に1行追加する();
-      // } else {
-      //   alert("ゲームオーバー")
-      // }
+    this.#step = (this.#step + 1) % 50;
+    if(this.#step == 0) {
+      this.#game.最上部に1行追加する();
     }
   }
 }
@@ -725,8 +720,6 @@ class MagicalDropGame {
     } else if(this.持ってる石.同じ色(最下部の石)) {
       this.持ってる石.add(this.格子.取る(columnNumber))
     }
-
-    console.log(this.格子.values);
   }
 
   /**
