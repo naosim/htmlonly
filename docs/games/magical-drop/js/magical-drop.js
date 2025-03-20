@@ -311,8 +311,13 @@ class Grid {
     }
   }
 
-  空である(row, column) {
-    return this.values[row][column].は空である;
+  /**
+   * 
+   * @param {Pos} pos 
+   * @returns 
+   */
+  空である(pos) {
+    return this.values[pos.row][pos.column].は空である;
   }
 
   /**
@@ -329,6 +334,7 @@ class Grid {
   }
 
   get 石リスト() {
+    /** @type {Stone[]} */
     var result = [];
     this.石だけforEach((v) => result.push(v));
     return result;
@@ -342,7 +348,12 @@ class Grid {
     return this.列を取得する(columnNumber).filter(v => v.は石である && v.石.状態 == "落ちてる").map(v => v.石);
   }
 
-  縦三つが揃っているか(row, column) {
+  /**
+   * 
+   * @param {Pos} param0 
+   * @returns 
+   */
+  縦三つが揃っているか({row, column}) {
     return [
       [row - 2, row - 1, row],
       [row - 1, row, row + 1],
@@ -616,17 +627,19 @@ class InicialGrid {
   }
 
   /**
-   * 
+   * ランダムに生成する。
+   * 最初の3行目まではランダムな石。それ以降は空が積まれる。
    * @param {{行数:number, 列数:number}} param0
    * @returns 
    */
   static ランダム({行数, 列数}) {
     var 色リスト = ["赤", "青", "緑", "黄"];
+    const 色数 = 色リスト.length;
     var value = new Array(行数).fill(0).map((_, row) => { 
       if(row >= 4) {
         return new Array(列数).fill(0).map(v => "空").join("");
       }
-      return new Array(列数).fill(0).map(v => 色リスト[Math.floor(Math.random() * 4)]).join("");
+      return new Array(列数).fill(0).map(v => 色リスト[Math.floor(Math.random() * 色数)]).join("");
     }).join("\n");
     console.log(value);
     return new InicialGrid(value);
@@ -696,10 +709,10 @@ class MagicalDropGame {
   消せるか確認する() {
     var 結果 = false;
     this.格子.落ちてる石リスト.forEach(v => {
-      if(this.格子.空である(v.位置.row, v.位置.column)) {
+      if(this.格子.空である(v.位置)) {
         return;
       }
-      if(this.格子.縦三つが揃っているか(v.位置.row, v.位置.column)) {
+      if(this.格子.縦三つが揃っているか(v.位置)) {
         結果 = true;
       }
     });
@@ -707,7 +720,7 @@ class MagicalDropGame {
   }
 
   /**
-   * 
+   * 石を取る。取った石は持ってる石に入る。
    * @param {number} columnNumber 
    */
   取る(columnNumber) {
@@ -743,19 +756,18 @@ class MagicalDropGame {
   }
 
   消す() {
-    this.格子.落ちてる石リスト.forEach(v => {
-      if(this.格子.空である(v.位置.row, v.位置.column)) {
+    this.格子.落ちてる石リスト.forEach(落ちてる石 => {
+      if(this.格子.空である(落ちてる石.位置)) {
         return;
       }
-      if(this.格子.縦三つが揃っているか(v.位置.row, v.位置.column)) {
+      if(this.格子.縦三つが揃っているか(落ちてる石.位置)) {
         // TODO: つながってる石を消す
-        this.格子.同じ色の隣を消して指定位置も消す(v.位置)
+        this.格子.同じ色の隣を消して指定位置も消す(落ちてる石.位置)
       }
     });
     this.格子.確認済みをクリアする()
 
     this.格子.落ちる石を決める();
-    console.log(this.格子.values);
   }
 
   落ちる() {
@@ -767,7 +779,7 @@ class MagicalDropGame {
     this.格子.最上部に1行追加する();
   }
 
-  step = 0;
+  // step = 0;
   update() {
     if(this.ゲームオーバー) {
       return;
