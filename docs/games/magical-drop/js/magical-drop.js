@@ -4,7 +4,7 @@
  */
 
 /**
- * @typedef {{row:number, column:number}} Pos
+ * @typedef {{行:number, 列:number}} Pos
  */
 
 /**
@@ -158,13 +158,13 @@ class StoneOrEmpty {
 
   /**
    * 
-   * @param {number} row 
+   * @param {number} 行 
    */
-  行を更新する(row) {
+  行を更新する(行) {
     if(this.#石) {
-      this.#石.位置.row = row;
+      this.#石.位置.行 = 行;
     } else if(this.#空) {
-      this.#空.位置.row = row;
+      this.#空.位置.行 = 行;
     }
   }
 
@@ -204,6 +204,11 @@ class StoneOrEmpty {
     return !!this.#石;
   }
 
+  /**
+   * 
+   * @param {Pos} 位置 
+   * @returns 
+   */
   static ランダムな石(位置) {
     var factories = [
       () => StoneOrEmpty.赤(位置), 
@@ -260,20 +265,20 @@ class StoneOrEmpty {
   /**
    * 
    * @param {string} text 
-   * @param {{row:number, column:number}} pos 
+   * @param {Pos} 位置 
    * @returns 
    */
-  static テキストから生成(text, pos) {
+  static テキストから生成(text, 位置) {
     if(text == "赤") {
-      return StoneOrEmpty.赤(pos);
+      return StoneOrEmpty.赤(位置);
     } else if(text == "青") {
-      return StoneOrEmpty.青(pos);
+      return StoneOrEmpty.青(位置);
     } else if(text == "緑") {
-      return StoneOrEmpty.緑(pos);
+      return StoneOrEmpty.緑(位置);
     } else if(text == "黄") {
-      return StoneOrEmpty.黄(pos);
+      return StoneOrEmpty.黄(位置);
     } else if(text == "空") {
-      return StoneOrEmpty.空(pos);
+      return StoneOrEmpty.空(位置);
     }
     throw new Error("不明な値");
   }
@@ -292,43 +297,49 @@ class Grid {
    */
   constructor(初期格子) {
     this.values = 初期格子.value.trim().split("\n").map(v => v.trim()).map(v => v.split(""))
-    .map((v, row) => v.map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})));
+    .map((v, 行) => v.map((cell, 列) => StoneOrEmpty.テキストから生成(cell, {行, 列})));
 
     this.values = [...this.values, ...new Array(this.values.length).fill("空空空空空空空空空空空空")
-      .map((v, row) => v.split("").map((cell, column) => StoneOrEmpty.テキストから生成(cell, {row, column})))];
+      .map((v, 行) => v.split("").map((cell, 列) => StoneOrEmpty.テキストから生成(cell, {行, 列})))];
   }
 
   get 列数() { return this.values[0].length; }
 
   /**
-   * @param {(v:StoneOrEmpty, row:number, column:number) => void} cb 
+   * @param {(v:StoneOrEmpty, 行:number, 列:number) => void} cb 
    */
   forEach(cb) {
-    for(let row = 0; row < this.values.length; row++) {
-      for(let column = 0; column < this.values[0].length; column++) {
-        cb(this.values[row][column], row, column);
+    for(let 行 = 0; 行 < this.values.length; 行++) {
+      for(let 列 = 0; 列 < this.values[0].length; 列++) {
+        cb(this.values[行][列], 行, 列);
       }
     }
   }
 
-  空である(row, column) {
-    return this.values[row][column].は空である;
+  /**
+   * 
+   * @param {Pos} 位置 
+   * @returns 
+   */
+  空である(位置) {
+    return this.values[位置.行][位置.列].は空である;
   }
 
   /**
-   * @param {(v:Stone, row:number, column:number) => void} cb 
+   * @param {(v:Stone, 行:number, 列:number) => void} cb 
    */
   石だけforEach(cb) {
-    for(let row = 0; row < this.values.length; row++) {
-      for(let column = 0; column < this.values[0].length; column++) {
-        if(this.values[row][column].は石である) {
-          cb(this.values[row][column].石, row, column);
+    for(let 行 = 0; 行 < this.values.length; 行++) {
+      for(let 列 = 0; 列 < this.values[0].length; 列++) {
+        if(this.values[行][列].は石である) {
+          cb(this.values[行][列].石, 行, 列);
         }
       }
     }
   }
 
   get 石リスト() {
+    /** @type {Stone[]} */
     var result = [];
     this.石だけforEach((v) => result.push(v));
     return result;
@@ -338,18 +349,28 @@ class Grid {
     return this.石リスト.filter(v => v.状態 == "落ちてる");
   }
 
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
   列にある落ちてる石リスト(columnNumber) {
     return this.列を取得する(columnNumber).filter(v => v.は石である && v.石.状態 == "落ちてる").map(v => v.石);
   }
 
-  縦三つが揃っているか(row, column) {
+  /**
+   * 
+   * @param {Pos} param0 
+   * @returns 
+   */
+  縦三つが揃っているか({行, 列}) {
     return [
-      [row - 2, row - 1, row],
-      [row - 1, row, row + 1],
-      [row, row + 1, row + 2],
+      [行 - 2, 行 - 1, 行],
+      [行 - 1, 行, 行 + 1],
+      [行, 行 + 1, 行 + 2],
     ].filter(ary => ary.every(v => v >= 0 && v < this.values.length))
-    .filter(ary => ary.every(v => this.values[v][column].は石である))
-    .filter(ary => ary.every(v => this.values[v][column].石.色 == this.values[row][column].石.色))
+    .filter(ary => ary.every(v => this.values[v][列].は石である))
+    .filter(ary => ary.every(v => this.values[v][列].石.色 == this.values[行][列].石.色))
     .length > 0;
   }
 
@@ -358,7 +379,7 @@ class Grid {
  * @param {Pos} 指定位置 
  */
   同じ色の隣を消して指定位置も消す(指定位置) {
-    var 石または空 = this.values[指定位置.row][指定位置.column];
+    var 石または空 = this.values[指定位置.行][指定位置.列];
     if(石または空.は空である) {
       // throw new Error("空");
       return;
@@ -366,14 +387,14 @@ class Grid {
     var 石 = 石または空.石;
     石.確認済み = true;
     var 上下左右 = [
-      {row: 指定位置.row - 1, column: 指定位置.column},
-      {row: 指定位置.row + 1, column: 指定位置.column},
-      {row: 指定位置.row, column: 指定位置.column - 1},
-      {row: 指定位置.row, column: 指定位置.column + 1},
-    ].filter(v => v.row >= 0 && v.row < this.values.length && v.column >= 0 && v.column < this.values[0].length)
-    .filter(v => this.values[v.row][v.column].は石である)
-    .filter(v => this.values[v.row][v.column].石.未確認)
-    .filter(v => this.values[v.row][v.column].石.同じ色(石))
+      {行: 指定位置.行 - 1, 列: 指定位置.列},
+      {行: 指定位置.行 + 1, 列: 指定位置.列},
+      {行: 指定位置.行, 列: 指定位置.列 - 1},
+      {行: 指定位置.行, 列: 指定位置.列 + 1},
+    ].filter(v => v.行 >= 0 && v.行 < this.values.length && v.列 >= 0 && v.列 < this.values[0].length)
+    .filter(v => this.values[v.行][v.列].は石である)
+    .filter(v => this.values[v.行][v.列].石.未確認)
+    .filter(v => this.values[v.行][v.列].石.同じ色(石))
     .forEach(v => this.同じ色の隣を消して指定位置も消す(v))
 
     石または空.to空(); 
@@ -385,14 +406,14 @@ class Grid {
   }
 
   落ちる石を決める() {
-    for(let column = 0; column < this.values[0].length; column++) {
+    for(let 列 = 0; 列 < this.values[0].length; 列++) {
       let 空を見つけた = false;
-      for(let row = 0; row < this.values.length; row++) {
-        if(!空を見つけた && this.values[row][column].は空である) {
+      for(let 行 = 0; 行 < this.values.length; 行++) {
+        if(!空を見つけた && this.values[行][列].は空である) {
           空を見つけた = true;
         }
-        if(空を見つけた && this.values[row][column].は石である) {
-          this.values[row][column].石.状態 = "落ちてる";
+        if(空を見つけた && this.values[行][列].は石である) {
+          this.values[行][列].石.状態 = "落ちてる";
         }
       }
     }
@@ -465,22 +486,22 @@ class Grid {
 
   最下部の石の行() {
     var result = 0;
-    for(let column = 0; column < this.values[0].length; column++) {
-      if(this.列がすべて空(column)) {
+    for(let 列 = 0; 列 < this.values[0].length; 列++) {
+      if(this.列がすべて空(列)) {
         continue;
       }
-      result = Math.max(result, this.最下部の石(column).位置.row);
+      result = Math.max(result, this.最下部の石(列).位置.行);
     }
     return result;
   }
 
   行を追加できる() {
     var max = 0;
-    for(let column = 0; column < this.values[0].length; column++) {
-      if(this.列がすべて空(column)) {
+    for(let 列 = 0; 列 < this.values[0].length; 列++) {
+      if(this.列がすべて空(列)) {
         max = Math.max(max, 0);
       } else {
-        max = Math.max(max, this.最下部の石(column).位置.row);
+        max = Math.max(max, this.最下部の石(列).位置.行);
       }
     }
     return max < this.values.length - 1;
@@ -506,37 +527,37 @@ class Grid {
 
   列を取得する(columnNumber) {
     const result = [];
-    for(let row = 0; row < this.values.length; row++) {
-      result.push(this.values[row][columnNumber]);
+    for(let 行 = 0; 行 < this.values.length; 行++) {
+      result.push(this.values[行][columnNumber]);
     }
     return result;
   }
 
   落ちる() {
     console.log(this.values);
-    for(let column = 0; column < this.values[0].length; column++) {
-      var 列にある落ちてる石リスト = this.列にある落ちてる石リスト(column);
+    for(let 列 = 0; 列 < this.values[0].length; 列++) {
+      var 列にある落ちてる石リスト = this.列にある落ちてる石リスト(列);
       if(列にある落ちてる石リスト.length == 0) {
         continue;
       }
-      for(let row = 0; row < this.values.length && 列にある落ちてる石リスト.length > 0; row++) {
-        if(this.values[row][column].は石である) {
+      for(let 行 = 0; 行 < this.values.length && 列にある落ちてる石リスト.length > 0; 行++) {
+        if(this.values[行][列].は石である) {
           continue;
         }
         /** @type {Stone} */
         // @ts-ignore
         var 落ちてる石 = 列にある落ちてる石リスト.shift();
-        this.values[row][column].to石(落ちてる石.色, "落ちてる");
-        this.values[落ちてる石.位置.row][落ちてる石.位置.column].to空();
+        this.values[行][列].to石(落ちてる石.色, "落ちてる");
+        this.values[落ちてる石.位置.行][落ちてる石.位置.列].to空();
       }
     }
   }
 
   最上部に1行追加する() {
     var 行数 = this.values.length;
-    var 追加する行 = new Array(this.values[0].length).fill(0).map((v, i) => StoneOrEmpty.ランダムな石({row: 0, column: i}));
+    var 追加する行 = new Array(this.values[0].length).fill(0).map((v, i) => StoneOrEmpty.ランダムな石({行: 0, 列: i}));
     this.values = [追加する行, ...this.values].slice(0, 行数);
-    this.values.forEach((v, row) => v.forEach((cell, column) => cell.行を更新する(row)));
+    this.values.forEach((v, 行) => v.forEach((cell, 列) => cell.行を更新する(行)));
     console.log("行数", this.values.length);
   }
   
@@ -616,17 +637,19 @@ class InicialGrid {
   }
 
   /**
-   * 
+   * ランダムに生成する。
+   * 最初の3行目まではランダムな石。それ以降は空が積まれる。
    * @param {{行数:number, 列数:number}} param0
    * @returns 
    */
   static ランダム({行数, 列数}) {
     var 色リスト = ["赤", "青", "緑", "黄"];
-    var value = new Array(行数).fill(0).map((_, row) => { 
-      if(row >= 4) {
+    const 色数 = 色リスト.length;
+    var value = new Array(行数).fill(0).map((_, 行) => { 
+      if(行 >= 4) {
         return new Array(列数).fill(0).map(v => "空").join("");
       }
-      return new Array(列数).fill(0).map(v => 色リスト[Math.floor(Math.random() * 4)]).join("");
+      return new Array(列数).fill(0).map(v => 色リスト[Math.floor(Math.random() * 色数)]).join("");
     }).join("\n");
     console.log(value);
     return new InicialGrid(value);
@@ -696,10 +719,10 @@ class MagicalDropGame {
   消せるか確認する() {
     var 結果 = false;
     this.格子.落ちてる石リスト.forEach(v => {
-      if(this.格子.空である(v.位置.row, v.位置.column)) {
+      if(this.格子.空である(v.位置)) {
         return;
       }
-      if(this.格子.縦三つが揃っているか(v.位置.row, v.位置.column)) {
+      if(this.格子.縦三つが揃っているか(v.位置)) {
         結果 = true;
       }
     });
@@ -707,7 +730,7 @@ class MagicalDropGame {
   }
 
   /**
-   * 
+   * 石を取る。取った石は持ってる石に入る。
    * @param {number} columnNumber 
    */
   取る(columnNumber) {
@@ -743,19 +766,18 @@ class MagicalDropGame {
   }
 
   消す() {
-    this.格子.落ちてる石リスト.forEach(v => {
-      if(this.格子.空である(v.位置.row, v.位置.column)) {
+    this.格子.落ちてる石リスト.forEach(落ちてる石 => {
+      if(this.格子.空である(落ちてる石.位置)) {
         return;
       }
-      if(this.格子.縦三つが揃っているか(v.位置.row, v.位置.column)) {
+      if(this.格子.縦三つが揃っているか(落ちてる石.位置)) {
         // TODO: つながってる石を消す
-        this.格子.同じ色の隣を消して指定位置も消す(v.位置)
+        this.格子.同じ色の隣を消して指定位置も消す(落ちてる石.位置)
       }
     });
     this.格子.確認済みをクリアする()
 
     this.格子.落ちる石を決める();
-    console.log(this.格子.values);
   }
 
   落ちる() {
@@ -767,7 +789,7 @@ class MagicalDropGame {
     this.格子.最上部に1行追加する();
   }
 
-  step = 0;
+  // step = 0;
   update() {
     if(this.ゲームオーバー) {
       return;
