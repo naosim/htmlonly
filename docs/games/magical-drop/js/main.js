@@ -42,39 +42,42 @@ class MagicalDropVirtualGamePad {
    * @param {Phaser.Scene} scene 
    */
   create(scene) {
-    const buttonWidth = 100;
+    const centerPos = {x: scene.sys.canvas.width / 2, y: scene.sys.canvas.height - 160};
+    const buttonWidth = 80;
     const buttonHeight = 60;
+
     const rightButton = scene.add.rectangle(
-      scene.sys.canvas.width / 2 + 40, 
-      scene.sys.canvas.height - 160, 
+      centerPos.x + 40, 
+      centerPos.y, 
       buttonWidth, buttonHeight, 0xffffff).setOrigin(0, 0);
     rightButton.setInteractive();
     rightButton.on('pointerdown', () => { this.right.isDown = true });
-    scene.add.text(rightButton.x + 10, rightButton.y + 10, '>', {fontSize: '44px', color: '#000000'});
+    scene.add.triangle(rightButton.x + buttonWidth / 2, rightButton.y + buttonHeight / 2, 0, 0, 0, buttonHeight * 0.8, buttonHeight * 0.4, buttonHeight * 0.4, 0x000000);
 
     const leftButton = scene.add.rectangle(
-      scene.sys.canvas.width / 2 - 40 - buttonWidth, 
-      scene.sys.canvas.height - 160, 
+      centerPos.x - 40 - buttonWidth, 
+      centerPos.y, 
       buttonWidth, buttonHeight, 0xffffff).setOrigin(0, 0);
     leftButton.setInteractive();
     leftButton.on('pointerdown', () => { this.left.isDown = true });
-    scene.add.text(leftButton.x + 10, leftButton.y + 10, '<', {fontSize: '44px', color: '#000000'});
-
-    const upButton = scene.add.rectangle(
-      scene.sys.canvas.width / 2 - buttonWidth / 2, 
-      scene.sys.canvas.height - 160 - buttonHeight, 
-      buttonWidth, buttonHeight, 0xffffff).setOrigin(0, 0);
-    upButton.setInteractive();
-    upButton.on('pointerdown', () => { this.up.isDown = true });
-    scene.add.text(upButton.x + 10, upButton.y + 10, 'おく', {fontSize: '24px', color: '#000000'});
+    scene.add.triangle(leftButton.x + buttonWidth / 2, leftButton.y + buttonHeight / 2, 0, buttonHeight * 0.4, buttonHeight * 0.4, buttonHeight * 0.8, buttonHeight * 0.4, 0, 0x000000);
 
     const downButton = scene.add.rectangle(
-      scene.sys.canvas.width / 2 - buttonWidth / 2, 
-      scene.sys.canvas.height - 160 + buttonHeight, 
+      centerPos.x - buttonWidth / 2, 
+      centerPos.y + buttonHeight, 
       buttonWidth, buttonHeight, 0xffffff).setOrigin(0, 0);
     downButton.setInteractive();
     downButton.on('pointerdown', () => { this.down.isDown = true });
     scene.add.text(downButton.x + 10, downButton.y + 10, 'とる', {fontSize: '24px', color: '#000000'});
+
+    const upButton = scene.add.rectangle(
+      centerPos.x - buttonWidth / 2, 
+      centerPos.y - 1, 
+      buttonWidth, buttonHeight, 0xffffff).setOrigin(0, 0);
+    upButton.setInteractive();
+    upButton.on('pointerdown', () => { this.up.isDown = true });
+    upButton.setStrokeStyle(2, 0x000000);
+    scene.add.text(upButton.x + 10, upButton.y + 10, 'おく', {fontSize: '24px', color: '#000000'});
 
     scene.events.on('postupdate', this.postUpdate, this);
   }
