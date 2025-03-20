@@ -508,9 +508,19 @@ class Grid {
   }
 
 
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
   列がすべて空(columnNumber) {
     return !this.列に石がある(columnNumber);
   }
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
   列に石がある(columnNumber) {
     for(let i = this.values.length - 1; i >= 0; i--) {
       let target = this.values[i][columnNumber];
@@ -521,10 +531,20 @@ class Grid {
     return false;
   }
 
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
   最下部の石の色(columnNumber) {
     return this.最下部の石(columnNumber).色;
   }
 
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
   列を取得する(columnNumber) {
     const result = [];
     for(let 行 = 0; 行 < this.values.length; 行++) {
@@ -534,7 +554,7 @@ class Grid {
   }
 
   落ちる() {
-    console.log(this.values);
+    // console.log(this.values);
     for(let 列 = 0; 列 < this.values[0].length; 列++) {
       var 列にある落ちてる石リスト = this.列にある落ちてる石リスト(列);
       if(列にある落ちてる石リスト.length == 0) {
@@ -558,7 +578,7 @@ class Grid {
     var 追加する行 = new Array(this.values[0].length).fill(0).map((v, i) => StoneOrEmpty.ランダムな石({行: 0, 列: i}));
     this.values = [追加する行, ...this.values].slice(0, 行数);
     this.values.forEach((v, 行) => v.forEach((cell, 列) => cell.行を更新する(行)));
-    console.log("行数", this.values.length);
+    // console.log("行数", this.values.length);
   }
   
 }
@@ -651,7 +671,7 @@ class InicialGrid {
       }
       return new Array(列数).fill(0).map(v => 色リスト[Math.floor(Math.random() * 色数)]).join("");
     }).join("\n");
-    console.log(value);
+    // console.log(value);
     return new InicialGrid(value);
   }
 }
@@ -761,7 +781,7 @@ class MagicalDropGame {
     this.格子.置く(columnNumber, this.持ってる石);
     this.持ってる石.clear();
 
-    console.log(this.格子.values);
+    // console.log(this.格子.values);
     this.状態.置く();
   }
 
