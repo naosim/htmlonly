@@ -1,3 +1,16 @@
+import {
+  MagicalDropGame,
+  PullStones,
+  Grid,
+  StoneOrEmpty,
+  BasicModeController,
+  InicialGrid
+} from "./magical-drop.mjs";
+
+/**
+ * @typedef {'赤' | '青' | '緑' | '黄'} StoneColor
+ */
+
 (function() { // startprogram
 const gridSize = 32;
 const gridHalfSize = gridSize / 2;

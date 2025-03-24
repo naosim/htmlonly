@@ -14,3 +14,8 @@ stateDiagram-v2
 落ちる --> 消せるか確認する :自動
 消せるか確認する --> 通常: 消せない
 ```
+
+## テストの実行
+```
+node --experimental-vm-modules ./node_modules/jest/bin/jest.js ./docs/games/magical-drop/js/test.mjs
+```

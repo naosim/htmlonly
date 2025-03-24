@@ -1,16 +1,20 @@
-
 /**
  * @typedef {'赤' | '青' | '緑' | '黄'} StoneColor
  */
 
-/**
- * @typedef {{行:number, 列:number}} Pos
- */
+// only typedef
+export class Pos {
+  /** @type {number} */
+  行;
+  /** @type {number} */
+  列;
+}
+
 
 /**
  * 取った石
  */
-class PullStones {
+export class PullStones {
   /** @type {StoneColor | "空"} */
   #色;
   /**
@@ -116,7 +120,7 @@ class Empty {
 /**
  * 石または空
  */
-class StoneOrEmpty {
+export class StoneOrEmpty {
   /** @type {Stone | undefined} */
   #石
   /** @type {Empty | undefined} */
@@ -287,7 +291,7 @@ class StoneOrEmpty {
 /**
  * 格子
  */
-class Grid {
+export class Grid {
   /** @type { StoneOrEmpty[][]} */
   values;
 
@@ -630,7 +634,7 @@ class StateTransition {
   }
 }
 
-class InicialGrid {
+export class InicialGrid {
   /** @type {string} */
   // @ts-ignore
   value;
@@ -684,7 +688,7 @@ class InicialGrid {
  * ステージを管理する
  * @implements {ModeController}
  * */
-class BasicModeController {
+export class BasicModeController {
   /** @type {MagicalDropGame} */
   #game;
 
@@ -710,7 +714,7 @@ class BasicModeController {
 
 /** @typedef {{初期格子:InicialGrid, モード:ModeController, 行数:number, 列数:number}} MagicalDropGameConfig */
 
-class MagicalDropGame {
+export class MagicalDropGame {
   格子;
   状態 = new StateTransition(() => this.消せるか確認する());
   /** @type {PullStones} */
