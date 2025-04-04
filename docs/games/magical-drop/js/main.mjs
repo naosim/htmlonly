@@ -267,11 +267,12 @@ class GridSprite {
    * @param {Grid} 格子 
    */
   update(格子) {
-    for(let i = 0; i < Math.min(格子.values.length, 12); i++) {
-      for(let j = 0; j < 格子.values[0].length; j++) {
-          this.gameObjects[i][j].update(格子.values[i][j]);
+    格子.forEach((v, 行, 列) => {
+      if(行 >= 12) {
+        return;
       }
-    }
+      this.gameObjects[行][列].update(v);
+    })
   }
 }
 

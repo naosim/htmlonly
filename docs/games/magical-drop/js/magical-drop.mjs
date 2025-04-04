@@ -320,6 +320,14 @@ export class Grid {
     }
   }
 
+  // 各石ごとに(cb) {
+  //   for(let i = 0; i < Math.min(this.格子.values.length, 12); i++) {
+  //     for(let j = 0; j < 格子.values[0].length; j++) {
+  //         this.gameObjects[i][j].update(格子.values[i][j]);
+  //     }
+  //   }
+  // }
+
   /**
    * 
    * @param {Pos} 位置 
@@ -358,7 +366,7 @@ export class Grid {
    * @param {number} columnNumber 
    * @returns 
    */
-  列にある落ちてる石リスト(columnNumber) {
+  #列にある落ちてる石リスト(columnNumber) {
     return this.列を取得する(columnNumber).filter(v => v.は石である && v.石.状態 == "落ちてる").map(v => v.石);
   }
 
@@ -560,7 +568,7 @@ export class Grid {
   落ちる() {
     // console.log(this.values);
     for(let 列 = 0; 列 < this.values[0].length; 列++) {
-      var 列にある落ちてる石リスト = this.列にある落ちてる石リスト(列);
+      var 列にある落ちてる石リスト = this.#列にある落ちてる石リスト(列);
       if(列にある落ちてる石リスト.length == 0) {
         continue;
       }
