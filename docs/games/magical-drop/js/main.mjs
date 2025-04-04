@@ -142,9 +142,9 @@ class MagicalDropGamePad {
  */
 class Player {
   gameObject;
+  /** @type {MagicalDropGame} */
   game;
   gamepad;// cursorsから変更
-  pullStones = new PullStones("空", 0);
 
   /**
    * 
@@ -169,29 +169,24 @@ class Player {
   update() {
     if (this.gamepad.left.isDown) {
       if(!this.pressed) {
-        this.gameObject.x -= gridSize;
-        if(this.gameObject.x < 0) {
-          this.gameObject.x = this.scene.sys.canvas.width - gridHalfSize;
-        }
+        this.game.左へ移動();
         this.pressed = true;
       }
     } else if (this.gamepad.right.isDown) {
       if(!this.pressed) {
-        this.gameObject.x += gridSize;
-        if(this.gameObject.x >= this.scene.sys.canvas.width) {
-          this.gameObject.x = gridHalfSize;
-        }
+        this.game.右へ移動();
         this.pressed = true;
       }
     } else {
       this.pressed = false;
     }
 
-    if(this.game.持ってる石.は空である) {
+    if(this.game.プレイヤー.持ってる石.は空である) {
       this.gameObject.fillColor = 0xffffff;
     } else {
-      this.gameObject.fillColor = ColorConverter.システム色値に変換(this.game.持ってる石.色);
+      this.gameObject.fillColor = ColorConverter.システム色値に変換(this.game.プレイヤー.持ってる石.色);
     }
+    this.gameObject.x = this.game.プレイヤー.列番号 * gridSize + gridHalfSize;
   }
 }
 
@@ -236,10 +231,10 @@ class AdditionalLineForPlayer {
 
   update() {
     this.line.x = this.player.x;
-    if(this.game.持ってる石.は空である) {
+    if(this.game.プレイヤー.持ってる石.は空である) {
       this.line.strokeColor = 0xffffff;
     } else {
-      this.line.strokeColor = ColorConverter.システム色値に変換(this.game.持ってる石.色);
+      this.line.strokeColor = ColorConverter.システム色値に変換(this.game.プレイヤー.持ってる石.色);
     }
   }
 }
@@ -383,10 +378,10 @@ function update() {
   }
   const columnNumber = (player.gameObject.x - gridHalfSize) / gridSize;
   if(magicalDropGamePad.down.isDown) {
-    magicalDropGame.取る(columnNumber);
+    magicalDropGame.取る();
   }
   if(magicalDropGamePad.up.isDown) {
-    magicalDropGame.置く(columnNumber);
+    magicalDropGame.置く();
   }
   gameStep = (gameStep + 1) % 10;
   if(gameStep === 0) {

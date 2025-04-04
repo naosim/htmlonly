@@ -718,15 +718,28 @@ export class BasicModeController {
   }
 }
 
+class Player {
+  列番号 = 6;
+  持ってる石 = PullStones.空();
+  constructor(列数) {
+    this.列数 = 列数;
+  }
+  右へ移動() {
+    this.列番号 = (this.列番号 + 1) % 12;
+  }
+  左へ移動() {
+    this.列番号 = this.列番号 == 0 ? 11 : this.列番号 - 1;
+  }
+}
+
 
 
 /** @typedef {{初期格子:InicialGrid, モード:ModeController, 行数:number, 列数:number}} MagicalDropGameConfig */
 
 export class MagicalDropGame {
+  プレイヤー;
   格子;
   状態 = new StateTransition(() => this.消せるか確認する());
-  /** @type {PullStones} */
-  持ってる石 = PullStones.空();
   モード;
   ゲームオーバー = false;
   /**
@@ -739,14 +752,20 @@ export class MagicalDropGame {
     this.モード.setGame(this);
     this.列数 = config.列数;
     this.行数 = config.行数;
+    this.プレイヤー = new Player(config.列数);
 
     if(this.格子.列数 != this.列数) {
       throw new Error("列数が一致しない");
     }
-
-
   }
 
+  右へ移動() {
+    this.プレイヤー.右へ移動();
+  }
+
+  左へ移動() {
+    this.プレイヤー.左へ移動();
+  }
 
   消せるか確認する() {
     var 結果 = false;
@@ -762,36 +781,32 @@ export class MagicalDropGame {
   }
 
   /**
-   * 石を取る。取った石は持ってる石に入る。
-   * @param {number} columnNumber 
+   * 石を取る。取った石は持ってる石に入る。 
    */
-  取る(columnNumber) {
-    if(this.格子.列がすべて空(columnNumber)) {
+  取る() {
+    const 列番号 = this.プレイヤー.列番号;
+    if(this.格子.列がすべて空(列番号)) {
       return;
     }
-    const 最下部の石 = this.格子.最下部の石(columnNumber);
-    if(!this.持ってる石 || this.持ってる石.は空である) { 
-      this.持ってる石 = this.格子.取る(columnNumber);
-    } else if(this.持ってる石.同じ色(最下部の石)) {
-      this.持ってる石.add(this.格子.取る(columnNumber))
+    const 最下部の石 = this.格子.最下部の石(列番号);
+    if(this.プレイヤー.持ってる石.は空である) { 
+      this.プレイヤー.持ってる石 = this.格子.取る(列番号);
+    } else if(this.プレイヤー.持ってる石.同じ色(最下部の石)) {
+      this.プレイヤー.持ってる石.add(this.格子.取る(列番号))
     }
   }
 
-  /**
-   * 
-   * @param {number} columnNumber 
-   * @returns 
-   */
-  置く(columnNumber) {
-    if(this.持ってる石.は空である) {
+  置く() {
+    const 列番号 = this.プレイヤー.列番号;
+    if(this.プレイヤー.持ってる石.は空である) {
       return;
     }
-    if(this.格子.列がすべて空(columnNumber)) {
+    if(this.格子.列がすべて空(列番号)) {
       return
     }
         
-    this.格子.置く(columnNumber, this.持ってる石);
-    this.持ってる石.clear();
+    this.格子.置く(列番号, this.プレイヤー.持ってる石);
+    this.プレイヤー.持ってる石.clear();
 
     // console.log(this.格子.values);
     this.状態.置く();
