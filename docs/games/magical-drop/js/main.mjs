@@ -376,7 +376,7 @@ function update() {
   if(magicalDropGame.ゲームオーバー) {
     return;
   }
-  const columnNumber = (player.gameObject.x - gridHalfSize) / gridSize;
+
   if(magicalDropGamePad.down.isDown) {
     magicalDropGame.取る();
   }

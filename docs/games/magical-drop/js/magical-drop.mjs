@@ -725,7 +725,7 @@ class Player {
     this.列数 = 列数;
   }
   右へ移動() {
-    this.列番号 = (this.列番号 + 1) % 12;
+    this.列番号 = (this.列番号 + 1) % this.列数;
   }
   左へ移動() {
     this.列番号 = this.列番号 == 0 ? 11 : this.列番号 - 1;
@@ -739,7 +739,7 @@ class Player {
 export class MagicalDropGame {
   プレイヤー;
   格子;
-  状態 = new StateTransition(() => this.消せるか確認する());
+  状態 = new StateTransition(() => this.#消せるか確認する());
   モード;
   ゲームオーバー = false;
   /**
@@ -767,7 +767,7 @@ export class MagicalDropGame {
     this.プレイヤー.左へ移動();
   }
 
-  消せるか確認する() {
+  #消せるか確認する() {
     var 結果 = false;
     this.格子.落ちてる石リスト.forEach(v => {
       if(this.格子.空である(v.位置)) {
