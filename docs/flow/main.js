@@ -16,38 +16,55 @@ class StartTaskDef {
   }
 }
 class ManualTaskDef {
+  /**
+   * 
+   * @param {{id:string, name:string, fromIds:string[]}} param0 
+   */
   constructor({
-    id, name, from
+    id, name, fromIds
   }) {
     this.id = id;
     this.name = name;
-    this.from = from;
+    this.fromIds = fromIds;
   }
 }
 class EndTaskDef {
   constructor({
-    id, from
+    id, fromIds
   }) {
     this.id = id;
-    this.from = from;
+    this.fromIds = fromIds;
   }
 }
 
-class TaskState {
+class TaskStateType {
   value;
   constructor(value) {
     this.value = value;
   }
-  static PENDING = new TaskState("pending"); // 前のタスクが終わるのを待っている
-  static STARTING = new TaskState("starting"); // 前のタスクが完了し、自身のタスクの開始を待っている(一瞬)
-  static WAITING = new TaskState("waiting"); // 待ちタスクの場合に、条件が揃うのを待っている
-  static PROCESS_STARTING = new TaskState("processstarting"); // 処理タスクの場合に、処理が開始されるのを待っている(一瞬)
-  static PROCESSING = new TaskState("processing"); // 処理タスクの場合に、処理中
-  static COMPLETED = new TaskState("completed"); // 完了済み
-  static SKIPPED = new TaskState("skipped"); // スキップ済み
-  static ERROR = new TaskState("error"); // エラー発生
+  static PENDING = new TaskStateType("pending"); // 前のタスクが終わるのを待っている
+  static STARTING = new TaskStateType("starting"); // 前のタスクが完了し、自身のタスクの開始を待っている(一瞬)
+  static WAITING = new TaskStateType("waiting"); // 待ちタスクの場合に、条件が揃うのを待っている
+  static PROCESS_STARTING = new TaskStateType("processstarting"); // 処理タスクの場合に、処理が開始されるのを待っている(一瞬)
+  static PROCESSING = new TaskStateType("processing"); // 処理タスクの場合に、処理中
+  static COMPLETED = new TaskStateType("completed"); // 完了済み
+  static SKIPPED = new TaskStateType("skipped"); // スキップ済み
+  static ERROR = new TaskStateType("error"); // エラー発生
+  static ALL = [
+    TaskStateType.PENDING,
+    TaskStateType.STARTING,
+    TaskStateType.WAITING,
+    TaskStateType.PROCESS_STARTING,
+    TaskStateType.PROCESSING,
+    TaskStateType.SKIPPED,
+    TaskStateType.ERROR,
+    TaskStateType.COMPLETED,
+  ];
   isPending() {
     return task.value == "pending";
+  }
+  isStarting() {
+    return task.value == "starting";
   }
   isSkipped() {
     return task.value == "skipped";
@@ -55,41 +72,121 @@ class TaskState {
   isCompleted() {
     return task.value == "completed";
   }
+
+  isCompletedOrSkipped() {
+    return this.isCompleted() || this.isSkipped();
+  }
 }
 
+class TaskState {
+  events = TaskStateType.ALL.reduce((memo, v) => {
+    memo[v.value] = null;
+    return memo;
+  }, {});
+  /**
+   * 
+   * @param {TaskStateType} stateType 
+   * @param {Date} datetime 
+   */
+  setState(stateType, datetime) {
+    this.events[stateType.value] = datetime;
+    return this;
+  }
+  
+  getCurrentState() {
+    for(const stateType of TaskStateType.ALL) {
+      if(this.events[stateType.value] != null) {
+        return stateType;
+      }
+    }
+    throw new Error("State not found");
+  }
+}
+
+//----------------
+class ContextAndPlayLoad {
+  context;
+  payload;
+  constructor({context, payload}) {
+    this.context = context;
+    this.payload = payload;
+  }
+}
 class Task {
-  state = TaskState.PENDING;
+  /** @type {ContextAndPlayLoad} */
+  cp
+
+  /**
+   * 
+   * @param {{taskDef:TaskDef, taskState:TaskState}} param0 
+   */
   constructor({
-    context,
-    payload,
-    taskDef
+    taskDef,
+    taskState,
   }) {
     this.taskDef = taskDef;
+    this.taskState = taskState;
   }
 
-  run() {
+  /**
+   * 
+   * @param {TaskStateType} stateType 
+   * @param {Date} datetime 
+   */
+  setState(stateType, datetime) {
+    this.taskState.setState(stateType, datetime);
+  }
+
+  /**
+   * @param {ContextAndPlayLoad} cp 
+   */
+  run(cp) {
+    this.cp = cp;
     setTimeout(this.runloop, 1000);
   }
 
+  /**
+   * 
+   * @param {Task[]} fromTasks 
+   */
+  setFromTasks(fromTasks) {
+    this.fromTasks = fromTasks;
+  }
+
+  /**
+   * 
+   * @param {TaskStateType} state 
+   */
+  setState(state) {
+    this.state = state;
+  }
+
+  isCompletedOrSkipped() {
+    return this.state.isCompletedOrSkipped();
+  }
+
   runloop() {
-    var cp = {context: this.context, payload: this.payload};
+    var cp = this.cp;
     if(this.state.isSkipped() || this.state.isCompleted()) {
       console.log("Task is already completed or skipped.");
       return;
     }
 
     if(this.state.isPending()) {
+    }
+
+    if(this.state.isStarting()) {
       if(this.taskDef.isSkip(cp)) {
-        this.state = TaskState.SKIPPED;
+        this.state = TaskStateType.SKIPPED;
         return;
       }
       if(this.taskDef.type == "waittask") {
-        this.state = TaskState.WAITING;
+        this.state = TaskStateType.WAITING;
         return;
       }
 
       if(this.taskDef.type == "processtask") {
-        this.state = TaskState.PROCESS_STARTING;
+        this.state = TaskStateType.PROCESS_STARTING;
         return;
       }
     }
@@ -98,11 +195,6 @@ class Task {
 
     }
 
-    
-
-    if(this.state.)
-
-
 
     setTimeout(this.runloop, 1000);
   }
@@ -110,25 +202,33 @@ class Task {
 
 
 class Flow {
+  /** @type {string} */
+  id;
+  /** @type {ContextAndPlayLoad} */
+  cp;
   constructor({
-    payload, context, flowDef
+    id,
+    flowDef
   }) {
-    this.payload = payload;
-    this.context = context;
-    this.flowDef = flowDef;
-
-    this.taskMap = {};
-    this.flowDef.taskDefs.forEach(taskDef => {
-      this.taskMap[taskDef.id] = new taskDef({taskDef});
-    });
+    this.id = id;
+    this.flowDef = flowDef;    
   }
 
-  run() {
+  init() {
+    this.taskMap = {};
+    this.flowDef.taskDefs.forEach(taskDef => {
+      const taskState = new TaskState().setState(TaskStateType.PENDING, new Date());
+      this.taskMap[`${this.id}_${taskDef.id}`] = new Task({taskDef, taskState});
+    });
+    return this;
+  }
 
-
+  run(cp) {
     console.log("Flow started with payload:", this.payload);
     console.log("Flow context:", this.context);
     console.log("Flow definition:", this.flowDef);
+
+    this.taskMap.values().forEach(task => {task.run(cp)});
   }
 }
 // Flow definition
@@ -148,8 +248,8 @@ function main() {
   new Flow({
     payload: {data: "test"},
     context: {user: "hoge"},
-    flowDef,
-  }).run();
+    flowDef
+  }).init().run();
 }
 main();
 
