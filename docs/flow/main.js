@@ -12,6 +12,8 @@ class FlowDef {
 
 class StartTaskDef {
   type = "start";
+  executionCondition = () => true;
+  process = () => {};
   constructor({
     id
   }) {
@@ -19,14 +21,13 @@ class StartTaskDef {
     this.fromIds = [];
   }
   isSkip() {
-    return false;
-  }
-  process() {
-    // nop;
+    return !this.executionCondition();
   }
 }
 class ManualTaskDef {
   type = "manual";
+  executionCondition = () => true;
+  process = () => {};
   /**
    * 
    * @param {{id:string, name:string, fromIds:string[]}} param0 
@@ -38,14 +39,23 @@ class ManualTaskDef {
     this.name = name;
     this.fromIds = fromIds;
   }
+  isSkip() {
+    return !this.executionCondition();
+  }
 }
+
 class EndTaskDef {
   type = "end";
+  executionCondition = () => true;
+  process = () => {};
   constructor({
     id, fromIds
   }) {
     this.id = id;
     this.fromIds = fromIds;
+  }
+  isSkip() {
+    return !this.executionCondition();
   }
 }
 
@@ -110,6 +120,7 @@ class TaskState {
     memo[v.value] = null;
     return memo;
   }, {});
+  
   /**
    * 
    * @param {TaskStateType} stateType 
@@ -194,20 +205,15 @@ class Task {
     this.taskStore = taskStore;
   }
 
+  setState(stateType) {
+    this.taskState.setState(stateType, new Date());
+  }
+
   /**
    * @returns {Task[]}
    */
   get fromTasks() {
     return this.taskDef.fromIds.map(id => this.taskStore.findByTaskDefId(id)).filter(v => v != null);
-  }
-
-  /**
-   * 
-   * @param {TaskStateType} stateType 
-   * @param {Date} datetime 
-   */
-  setState(stateType, datetime) {
-    this.taskState.setState(stateType, datetime);
   }
 
   /**
@@ -226,58 +232,72 @@ class Task {
     this.fromTasks = fromTasks;
   }
 
-  /**
-   * 
-   * @param {TaskStateType} state 
-   */
-  setState(state) {
-    this.state = state;
-  }
-
   isCompletedOrSkipped() {
     return this.state.isCompletedOrSkipped();
   }
 
   runloop() {
-    this.runprocess();
+    var nextState = this.runprocess();
+    if(nextState) {
+      this.setState(nextState)
+    }
     setTimeout(() => this.runloop(), 1000);
   }
 
+  /**
+   * 
+   * @returns {TaskStateType | null} 次の状態を返す
+   */
   runprocess() {
-    console.log(TaskStateType.ALL);
     var cp = this.cp;
     if(this.state.isSkipped() || this.state.isCompleted()) {
       //console.log("Task is already completed or skipped.");
-      return;
+      return null;
     }
 
     if(this.state.isPending()) {
       // すべての前のタスクが完了またはスキップされているかを確認
       var isAllFinished = this.fromTasks.length == 0 || this.fromTasks.every(task => task.taskState.isCompletedOrSkipped());
       if(isAllFinished) {
-        this.state.setState(TaskStateType.STARTING, new Date());
-        return;
+        return TaskStateType.STARTING;
+        // this.state.setState(TaskStateType.STARTING, new Date());
+        // return;
       }
-      // console.log(this.);
-      // return;
     }
 
     if(this.state.isStarting()) {
       if(this.taskDef.isSkip(cp)) {
-        this.state.setState(TaskStateType.SKIPPED, new Date());
-        return;
+        return TaskStateType.SKIPPED;
       } else {
-        this.state.setState(TaskStateType.PROCESS_STARTING, new Date());
+        return TaskStateType.PROCESS_STARTING;
       }
     }
 
     if(this.state.isProcessStarting()) {
-      if(this.taskDef.type == "start") {
+      if(this.taskDef.type == "start" || this.taskDef.type == "end") {
         this.taskDef.process(cp);
-        this.state.setState(TaskStateType.COMPLETED, new Date());
+        return TaskStateType.COMPLETED;
       }
       
     }    
+  }
+
+  forceComplete() {
+    this.setState(TaskStateType.COMPLETED);
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      state: this.state.value.value,
+      taskDef: {
+        id: this.taskDef.id,
+        type: this.taskDef.type,
+        name: this.taskDef.name,
+        fromIds: this.taskDef.fromIds,
+      },
+      stateEvents: this.state.events,
+    };
   }
 }
 
@@ -345,8 +365,8 @@ function main() {
     name: "一日の流れ",
     taskDefs: [
       new StartTaskDef({id: "001"}),
-      // new ManualTaskDef({id: "002", name:"起床", fromIds: ["001"]}),
-      // new EndTaskDef({id: "003", fromIds: ["002"]}),
+      new ManualTaskDef({id: "002", name:"起床", fromIds: ["001"]}),
+      new EndTaskDef({id: "003", fromIds: ["002"]}),
     ]
   })
   
@@ -361,25 +381,7 @@ function main() {
 }
 main();
 console.log(flow);
-// const { createApp, ref } = Vue
-
-// createApp({
-//   setup() {
-//     const message = ref('Hello vue!')
-//     return {
-//       message,
-//       flow,
-//       list: ref(flow.tasks),
-//     }
-//   }
-// }).mount('#app')
 
 setInterval(() => {
-  document.getElementById("app").innerHTML = JSON.stringify(flow.tasks.map(task => {
-    return {
-      id: task.id,
-      state: task.state.value.value,
-      fromTasks: task.fromTasks.map(v => v.id),
-    };
-  }), null, 2);
+  document.getElementById("code").innerHTML = JSON.stringify(flow.tasks.map(task => task.toJSON()), null, 2);
 }, 1000);
