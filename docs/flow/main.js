@@ -4,18 +4,29 @@ class FlowDef {
   constructor({
     name, taskDefs
   }) {
+    this.name = name;
+    this.taskDefs = taskDefs;
 
   }
 }
 
 class StartTaskDef {
+  type = "start";
   constructor({
     id
   }) {
     this.id = id;
+    this.fromIds = [];
+  }
+  isSkip() {
+    return false;
+  }
+  process() {
+    // nop;
   }
 }
 class ManualTaskDef {
+  type = "manual";
   /**
    * 
    * @param {{id:string, name:string, fromIds:string[]}} param0 
@@ -29,6 +40,7 @@ class ManualTaskDef {
   }
 }
 class EndTaskDef {
+  type = "end";
   constructor({
     id, fromIds
   }) {
@@ -61,16 +73,28 @@ class TaskStateType {
     TaskStateType.COMPLETED,
   ];
   isPending() {
-    return task.value == "pending";
+    return this.value == "pending";
   }
   isStarting() {
-    return task.value == "starting";
+    return this.value == "starting";
+  }
+  isWaiting() {
+    return this.value == "waiting";
+  }
+  isProcessStarting() {
+    return this.value == "processstarting";
+  }
+  isProcessing() {
+    return this.value == "processing";
   }
   isSkipped() {
-    return task.value == "skipped";
+    return this.value == "skipped";
+  }
+  isError() {
+    return this.value == "error";
   }
   isCompleted() {
-    return task.value == "completed";
+    return this.value == "completed";
   }
 
   isCompletedOrSkipped() {
@@ -79,6 +103,9 @@ class TaskStateType {
 }
 
 class TaskState {
+  /** @type {TaskStateType} */
+  value = TaskStateType.PENDING;
+
   events = TaskStateType.ALL.reduce((memo, v) => {
     memo[v.value] = null;
     return memo;
@@ -90,16 +117,42 @@ class TaskState {
    */
   setState(stateType, datetime) {
     this.events[stateType.value] = datetime;
+    this.value = this.#getCurrentState();
     return this;
   }
   
-  getCurrentState() {
-    for(const stateType of TaskStateType.ALL) {
+  #getCurrentState() {
+    for(let i = TaskStateType.ALL.length - 1; i >= 0; i--) {
+      const stateType = TaskStateType.ALL[i];
       if(this.events[stateType.value] != null) {
         return stateType;
       }
     }
     throw new Error("State not found");
+  }
+
+
+  isPending() {
+    return this.value.isPending();
+  }
+  isStarting() {
+    return this.value.isStarting();
+  }
+  isSkipped() {
+    return this.value.isSkipped();
+  }
+  isProcessing() {
+    return this.value.isProcessing();
+  }
+  isProcessStarting() {
+    return this.value.isProcessStarting(); 
+  }
+  isCompleted() {
+    return this.value.isCompleted();
+  }
+
+  isCompletedOrSkipped() {
+    return this.isCompleted() || this.isSkipped();
   }
 }
 
@@ -115,17 +168,37 @@ class ContextAndPlayLoad {
 class Task {
   /** @type {ContextAndPlayLoad} */
   cp
+  taskDefId;
+
+  /**
+   * @type {TaskStore}
+   */
+  taskStore;
 
   /**
    * 
    * @param {{taskDef:TaskDef, taskState:TaskState}} param0 
    */
   constructor({
+    flowId,
     taskDef,
     taskState,
+    taskStore,
   }) {
+    this.flowId = flowId;
+    this.id = `${flowId}_${taskDef.id}`;
     this.taskDef = taskDef;
+    this.taskDefId = taskDef.id;
     this.taskState = taskState;
+    this.state = taskState;
+    this.taskStore = taskStore;
+  }
+
+  /**
+   * @returns {Task[]}
+   */
+  get fromTasks() {
+    return this.taskDef.fromIds.map(id => this.taskStore.findByTaskDefId(id)).filter(v => v != null);
   }
 
   /**
@@ -142,7 +215,7 @@ class Task {
    */
   run(cp) {
     this.cp = cp;
-    setTimeout(this.runloop, 1000);
+    setTimeout(() => this.runloop(), 1000);
   }
 
   /**
@@ -166,37 +239,64 @@ class Task {
   }
 
   runloop() {
+    this.runprocess();
+    setTimeout(() => this.runloop(), 1000);
+  }
+
+  runprocess() {
+    console.log(TaskStateType.ALL);
     var cp = this.cp;
     if(this.state.isSkipped() || this.state.isCompleted()) {
-      console.log("Task is already completed or skipped.");
+      //console.log("Task is already completed or skipped.");
       return;
     }
 
     if(this.state.isPending()) {
+      // すべての前のタスクが完了またはスキップされているかを確認
+      var isAllFinished = this.fromTasks.length == 0 || this.fromTasks.every(task => task.taskState.isCompletedOrSkipped());
+      if(isAllFinished) {
+        this.state.setState(TaskStateType.STARTING, new Date());
+        return;
+      }
+      // console.log(this.);
+      // return;
     }
 
     if(this.state.isStarting()) {
       if(this.taskDef.isSkip(cp)) {
-        this.state = TaskStateType.SKIPPED;
+        this.state.setState(TaskStateType.SKIPPED, new Date());
         return;
-      }
-      if(this.taskDef.type == "waittask") {
-        this.state = TaskStateType.WAITING;
-        return;
-      }
-
-      if(this.taskDef.type == "processtask") {
-        this.state = TaskStateType.PROCESS_STARTING;
-        return;
+      } else {
+        this.state.setState(TaskStateType.PROCESS_STARTING, new Date());
       }
     }
 
-    if(this.state.isWaiting()) {
+    if(this.state.isProcessStarting()) {
+      if(this.taskDef.type == "start") {
+        this.taskDef.process(cp);
+        this.state.setState(TaskStateType.COMPLETED, new Date());
+      }
+      
+    }    
+  }
+}
 
-    }
+class TaskStore {
+  map = {};
+  /**
+   * 
+   * @param {Task} task 
+   */
+  add(task) {
+    this.map[task.taskDefId] = task;
+  }
 
+  findByTaskDefId(taskDefId) {
+    return this.map[taskDefId];
+  }
 
-    setTimeout(this.runloop, 1000);
+  all() {
+    return Object.values(this.map);
   }
 }
 
@@ -206,6 +306,9 @@ class Flow {
   id;
   /** @type {ContextAndPlayLoad} */
   cp;
+
+  taskStore = new TaskStore();
+  
   constructor({
     id,
     flowDef
@@ -214,11 +317,15 @@ class Flow {
     this.flowDef = flowDef;    
   }
 
+  get tasks() {
+    return this.taskStore.all();
+  }
+
   init() {
-    this.taskMap = {};
     this.flowDef.taskDefs.forEach(taskDef => {
       const taskState = new TaskState().setState(TaskStateType.PENDING, new Date());
-      this.taskMap[`${this.id}_${taskDef.id}`] = new Task({taskDef, taskState});
+      const task = new Task({flowId:this.id, taskDef, taskState, taskStore:this.taskStore});
+      this.taskStore.add(task);
     });
     return this;
   }
@@ -227,29 +334,52 @@ class Flow {
     console.log("Flow started with payload:", this.payload);
     console.log("Flow context:", this.context);
     console.log("Flow definition:", this.flowDef);
-
-    this.taskMap.values().forEach(task => {task.run(cp)});
+    this.taskStore.all().forEach(task => task.run(cp));
   }
 }
 // Flow definition
-
+var flow;
 function main() {
   const flowDef = new FlowDef({
     id: "fd_mo",
     name: "一日の流れ",
     taskDefs: [
       new StartTaskDef({id: "001"}),
-      new ManualTaskDef({id: "002", name:"起床", from: "001"}),
-      new EndTaskDef({id: "003", from: "002"}),
+      // new ManualTaskDef({id: "002", name:"起床", fromIds: ["001"]}),
+      // new EndTaskDef({id: "003", fromIds: ["002"]}),
     ]
   })
   
   
-  new Flow({
+  flow = new Flow({
+    id: "flow_001",
     payload: {data: "test"},
     context: {user: "hoge"},
     flowDef
-  }).init().run();
+  });
+  flow.init().run();
 }
 main();
+console.log(flow);
+// const { createApp, ref } = Vue
 
+// createApp({
+//   setup() {
+//     const message = ref('Hello vue!')
+//     return {
+//       message,
+//       flow,
+//       list: ref(flow.tasks),
+//     }
+//   }
+// }).mount('#app')
+
+setInterval(() => {
+  document.getElementById("app").innerHTML = JSON.stringify(flow.tasks.map(task => {
+    return {
+      id: task.id,
+      state: task.state.value.value,
+      fromTasks: task.fromTasks.map(v => v.id),
+    };
+  }), null, 2);
+}, 1000);
