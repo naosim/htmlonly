@@ -114,6 +114,9 @@ class Task {
   /** @type {ContextAndPlayLoad} */
   cp
   taskDefId;
+  get name() {
+    return this.taskDef.name;
+  }
 
   /**
    * @type {TaskStore}
@@ -244,7 +247,11 @@ class TaskStore {
   add(task) {
     this.map[task.taskDefId] = task;
   }
-
+  /**
+   * 
+   * @param {string} taskDefId 
+   * @returns {Task}
+   */
   findByTaskDefId(taskDefId) {
     return this.map[taskDefId];
   }

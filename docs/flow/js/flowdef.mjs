@@ -1,3 +1,4 @@
+
 export class TaskType {
   value;
   constructor(value) {
@@ -14,29 +15,40 @@ export class TaskType {
 }
 
 export class FlowDef {
+  id;
+  name;
   constructor({
-    name, taskDefs
+    id, name, taskDefs
   }) {
+    this.id = id;
     this.name = name;
     this.taskDefs = taskDefs;
+  }
 
+  /** @type {(cp:ContextAndPlayLoad)=>boolean} */
+  executionCondition = (cp) => true;
+  isSkip(cp) {
+    return !this.executionCondition(cp);
   }
 }
 
+/**
+ * @implements {TaskDef}
+ */
 export class StartTaskDef {
+  id;
   type = TaskType.START;
+  name = this.type.value;
   /** @type {(cp:ContextAndPlayLoad)=>boolean} */
   executionCondition = (cp) => true;
   /** @type {(cp:ContextAndPlayLoad)=>void} */
   process = (cp) => {};
-  constructor({
-    id
-  }) {
+  constructor({id}) {
     this.id = id;
     this.fromIds = [];
   }
-  isSkip() {
-    return !this.executionCondition();
+  isSkip(cp) {
+    return !this.executionCondition(cp);
   }
 }
 
@@ -64,6 +76,7 @@ export class ManualTaskDef {
 
 export class EndTaskDef {
   type = TaskType.END;
+  name = this.type.value;
   /** @type {(cp:ContextAndPlayLoad)=>boolean} */
   executionCondition = (cp) => true;
   /** @type {(cp:ContextAndPlayLoad)=>void} */
