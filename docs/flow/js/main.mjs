@@ -55,33 +55,41 @@ function taskToDiv(task, div) {
   }
 }
 
+var mermaidText = '';
+function initFlowView() {
+  updateFlowView();
+}
+
+/**
+ * 
+ * @param {Flow} flow 
+ */
+function createMermaidText(flow) {
+  var mermaidText = 'graph TD;\n';
+  flow.tasks.forEach(task => {
+    mermaidText += `${task.taskDefId}["${task.taskDefId}"]:::${task.state.value.value}\n`;
+  });
+  flow.tasks.forEach(task => {
+    task.taskDef.fromIds.forEach(fromId => {
+      mermaidText += fromId + ' --> ' + task.taskDefId + '\n';
+    });
+  });
+  return mermaidText;
+}
+
+function updateFlowView() {
+  var currentMermaidText = createMermaidText(flow);
+  if(mermaidText != currentMermaidText) {
+    mermaidText = currentMermaidText;
+    document.getElementById("mermaid").innerHTML = mermaidText;
+  }
+}
+
 
 
 
 main();
-console.log(flow);
-
-
-flow.tasks.forEach(task => {
-  var div = document.createElement("div");
-  taskToDiv(task, div);
-  document.getElementById("app").appendChild(div);
-});
-
-setInterval(() => {
-  flow.tasks.forEach(task => {
-    var div = document.getElementById(task.id);
-    var divHash = div.getAttribute("data-task-hash");
-    // var correntHash = hash(task.toJSON());
-    // console.log(task.id, divHash, correntHash);
-    if(divHash == hash(JSON.stringify(task.toJSON()))) {
-      return;
-    }
-    taskToDiv(task, div);
-  });
-
-  document.getElementById("code").innerHTML = JSON.stringify(flow.tasks.map(task => task.toJSON()), null, 2);
-}, 1000);
+setInterval(updateFlowView, 1000);
 
 function hash(str) {
   var hash = 0,
@@ -108,3 +116,22 @@ console.log(hash("hoge"));
   return hash;
 }
 */
+
+const mermaid = window.mermaid || {};
+mermaid.initialize({ startOnLoad: false, securityLevel: 'loose', });
+initFlowView();
+console.log(mermaidText);
+
+/*
+mermaid.initialize({ startOnLoad: false });
+
+  // Example of using the render function
+  const drawDiagram = async function () {
+    element = document.querySelector('#graphDiv');
+    const graphDefinition = 'graph TB\na-->b';
+    const { svg } = await mermaid.render('graphDiv', graphDefinition);
+    element.innerHTML = svg;
+  };
+
+  await drawDiagram();
+  */
