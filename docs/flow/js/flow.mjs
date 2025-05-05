@@ -214,9 +214,12 @@ class Task {
       if(this.taskDef.type.eq(TaskType.START) || this.taskDef.type.eq(TaskType.END)) {
         this.taskDef.process(cp);
         return TaskStateType.COMPLETED;
+      } else if(this.taskDef.type.eq(TaskType.WAIT)) {
+        if(this.taskDef.isCompletedForWait(cp)) {
+          return TaskStateType.COMPLETED;
+        }
       }
-      
-    }    
+    }
   }
 
   forceComplete() {
@@ -272,10 +275,12 @@ export class Flow {
   
   constructor({
     id,
-    flowDef
+    flowDef,
+    cp
   }) {
     this.id = id;
-    this.flowDef = flowDef;    
+    this.flowDef = flowDef;  
+    this.cp = cp;  
   }
 
   get tasks() {
@@ -291,10 +296,10 @@ export class Flow {
     return this;
   }
 
-  run(cp) {
+  run() {
     console.log("Flow started with payload:", this.payload);
     console.log("Flow context:", this.context);
     console.log("Flow definition:", this.flowDef);
-    this.taskStore.all().forEach(task => task.run(cp));
+    this.taskStore.all().forEach(task => task.run(this.cp));
   }
 }

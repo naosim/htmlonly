@@ -16,7 +16,7 @@ export class TaskType {
   static FLOW_TASK = new TaskType("flowtask");
 }
 
-class TaskDef {
+export class TaskDef {
   id;
   /** @type {TaskType} */
   type;
@@ -27,15 +27,18 @@ class TaskDef {
   executionCondition = (cp) => true;
   /** @type {(cp:ContextAndPlayLoad)=>void} */
   process = (cp) => {};
+  /** @type {(cp:ContextAndPlayLoad)=>boolean} */
+  isCompletedForWait;
   isSkip() {
     return !this.executionCondition();
   }
+
   /**
    * 
-   * @param {{id:string, type:TaskType, name:string, fromIds:string[], executionCondition:(cp:ContextAndPlayLoad)=>boolean, process:(cp:ContextAndPlayLoad)=>void}} param0 
+   * @param {{id:string, type:TaskType, name:string, fromIds:string[], executionCondition:(cp:ContextAndPlayLoad)=>boolean, process:(cp:ContextAndPlayLoad)=>void, isCompletedForWait:(cp:ContextAndPlayLoad)=>boolean}} param0 
    */
   constructor({
-    id, type, name, fromIds, executionCondition, process
+    id, type, name, fromIds, executionCondition, process, isCompletedForWait
   }) {
     this.id = id;
     this.type = type;
@@ -43,6 +46,7 @@ class TaskDef {
     this.fromIds = fromIds;
     this.executionCondition = executionCondition;
     this.process = process;
+    this.isCompletedForWait = isCompletedForWait || ((cp) => false);
   }
 
   static start({id}) {
@@ -77,14 +81,19 @@ class TaskDef {
       process: (cp) => {}
     });
   }
-  static wait({id, name, fromIds, executionCondition, process}) {
+  /**
+   * 
+   * @param {{id:string, name:string, fromIds:string[], executionCondition:(cp:ContextAndPlayLoad)=>boolean, isCompleted:(cp:ContextAndPlayLoad)=>boolean}} param0 
+   * @returns 
+   */
+  static wait({id, name, fromIds, executionCondition, isCompletedForWait}) {
     return new TaskDef({
       id,
       type: TaskType.WAIT,
       name,
       fromIds,
       executionCondition: executionCondition || ((cp) => true),
-      process
+      isCompletedForWait,
     });
   }
 
@@ -109,22 +118,6 @@ class TaskDef {
       process: (cp) => {}
     });
   }
-
-  /**
-   * 
-   * @param {{flow:FlowDef, fromIds:[]}} param0 
-   * @returns 
-   */
-  static flowTask({flow, fromIds}) {
-    return new TaskDef({
-      id: flow.id,
-      type: TaskType.FLOW_TASK,
-      name: flow.name,
-      fromIds,
-      executionCondition: (cp) => true,
-      process: (cp) => {}
-    });
-  }
 }
 
 export class FlowDef {
@@ -142,66 +135,6 @@ export class FlowDef {
   executionCondition = (cp) => true;
   isSkip(cp) {
     return !this.executionCondition(cp);
-  }
-}
-
-/**
- * @implements {TaskDef}
- */
-export class StartTaskDef {
-  id;
-  type = TaskType.START;
-  name = this.type.value;
-  /** @type {(cp:ContextAndPlayLoad)=>boolean} */
-  executionCondition = (cp) => true;
-  /** @type {(cp:ContextAndPlayLoad)=>void} */
-  process = (cp) => {};
-  constructor({id}) {
-    this.id = id;
-    this.fromIds = [];
-  }
-  isSkip(cp) {
-    return !this.executionCondition(cp);
-  }
-}
-
-export class ManualTaskDef {
-  type = TaskType.MANUAL;
-  /** @type {(cp:ContextAndPlayLoad)=>boolean} */
-  executionCondition = (cp) => true;
-  /** @type {(cp:ContextAndPlayLoad)=>void} */
-  process = (cp) => {};
-  /**
-   * 
-   * @param {{id:string, name:string, fromIds:string[]}} param0 
-   */
-  constructor({
-    id, name, fromIds
-  }) {
-    this.id = id;
-    this.name = name;
-    this.fromIds = fromIds;
-  }
-  isSkip() {
-    return !this.executionCondition();
-  }
-}
-
-export class EndTaskDef {
-  type = TaskType.END;
-  name = this.type.value;
-  /** @type {(cp:ContextAndPlayLoad)=>boolean} */
-  executionCondition = (cp) => true;
-  /** @type {(cp:ContextAndPlayLoad)=>void} */
-  process = (cp) => {};
-  constructor({
-    id, fromIds
-  }) {
-    this.id = id;
-    this.fromIds = fromIds;
-  }
-  isSkip() {
-    return !this.executionCondition();
   }
 }
 

@@ -1,4 +1,4 @@
-import { FlowDef, StartTaskDef, ManualTaskDef, EndTaskDef, TaskType } from "./flowdef.mjs";
+import { ContextAndPlayLoad } from "./flowdef.mjs";
 import { Flow } from "./flow.mjs";
 import {flowDef} from "./myflowdef.mjs";
 function hash(str) {
@@ -20,11 +20,12 @@ function main() {
   // フローを開始する
   flow = new Flow({
     id: "flow_001",
-    payload: {data: "test"},
-    context: {user: "hoge"},
+    cp: new ContextAndPlayLoad({payload: {data: "test", coffeeBeanGrindComplete: false}, context: {user: "hoge"}}),
     flowDef
   });
   flow.init().run();
+
+  window.flow = flow;
 }
 
 var mermaidText = '';
