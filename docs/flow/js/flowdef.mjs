@@ -11,7 +11,120 @@ export class TaskType {
   static START = new TaskType("start");
   static END = new TaskType("end");
   static WAIT = new TaskType("wait");
+  static PROCESS = new TaskType("process");
+  static MILESTONE = new TaskType("milestone");
+  static FLOW_TASK = new TaskType("flowtask");
+}
 
+class TaskDef {
+  id;
+  /** @type {TaskType} */
+  type;
+  name;
+  /** @type {string[]} */
+  fromIds;
+  /** @type {(cp:ContextAndPlayLoad)=>boolean} */
+  executionCondition = (cp) => true;
+  /** @type {(cp:ContextAndPlayLoad)=>void} */
+  process = (cp) => {};
+  isSkip() {
+    return !this.executionCondition();
+  }
+  /**
+   * 
+   * @param {{id:string, type:TaskType, name:string, fromIds:string[], executionCondition:(cp:ContextAndPlayLoad)=>boolean, process:(cp:ContextAndPlayLoad)=>void}} param0 
+   */
+  constructor({
+    id, type, name, fromIds, executionCondition, process
+  }) {
+    this.id = id;
+    this.type = type;
+    this.name = name;
+    this.fromIds = fromIds;
+    this.executionCondition = executionCondition;
+    this.process = process;
+  }
+
+  static start({id}) {
+    return new TaskDef({
+      id,
+      type: TaskType.START,
+      name: TaskType.START.value,
+      fromIds: [],
+      executionCondition: (cp) => true,
+      process: (cp) => {}
+    });
+  }
+
+  static manual({id, name, fromIds, executionCondition}) {
+    return new TaskDef({
+      id,
+      type: TaskType.MANUAL,
+      name,
+      fromIds,
+      executionCondition: executionCondition || ((cp) => true),
+      process: (cp) => {}
+    });
+  }
+
+  static end({id, fromIds}) {
+    return new TaskDef({
+      id,
+      type: TaskType.END,
+      name: TaskType.END.value,
+      fromIds,
+      executionCondition: (cp) => true,
+      process: (cp) => {}
+    });
+  }
+  static wait({id, name, fromIds, executionCondition, process}) {
+    return new TaskDef({
+      id,
+      type: TaskType.WAIT,
+      name,
+      fromIds,
+      executionCondition: executionCondition || ((cp) => true),
+      process
+    });
+  }
+
+  static process({id, name, fromIds, executionCondition, process}) {
+    return new TaskDef({
+      id,
+      type: TaskType.PROCESS,
+      name,
+      fromIds,
+      executionCondition: executionCondition || ((cp) => true),
+      process
+    });
+  }
+
+  static milestone({id, name, fromIds}) {
+    return new TaskDef({
+      id,
+      type: TaskType.MILESTONE,
+      name,
+      fromIds,
+      executionCondition: (cp) => true,
+      process: (cp) => {}
+    });
+  }
+
+  /**
+   * 
+   * @param {{flow:FlowDef, fromIds:[]}} param0 
+   * @returns 
+   */
+  static flowTask({flow, fromIds}) {
+    return new TaskDef({
+      id: flow.id,
+      type: TaskType.FLOW_TASK,
+      name: flow.name,
+      fromIds,
+      executionCondition: (cp) => true,
+      process: (cp) => {}
+    });
+  }
 }
 
 export class FlowDef {
