@@ -1,3 +1,18 @@
+export class TaskType {
+  value;
+  constructor(value) {
+    this.value = value;
+  }
+  eq(other) {
+    return this.value === other.value;
+  }
+  static MANUAL = new TaskType("manual");
+  static START = new TaskType("start");
+  static END = new TaskType("end");
+  static WAIT = new TaskType("wait");
+
+}
+
 export class FlowDef {
   constructor({
     name, taskDefs
@@ -9,8 +24,7 @@ export class FlowDef {
 }
 
 export class StartTaskDef {
-  type = "start";
-
+  type = TaskType.START;
   /** @type {(cp:ContextAndPlayLoad)=>boolean} */
   executionCondition = (cp) => true;
   /** @type {(cp:ContextAndPlayLoad)=>void} */
@@ -27,7 +41,7 @@ export class StartTaskDef {
 }
 
 export class ManualTaskDef {
-  type = "manual";
+  type = TaskType.MANUAL;
   /** @type {(cp:ContextAndPlayLoad)=>boolean} */
   executionCondition = (cp) => true;
   /** @type {(cp:ContextAndPlayLoad)=>void} */
@@ -49,7 +63,7 @@ export class ManualTaskDef {
 }
 
 export class EndTaskDef {
-  type = "end";
+  type = TaskType.END;
   /** @type {(cp:ContextAndPlayLoad)=>boolean} */
   executionCondition = (cp) => true;
   /** @type {(cp:ContextAndPlayLoad)=>void} */

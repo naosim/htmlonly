@@ -1,4 +1,4 @@
-import { ContextAndPlayLoad } from "./flowdef.mjs";
+import { ContextAndPlayLoad, TaskType } from "./flowdef.mjs";
 
 class TaskStateType {
   value;
@@ -208,7 +208,7 @@ class Task {
     }
 
     if(this.state.isProcessStarting()) {
-      if(this.taskDef.type == "start" || this.taskDef.type == "end") {
+      if(this.taskDef.type.eq(TaskType.START) || this.taskDef.type.eq(TaskType.END)) {
         this.taskDef.process(cp);
         return TaskStateType.COMPLETED;
       }
@@ -226,7 +226,7 @@ class Task {
       state: this.state.value.value,
       taskDef: {
         id: this.taskDef.id,
-        type: this.taskDef.type,
+        type: this.taskDef.type.value,
         name: this.taskDef.name,
         fromIds: this.taskDef.fromIds,
       },

@@ -1,4 +1,4 @@
-import { FlowDef, StartTaskDef, ManualTaskDef, EndTaskDef } from "./flowdef.mjs";
+import { FlowDef, StartTaskDef, ManualTaskDef, EndTaskDef, TaskType } from "./flowdef.mjs";
 import { Flow } from "./flow.mjs";
 
 // Flow definition
@@ -24,15 +24,47 @@ function main() {
   });
   flow.init().run();
 }
+
+/**
+ * 
+ * @param {Task} task 
+ * @param {any} div 
+ */
+function taskToDiv(task, div) {
+  if(div.id != task.id) {// 最初
+    div.id = task.id;
+
+    const title = document.createElement("div");
+    title.className = "title";
+    div.appendChild(title);
+
+    if(task.taskDef.type.eq(TaskType.MANUAL)) {
+      const manualButton = document.createElement("button");
+      manualButton.innerText = "完了にする";
+      manualButton.onclick = () => task.forceComplete();
+      div.appendChild(manualButton);
+    }
+  }
+
+  div.querySelector(".title").innerText = task.id;
+  div.setAttribute("data-task-hash", hash(JSON.stringify(task.toJSON())));
+  if (task.state.isCompleted()) {
+    div.style.backgroundColor = "green";
+  } else {
+    div.style.backgroundColor = "blue";
+  }
+}
+
+
+
+
 main();
 console.log(flow);
 
 
 flow.tasks.forEach(task => {
   var div = document.createElement("div");
-  div.id = task.id;
-  div.innerText = task.id;
-  div.setAttribute("data-task-hash", "");
+  taskToDiv(task, div);
   document.getElementById("app").appendChild(div);
 });
 
@@ -45,11 +77,7 @@ setInterval(() => {
     if(divHash == hash(JSON.stringify(task.toJSON()))) {
       return;
     }
-    if (task.state.isCompleted()) {
-      div.style.backgroundColor = "green";
-    } else {
-      div.style.backgroundColor = "blue";
-    }
+    taskToDiv(task, div);
   });
 
   document.getElementById("code").innerHTML = JSON.stringify(flow.tasks.map(task => task.toJSON()), null, 2);
