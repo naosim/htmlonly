@@ -1,6 +1,6 @@
-import { ContextAndPlayLoad } from "./flowdef.mjs";
+import { ContextAndPlayLoad, FlowDefRepository, TaskType } from "./flowdef.mjs";
 import { Flow } from "./flow.mjs";
-import {flowDef} from "./myflowdef.mjs";
+import {flowDefsJson} from "./myflowdef.mjs";
 function hash(str) {
   var hash = 0,
     i, chr;
@@ -17,11 +17,13 @@ function hash(str) {
 /** @type {Flow} */
 var flow;
 function main() {  
+  const flowDefRepository = FlowDefRepository.createFromJsonObject(flowDefsJson);
+  const flowDef = flowDefRepository.findById("fd_mo");
   // フローを開始する
   flow = new Flow({
     id: "flow_001",
     cp: new ContextAndPlayLoad({payload: {data: "test", coffeeBeanGrindComplete: false}, context: {user: "hoge"}}),
-    flowDef
+    flowDef: flowDef,
   });
   flow.init().run();
 
@@ -45,7 +47,8 @@ window.onClickForceComplete = function(taskDefId) {
 function createMermaidText(flow) {
   var mermaidText = 'graph TD;\n';
   flow.tasks.forEach(task => {
-    mermaidText += `${task.taskDefId}["${task.name} <button id="${task.taskDefId}">▼</button>"]:::${task.state.value.value}\n`;
+    var completeButton = !task.taskDef.type.eq(TaskType.MANUAL) ? "" : `<br><button data-task-def-id="${task.taskDefId}" data-button-type="complete">完了</button>`;
+    mermaidText += `${task.taskDefId}["${task.name} <button id="${task.taskDefId}" data-task-def-id="${task.taskDefId}" data-button-type="menu">▼</button>${completeButton}"]:::${task.state.value.value}\n`;
   });
   flow.tasks.forEach(task => {
     task.taskDef.fromIds.forEach(fromId => {
@@ -72,10 +75,15 @@ async function updateFlowView() {
     mermaidDiv.innerHTML = svg;
     mermaidDiv.querySelectorAll("button").forEach(button => {
       button.onclick = () => {
-        const taskId = button.id;
+        const taskId = button.getAttribute("data-task-def-id");
+        const buttonType = button.getAttribute("data-button-type");
         var task = flow.taskStore.findByTaskDefId(taskId);
-        let dialog2 = xdialog.create({title: task.taskDef.name, body: `<button onclick="onClickForceComplete('${task.taskDef.id}')">完了にする</button>`});
-        dialog2.show();
+        if(buttonType == "menu") {
+          let dialog2 = xdialog.create({title: task.taskDef.name, body: `<button onclick="onClickForceComplete('${task.taskDef.id}')">完了にする</button>`});
+          dialog2.show();
+        } else if(buttonType == "complete") {
+          task.forceComplete();
+        }
       };
     });
   }

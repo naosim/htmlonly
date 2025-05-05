@@ -1,4 +1,14 @@
 
+
+export class ContextAndPlayLoad {
+  context;
+  payload;
+  constructor({context, payload}) {
+    this.context = context;
+    this.payload = payload;
+  }
+}
+
 export class TaskType {
   value;
   constructor(value) {
@@ -136,13 +146,57 @@ export class FlowDef {
   isSkip(cp) {
     return !this.executionCondition(cp);
   }
+
+  static createFromJsonObject(json) {
+    json.taskDefs = json.taskDefs
+      .map(taskDef => {
+        ["executionCondition", "process","isCompletedForWait"].forEach(key => {
+          if(taskDef[key]) {
+            taskDef[key] = eval(taskDef[key]);
+          }
+        })
+        return taskDef;
+      })
+      .map(taskDef => {
+        switch (taskDef.type) {
+          case "start":
+            return TaskDef.start(taskDef);
+          case "manual":
+            return TaskDef.manual(taskDef);
+          case "wait":
+            return TaskDef.wait(taskDef);
+          case "end":
+            return TaskDef.end(taskDef);
+          default:
+            throw new Error(`Unknown task type: ${taskDef.type}`);
+        }
+      });
+
+    return new FlowDef(json)
+  }
 }
 
-export class ContextAndPlayLoad {
-  context;
-  payload;
-  constructor({context, payload}) {
-    this.context = context;
-    this.payload = payload;
+export class FlowDefRepository {
+  map = {};
+  add(flowDef) {
+    this.map[flowDef.id] = flowDef;
+  }
+  findById(id) {
+    return this.map[id];
+  }
+  all() {
+    return Object.values(this.map);
+  }
+  /**
+   * 
+   * @param {any[]} json 
+   */
+  static createFromJsonObject(json) {
+    var r = new FlowDefRepository();
+    json.forEach(flowDefJson => {
+      var flowDef = FlowDef.createFromJsonObject(flowDefJson);
+      r.add(flowDef);
+    });
+    return r;
   }
 }
