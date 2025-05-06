@@ -1,4 +1,4 @@
-import { ContextAndPlayLoad, FlowDefRepository, TaskType } from "./flowdef.mjs";
+import { ContextAndPayLoad, FlowDefRepository, TaskType } from "./flowdef.mjs";
 import { Flow } from "./flow.mjs";
 import {flowDefsJson} from "./myflowdef.mjs";
 function hash(str) {
@@ -22,10 +22,10 @@ function main() {
   // フローを開始する
   flow = new Flow({
     id: "flow_001",
-    cp: new ContextAndPlayLoad({payload: {data: "test", coffeeBeanGrindComplete: false}, context: {user: "hoge"}}),
+    cp: new ContextAndPayLoad({payload: {data: "test", coffeeBeanGrindComplete: false}, context: {user: "hoge"}}),
     flowDef: flowDef,
   });
-  flow.init().run2();
+  flow.init().run();
 
   window.flow = flow;
 }

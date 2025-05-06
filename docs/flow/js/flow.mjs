@@ -1,4 +1,4 @@
-import { ContextAndPlayLoad, TaskType } from "./flowdef.mjs";
+import { ContextAndPayLoad, TaskType } from "./flowdef.mjs";
 
 class TaskStateType {
   value;
@@ -111,7 +111,7 @@ class TaskState {
 //----------------
 
 class Task {
-  /** @type {ContextAndPlayLoad} */
+  /** @type {ContextAndPayLoad} */
   cp
   taskDefId;
   get name() {
@@ -154,7 +154,7 @@ class Task {
   }
 
   /**
-   * @param {ContextAndPlayLoad} cp 
+   * @param {ContextAndPayLoad} cp 
    */
   run(cp) {
     var nextState = this.runprocess(cp);
@@ -221,8 +221,10 @@ class Task {
 
   toJSON() {
     return {
+      flowId: this.flowId,
       id: this.id,
       state: this.state.value.value,
+      taskDefId: this.taskDef.id,
       taskDef: {
         id: this.taskDef.id,
         type: this.taskDef.type.value,
@@ -261,7 +263,7 @@ class TaskStore {
 export class Flow {
   /** @type {string} */
   id;
-  /** @type {ContextAndPlayLoad} */
+  /** @type {ContextAndPayLoad} */
   cp;
 
   taskStore = new TaskStore();
@@ -290,7 +292,7 @@ export class Flow {
   }
 
   run() {
-    this.taskStore.all().forEach(task => task.run2(this.cp));
+    this.taskStore.all().forEach(task => task.run(this.cp));
     if(!this.isCompleted()) {
       setTimeout(() => this.run(), 1000);
     } else {
@@ -300,5 +302,13 @@ export class Flow {
   }
   isCompleted() {
     return this.tasks.every(task => task.isCompletedOrSkipped());
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      payload: this.cp.payload,
+      tasks: this.tasks.map(task => task.toJSON()),
+    };
   }
 }

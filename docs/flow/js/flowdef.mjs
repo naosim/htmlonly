@@ -1,6 +1,6 @@
 
 
-export class ContextAndPlayLoad {
+export class ContextAndPayLoad {
   context;
   payload;
   constructor({context, payload}) {
@@ -33,11 +33,11 @@ export class TaskDef {
   name;
   /** @type {string[]} */
   fromIds;
-  /** @type {(cp:ContextAndPlayLoad)=>boolean} */
+  /** @type {(cp:ContextAndPayLoad)=>boolean} */
   executionCondition = (cp) => true;
-  /** @type {(cp:ContextAndPlayLoad)=>void} */
+  /** @type {(cp:ContextAndPayLoad)=>void} */
   process = (cp) => {};
-  /** @type {(cp:ContextAndPlayLoad)=>boolean} */
+  /** @type {(cp:ContextAndPayLoad)=>boolean} */
   isCompletedForWait;
   isSkip() {
     return !this.executionCondition();
@@ -45,7 +45,7 @@ export class TaskDef {
 
   /**
    * 
-   * @param {{id:string, type:TaskType, name:string, fromIds:string[], executionCondition:(cp:ContextAndPlayLoad)=>boolean, process:(cp:ContextAndPlayLoad)=>void, isCompletedForWait:(cp:ContextAndPlayLoad)=>boolean}} param0 
+   * @param {{id:string, type:TaskType, name:string, fromIds:string[], executionCondition:(cp:ContextAndPayLoad)=>boolean, process:(cp:ContextAndPayLoad)=>void, isCompletedForWait:(cp:ContextAndPayLoad)=>boolean}} param0 
    */
   constructor({
     id, type, name, fromIds, executionCondition, process, isCompletedForWait
@@ -93,7 +93,7 @@ export class TaskDef {
   }
   /**
    * 
-   * @param {{id:string, name:string, fromIds:string[], executionCondition:(cp:ContextAndPlayLoad)=>boolean, isCompleted:(cp:ContextAndPlayLoad)=>boolean}} param0 
+   * @param {{id:string, name:string, fromIds:string[], executionCondition:(cp:ContextAndPayLoad)=>boolean, isCompleted:(cp:ContextAndPayLoad)=>boolean}} param0 
    * @returns 
    */
   static wait({id, name, fromIds, executionCondition, isCompletedForWait}) {
@@ -141,7 +141,7 @@ export class FlowDef {
     this.taskDefs = taskDefs;
   }
 
-  /** @type {(cp:ContextAndPlayLoad)=>boolean} */
+  /** @type {(cp:ContextAndPayLoad)=>boolean} */
   executionCondition = (cp) => true;
   isSkip(cp) {
     return !this.executionCondition(cp);
