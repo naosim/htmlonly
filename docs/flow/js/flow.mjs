@@ -157,8 +157,10 @@ class Task {
    * @param {ContextAndPlayLoad} cp 
    */
   run(cp) {
-    this.cp = cp;
-    setTimeout(() => this.runloop(), 1000);
+    var nextState = this.runprocess(cp);
+    if(nextState) {
+      this.setState(nextState)
+    }
   }
 
   /**
@@ -173,20 +175,11 @@ class Task {
     return this.state.isCompletedOrSkipped();
   }
 
-  runloop() {
-    var nextState = this.runprocess();
-    if(nextState) {
-      this.setState(nextState)
-    }
-    setTimeout(() => this.runloop(), 1000);
-  }
-
   /**
    * 
    * @returns {TaskStateType | null} 次の状態を返す
    */
-  runprocess() {
-    var cp = this.cp;
+  runprocess(cp) {
     if(this.state.isSkipped() || this.state.isCompleted()) {
       //console.log("Task is already completed or skipped.");
       return null;
@@ -297,9 +290,15 @@ export class Flow {
   }
 
   run() {
-    console.log("Flow started with payload:", this.payload);
-    console.log("Flow context:", this.context);
-    console.log("Flow definition:", this.flowDef);
-    this.taskStore.all().forEach(task => task.run(this.cp));
+    this.taskStore.all().forEach(task => task.run2(this.cp));
+    if(!this.isCompleted()) {
+      setTimeout(() => this.run(), 1000);
+    } else {
+      console.log(this.id, "Flow is completed.");
+    }
+    
+  }
+  isCompleted() {
+    return this.tasks.every(task => task.isCompletedOrSkipped());
   }
 }

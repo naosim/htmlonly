@@ -25,7 +25,7 @@ function main() {
     cp: new ContextAndPlayLoad({payload: {data: "test", coffeeBeanGrindComplete: false}, context: {user: "hoge"}}),
     flowDef: flowDef,
   });
-  flow.init().run();
+  flow.init().run2();
 
   window.flow = flow;
 }
