@@ -109,7 +109,29 @@
     setTimeout(async () => {
       // Load sample.tsv
       const tsvData = await DataStore.getTsvData();
-      const { columns, data, columnVariations } = tsvData;
+      var { columns, data, columnVariations } = tsvData;
+      // Header Menu for Pinning
+      const headerMenu = [
+        {
+          label: "📌 右に固定",
+          action: function (e, column) {
+            column.updateDefinition({ frozen: "right" });
+          }
+        },
+        {
+          label: "📌 左に固定",
+          action: function (e, column) {
+            column.updateDefinition({ frozen: true });
+          }
+        },
+        {
+          label: "🔓 固定解除",
+          action: function (e, column) {
+            column.updateDefinition({ frozen: false });
+          }
+        }
+      ];
+      columns = columns.map(col => ({ ...col, headerMenu: headerMenu, headerFilter: "input" }));
       console.log(columnVariations);
 
       // columnVariations に含まれるカラムのフィルター設定を更新
@@ -186,22 +208,6 @@
         // Extract headers from the first line
         const headers = lines[0].split('\t').map(h => h.trim());
 
-        // Header Menu for Pinning
-        const headerMenu = [
-          {
-            label: "📌 列を固定",
-            action: function (e, column) {
-              column.updateDefinition({ frozen: true });
-            }
-          },
-          {
-            label: "🔓 固定解除",
-            action: function (e, column) {
-              column.updateDefinition({ frozen: false });
-            }
-          }
-        ];
-
         // Map data rows
         const data = lines.slice(1).map(line => {
           const values = line.split('\t');
@@ -217,8 +223,6 @@
         const columns = headers.map(header => ({
           title: header,
           field: header,
-          headerFilter: "input", // Simple text filter for all columns
-          headerMenu: headerMenu, // Enable header menu
         }));
 
         return { columns, data };
