@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Sheet</title>
+  <!-- DaisyUI & Tailwind -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tabulator -->
+  <link href="https://unpkg.com/tabulator-tables@6.2.1/dist/css/tabulator.min.css" rel="stylesheet">
+  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@6.2.1/dist/js/tabulator.min.js"></script>
+
+  <!-- Tabby -->
+  <script src="https://cdn.jsdelivr.net/gh/cferdinandi/tabby/dist/js/tabby.polyfills.min.js"></script>
+  <style>
+    /* Tabby Tabs Simple Styles */
+    [role="tablist"] {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      display: flex;
+      gap: 0.5rem;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    [role="tab"] {
+      display: inline-block;
+      padding: 0.75rem 1.25rem;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 0.5rem 0.5rem 0 0;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    [role="tab"][aria-selected="true"] {
+      background-color: #fff;
+      border-color: #e5e7eb;
+      border-bottom-color: #fff;
+      margin-bottom: -2px;
+      font-weight: bold;
+    }
+
+    [role="tabpanel"] {
+      padding: 1.5rem;
+      border: 1px solid #e5e7eb;
+      border-top: none;
+      background-color: #fff;
+      border-radius: 0 0.5rem 0.5rem;
+    }
+  </style>
+</head>
+
+<body class="p-8">
+
+  <!-- Tabby HTML Structure -->
+  <ul data-tabs>
+    <li><a data-tabby-default href="#tab1">Tab 1</a></li>
+    <li><a href="#tab2">Tab 2</a></li>
+    <li><a href="#tab3">Tab 3</a></li>
+  </ul>
+
+  <div id="tab1" class="overflow-x-auto">
+    <h2 class="text-xl font-bold mb-4">Table Tab</h2>
+
+    <!-- 列表示切り替えメニュー -->
+    <div class="mb-4">
+      <details class="dropdown">
+        <summary class="btn btn-sm btn-outline m-1">表示列を選択</summary>
+        <ul id="column-toggles"
+          class="p-2 shadow menu dropdown-content z-[2] bg-base-100 rounded-box w-64 max-h-96 overflow-y-auto">
+          <!-- ここにJSでチェックボックスを追加します -->
+        </ul>
+      </details>
+    </div>
+
+    <div id="example-table"></div>
+  </div>
+
+  <div id="tab2">
+    <h2 class="text-xl font-bold mb-4">Content for Tab 2</h2>
+    <p>This is the content for the second tab.</p>
+  </div>
+
+  <div id="tab3">
+    <h2 class="text-xl font-bold mb-4">Content for Tab 3</h2>
+    <p>This is the content for the third tab.</p>
+  </div>
+
+
+  <script type="module">
+    // Initialize Tabby
+    var tabs = new Tabby('[data-tabs]');
+
+    // Initialize Tabulator with empty state
+    var table = new Tabulator("#example-table", {
+      layout: "fitData", //fit columns to width of data
+      height: "500px", // set height of table
+      rowHeader: { formatter: "rownum", headerSort: false, hozAlign: "center", resizable: false, frozen: true },
+      placeholder: "Loading Data...", //display message to user on empty table
+      movableColumns: true, // Enable column moving
+    });
+
+    // 少しタイミングを遅らせる。
+    setTimeout(async () => {
+      // Load sample.tsv
+      const tsvData = await DataStore.getTsvData();
+      var { columns, data, columnVariations } = tsvData;
+      // Header Menu for Pinning
+      const headerMenu = [
+        {
+          label: "📌 右に固定",
+          action: function (e, column) {
+            column.updateDefinition({ frozen: "right" });
+          }
+        },
+        {
+          label: "📌 左に固定",
+          action: function (e, column) {
+            column.updateDefinition({ frozen: true });
+          }
+        },
+        {
+          label: "🔓 固定解除",
+          action: function (e, column) {
+            column.updateDefinition({ frozen: false });
+          }
+        }
+      ];
+      columns = columns.map(col => ({ ...col, headerMenu: headerMenu, headerFilter: "input" }));
+      console.log(columnVariations);
+
+      // columnVariations に含まれるカラムのフィルター設定を更新
+      columnVariations.forEach(variation => {
+        const col = columns.find(c => c.field === variation.target);
+        if (col) {
+          col.headerFilter = "list";
+          col.headerFilterParams = {
+            values: variation.values,
+            multiselect: true, // 複数選択可能
+            clearable: true,
+          };
+          col.headerFilterFunc = "in"; // OR条件 (リストに含まれるか)
+        }
+      });
+
+      // Update table with new columns and data
+      table.setColumns(columns);
+      table.setData(data);
+
+      // カラム表示切り替えメニューを生成
+      const toggleList = document.getElementById('column-toggles');
+      toggleList.innerHTML = ''; // Reset
+      columns.forEach(col => {
+        const li = document.createElement('li');
+        const label = document.createElement('label');
+        label.className = "label cursor-pointer justify-start gap-2";
+
+        const checkbox = document.createElement('input');
+        checkbox.type = "checkbox";
+        checkbox.className = "checkbox checkbox-xs";
+        checkbox.checked = true; // 初期はすべて表示
+
+        // チェックボックスの変更イベント
+        checkbox.addEventListener('change', function () {
+          table.toggleColumn(col.field);
+        });
+
+        const span = document.createElement('span');
+        span.className = "label-text";
+        span.innerText = col.title;
+
+        label.appendChild(checkbox);
+        label.appendChild(span);
+        li.appendChild(label);
+        toggleList.appendChild(li);
+      });
+    }, 1);
+
+
+    document.addEventListener('tabby', function (event) {
+      if (event.target.hash === '#tab1') {
+        table.redraw();
+      }
+    });
+
+    class DataStore {
+      static async getTsvData() {
+        const filePath = '../sample.tsv';
+        const variationTargets = ['IsActive', 'Family'];
+        const tsvData = await DataStore.loadTSV(filePath);
+        const { columns, data } = tsvData;
+        /**
+         * @type {{target: string, index: number, values: string[]}[]}
+         */
+        const columnVariations = variationTargets.map(target => ({ target, index: columns.findIndex(col => col.field === target), values: Array.from(new Set(data.map(row => row[target]))) }));
+        return { columns, data, columnVariations };
+      }
+      // TSV Parsing Helper
+      static parseTSV(tsvText) {
+        const lines = tsvText.trim().split('\n');
+        if (lines.length === 0) return { columns: [], data: [] };
+
+        // Extract headers from the first line
+        const headers = lines[0].split('\t').map(h => h.trim());
+
+        // Map data rows
+        const data = lines.slice(1).map(line => {
+          const values = line.split('\t');
+          const row = {};
+          headers.forEach((header, index) => {
+            // Handle potential missing values or quotes if necessary (basic split here)
+            row[header] = values[index] ? values[index].trim() : "";
+          });
+          return row;
+        });
+
+        // Create Tabulator column definitions
+        const columns = headers.map(header => ({
+          title: header,
+          field: header,
+        }));
+
+        return { columns, data };
+      }
+      /**
+       * @return {Promise<{columns: string[], data: string[][]}>}
+       */
+      static async loadTSV(filePath) {
+        const response = await fetch(filePath);
+        if (!response.ok) throw new Error("Failed to load file");
+        const text = await response.text();
+        return DataStore.parseTSV(text);
+      }
+    }
+  </script>
+</body>
+
+</html>

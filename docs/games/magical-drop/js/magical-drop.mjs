@@ -1,16 +1,20 @@
-
 /**
  * @typedef {'赤' | '青' | '緑' | '黄'} StoneColor
  */
 
-/**
- * @typedef {{行:number, 列:number}} Pos
- */
+// only typedef
+export class Pos {
+  /** @type {number} */
+  行;
+  /** @type {number} */
+  列;
+}
+
 
 /**
  * 取った石
  */
-class PullStones {
+export class PullStones {
   /** @type {StoneColor | "空"} */
   #色;
   /**
@@ -116,7 +120,7 @@ class Empty {
 /**
  * 石または空
  */
-class StoneOrEmpty {
+export class StoneOrEmpty {
   /** @type {Stone | undefined} */
   #石
   /** @type {Empty | undefined} */
@@ -287,7 +291,7 @@ class StoneOrEmpty {
 /**
  * 格子
  */
-class Grid {
+export class Grid {
   /** @type { StoneOrEmpty[][]} */
   values;
 
@@ -315,6 +319,14 @@ class Grid {
       }
     }
   }
+
+  // 各石ごとに(cb) {
+  //   for(let i = 0; i < Math.min(this.格子.values.length, 12); i++) {
+  //     for(let j = 0; j < 格子.values[0].length; j++) {
+  //         this.gameObjects[i][j].update(格子.values[i][j]);
+  //     }
+  //   }
+  // }
 
   /**
    * 
@@ -354,7 +366,7 @@ class Grid {
    * @param {number} columnNumber 
    * @returns 
    */
-  列にある落ちてる石リスト(columnNumber) {
+  #列にある落ちてる石リスト(columnNumber) {
     return this.列を取得する(columnNumber).filter(v => v.は石である && v.石.状態 == "落ちてる").map(v => v.石);
   }
 
@@ -508,9 +520,19 @@ class Grid {
   }
 
 
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
   列がすべて空(columnNumber) {
     return !this.列に石がある(columnNumber);
   }
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
   列に石がある(columnNumber) {
     for(let i = this.values.length - 1; i >= 0; i--) {
       let target = this.values[i][columnNumber];
@@ -521,10 +543,20 @@ class Grid {
     return false;
   }
 
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
   最下部の石の色(columnNumber) {
     return this.最下部の石(columnNumber).色;
   }
 
+  /**
+   * 
+   * @param {number} columnNumber 
+   * @returns 
+   */
   列を取得する(columnNumber) {
     const result = [];
     for(let 行 = 0; 行 < this.values.length; 行++) {
@@ -534,9 +566,9 @@ class Grid {
   }
 
   落ちる() {
-    console.log(this.values);
+    // console.log(this.values);
     for(let 列 = 0; 列 < this.values[0].length; 列++) {
-      var 列にある落ちてる石リスト = this.列にある落ちてる石リスト(列);
+      var 列にある落ちてる石リスト = this.#列にある落ちてる石リスト(列);
       if(列にある落ちてる石リスト.length == 0) {
         continue;
       }
@@ -558,7 +590,7 @@ class Grid {
     var 追加する行 = new Array(this.values[0].length).fill(0).map((v, i) => StoneOrEmpty.ランダムな石({行: 0, 列: i}));
     this.values = [追加する行, ...this.values].slice(0, 行数);
     this.values.forEach((v, 行) => v.forEach((cell, 列) => cell.行を更新する(行)));
-    console.log("行数", this.values.length);
+    // console.log("行数", this.values.length);
   }
   
 }
@@ -610,7 +642,7 @@ class StateTransition {
   }
 }
 
-class InicialGrid {
+export class InicialGrid {
   /** @type {string} */
   // @ts-ignore
   value;
@@ -651,7 +683,7 @@ class InicialGrid {
       }
       return new Array(列数).fill(0).map(v => 色リスト[Math.floor(Math.random() * 色数)]).join("");
     }).join("\n");
-    console.log(value);
+    // console.log(value);
     return new InicialGrid(value);
   }
 }
@@ -664,7 +696,7 @@ class InicialGrid {
  * ステージを管理する
  * @implements {ModeController}
  * */
-class BasicModeController {
+export class BasicModeController {
   /** @type {MagicalDropGame} */
   #game;
 
@@ -686,15 +718,28 @@ class BasicModeController {
   }
 }
 
+class Player {
+  列番号 = 6;
+  持ってる石 = PullStones.空();
+  constructor(列数) {
+    this.列数 = 列数;
+  }
+  右へ移動() {
+    this.列番号 = (this.列番号 + 1) % this.列数;
+  }
+  左へ移動() {
+    this.列番号 = this.列番号 == 0 ? 11 : this.列番号 - 1;
+  }
+}
+
 
 
 /** @typedef {{初期格子:InicialGrid, モード:ModeController, 行数:number, 列数:number}} MagicalDropGameConfig */
 
-class MagicalDropGame {
+export class MagicalDropGame {
+  プレイヤー;
   格子;
-  状態 = new StateTransition(() => this.消せるか確認する());
-  /** @type {PullStones} */
-  持ってる石 = PullStones.空();
+  状態 = new StateTransition(() => this.#消せるか確認する());
   モード;
   ゲームオーバー = false;
   /**
@@ -707,16 +752,22 @@ class MagicalDropGame {
     this.モード.setGame(this);
     this.列数 = config.列数;
     this.行数 = config.行数;
+    this.プレイヤー = new Player(config.列数);
 
     if(this.格子.列数 != this.列数) {
       throw new Error("列数が一致しない");
     }
-
-
   }
 
+  右へ移動() {
+    this.プレイヤー.右へ移動();
+  }
 
-  消せるか確認する() {
+  左へ移動() {
+    this.プレイヤー.左へ移動();
+  }
+
+  #消せるか確認する() {
     var 結果 = false;
     this.格子.落ちてる石リスト.forEach(v => {
       if(this.格子.空である(v.位置)) {
@@ -730,38 +781,34 @@ class MagicalDropGame {
   }
 
   /**
-   * 石を取る。取った石は持ってる石に入る。
-   * @param {number} columnNumber 
+   * 石を取る。取った石は持ってる石に入る。 
    */
-  取る(columnNumber) {
-    if(this.格子.列がすべて空(columnNumber)) {
+  取る() {
+    const 列番号 = this.プレイヤー.列番号;
+    if(this.格子.列がすべて空(列番号)) {
       return;
     }
-    const 最下部の石 = this.格子.最下部の石(columnNumber);
-    if(!this.持ってる石 || this.持ってる石.は空である) { 
-      this.持ってる石 = this.格子.取る(columnNumber);
-    } else if(this.持ってる石.同じ色(最下部の石)) {
-      this.持ってる石.add(this.格子.取る(columnNumber))
+    const 最下部の石 = this.格子.最下部の石(列番号);
+    if(this.プレイヤー.持ってる石.は空である) { 
+      this.プレイヤー.持ってる石 = this.格子.取る(列番号);
+    } else if(this.プレイヤー.持ってる石.同じ色(最下部の石)) {
+      this.プレイヤー.持ってる石.add(this.格子.取る(列番号))
     }
   }
 
-  /**
-   * 
-   * @param {number} columnNumber 
-   * @returns 
-   */
-  置く(columnNumber) {
-    if(this.持ってる石.は空である) {
+  置く() {
+    const 列番号 = this.プレイヤー.列番号;
+    if(this.プレイヤー.持ってる石.は空である) {
       return;
     }
-    if(this.格子.列がすべて空(columnNumber)) {
+    if(this.格子.列がすべて空(列番号)) {
       return
     }
         
-    this.格子.置く(columnNumber, this.持ってる石);
-    this.持ってる石.clear();
+    this.格子.置く(列番号, this.プレイヤー.持ってる石);
+    this.プレイヤー.持ってる石.clear();
 
-    console.log(this.格子.values);
+    // console.log(this.格子.values);
     this.状態.置く();
   }
 
