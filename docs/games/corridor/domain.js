@@ -210,6 +210,20 @@ export class Corridor {
     }
 
     /**
+     * ゲームが終了したか判定する
+     */
+    get isGameOver() {
+        return this.winner !== null;
+    }
+
+    /**
+     * ゲームが進行中か判定する
+     */
+    get isGameActive() {
+        return this.winner === null;
+    }
+
+    /**
      * 現在のターンのプレイヤーを取得する
      */
     get currentPlayer() {
@@ -229,7 +243,7 @@ export class Corridor {
      * @returns {Corridor}
      */
     movePawn(newPos) {
-        if (this.winner !== null) return this;
+        if (this.isGameOver) return this;
         if (!this.getValidPawnMoves().some(p => p.equals(newPos))) return this;
 
         const newPlayers = [...this.players];
@@ -254,7 +268,7 @@ export class Corridor {
      * @returns {Corridor}
      */
     placeWall(wall) {
-        if (this.winner !== null) return this;
+        if (this.isGameOver) return this;
         if (this.currentPlayer.wallsRemaining <= 0) return this;
         if (!this.board.isValidWallPlacement(wall)) return this;
 

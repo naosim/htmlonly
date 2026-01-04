@@ -1,9 +1,57 @@
 import { Corridor, Point, Wall } from './domain.js';
 
+/**
+ * ビュー上のグリッド目（17x17など）の1マスを表現するヘルパークラス
+ */
+class GridSlot {
+  /**
+    * @param {number} r 行インデックス (0 to gridSize-1)
+    * @param {number} c 列インデックス (0 to gridSize-1)
+    */
+  constructor(r, c) {
+    this.r = r;
+    this.c = c;
+    // ドメイン層の座標 (x, y) に変換
+    this.x = Math.floor(c / 2);
+    this.y = Math.floor(r / 2);
+  }
+
+  /** マス目（駒が置ける場所）か判定 */
+  get isCell() { return this.r % 2 === 0 && this.c % 2 === 0; }
+  /** 水平方向の壁スロットか判定 */
+  get isHWall() { return this.r % 2 !== 0 && this.c % 2 === 0; }
+  /** 垂直方向の壁スロットか判定 */
+  get isVWall() { return this.r % 2 === 0 && this.c % 2 !== 0; }
+  /** 角（壁の交差点）か判定 */
+  get isCorner() { return this.r % 2 !== 0 && this.c % 2 !== 0; }
+
+  /**
+   * 指定した壁リストの中に、このスロットを占有する壁があるか判定
+   * @param {Wall[]} walls 
+   */
+  isOccupiedBy(walls) {
+    if (this.isCell) return false;
+
+    if (this.isHWall) {
+      // 水平壁は (x, y) と (x+1, y) の2スロット分を占有する
+      return walls.some(w => w.orientation === 'H' && w.y === this.y && (w.x === this.x || w.x === this.x - 1));
+    }
+    if (this.isVWall) {
+      // 垂直壁は (x, y) と (x, y+1) の2スロット分を占有する
+      return walls.some(w => w.orientation === 'V' && w.x === this.x && (w.y === this.y || w.y === this.y - 1));
+    }
+    if (this.isCorner) {
+      // 角は、その座標を起点とする水平壁または垂直壁がある場合に占有される
+      return walls.some(w => w.x === this.x && w.y === this.y);
+    }
+    return false;
+  }
+}
+
 class QuoridorView {
   constructor() {
     this.game = new Corridor();
-    this.history = []; // ゲーム履歴を保持
+    this.history = [];
 
     this.boardElement = document.getElementById('board');
     this.p1Info = document.getElementById('player1-info');
@@ -26,22 +74,27 @@ class QuoridorView {
 
   render() {
     if (!this.boardElement) return;
-    this.boardElement.innerHTML = '';
-    const size = 17; // 9 cells + 8 gaps
 
-    for (let r = 0; r < size; r++) {
-      for (let c = 0; c < size; c++) {
+    const boardSize = this.game.board.size;
+    const gridSize = boardSize * 2 - 1;
+
+    this.boardElement.style.setProperty('--board-size-minus-1', (boardSize - 1).toString());
+    this.boardElement.innerHTML = '';
+
+    const walls = this.game.board.walls;
+
+    for (let r = 0; r < gridSize; r++) {
+      for (let c = 0; c < gridSize; c++) {
+        const slot = new GridSlot(r, c);
         const element = document.createElement('div');
         element.dataset.r = r.toString();
         element.dataset.c = c.toString();
 
-        if (r % 2 === 0 && c % 2 === 0) {
-          // Cell
-          const x = c / 2;
-          const y = r / 2;
+        if (slot.isCell) {
           element.classList.add('cell');
+          const pos = new Point(slot.x, slot.y);
 
-          const pos = new Point(x, y);
+          // 駒の描画
           this.game.players.forEach(p => {
             if (p.pos.equals(pos)) {
               const pawn = document.createElement('div');
@@ -50,38 +103,28 @@ class QuoridorView {
             }
           });
 
-          if (this.game.winner === null && this.game.getValidPawnMoves().some(p => p.equals(pos))) {
+          // 移動可能ハイライト
+          if (this.game.isGameActive && this.game.getValidPawnMoves().some(p => p.equals(pos))) {
             element.classList.add('valid-move');
             element.addEventListener('click', () => this.handleMove(pos));
           }
-        } else if (r % 2 !== 0 && c % 2 === 0) {
-          // Horizontal wall gap
+        } else if (slot.isHWall) {
           element.classList.add('wall-slot', 'h-wall-slot-segment');
-          const x = c / 2;
-          const y = (r - 1) / 2;
-
-          if (this.isWallPart(x, y, 'H', 'segment')) {
+          if (slot.isOccupiedBy(walls)) {
             element.classList.add('wall');
-          } else if (this.game.winner === null && x < 8) {
-            element.addEventListener('click', () => this.handlePlaceWall(x, y, 'H'));
+          } else if (this.game.isGameActive && slot.x < boardSize - 1) {
+            element.addEventListener('click', () => this.handlePlaceWall(slot.x, slot.y, 'H'));
           }
-        } else if (r % 2 === 0 && c % 2 !== 0) {
-          // Vertical wall gap
+        } else if (slot.isVWall) {
           element.classList.add('wall-slot', 'v-wall-slot-segment');
-          const x = (c - 1) / 2;
-          const y = r / 2;
-
-          if (this.isWallPart(x, y, 'V', 'segment')) {
+          if (slot.isOccupiedBy(walls)) {
             element.classList.add('wall');
-          } else if (this.game.winner === null && y < 8) {
-            element.addEventListener('click', () => this.handlePlaceWall(x, y, 'V'));
+          } else if (this.game.isGameActive && slot.y < boardSize - 1) {
+            element.addEventListener('click', () => this.handlePlaceWall(slot.x, slot.y, 'V'));
           }
-        } else {
-          // Corner
+        } else if (slot.isCorner) {
           element.classList.add('corner-slot');
-          const x = (c - 1) / 2;
-          const y = (r - 1) / 2;
-          if (this.isWallPart(x, y, 'H', 'corner') || this.isWallPart(x, y, 'V', 'corner')) {
+          if (slot.isOccupiedBy(walls)) {
             element.classList.add('wall');
           }
         }
@@ -91,26 +134,6 @@ class QuoridorView {
     }
 
     this.updateStatus();
-  }
-
-  isWallPart(x, y, orientation, type) {
-    if (orientation === 'H') {
-      if (type === 'segment') {
-        // Horizontal segments at (x, y) and (x+1, y)
-        return this.game.board.walls.some(w => w.orientation === 'H' && w.y === y && (w.x === x || w.x === x - 1));
-      } else {
-        // Corner at (x, y)
-        return this.game.board.walls.some(w => w.orientation === 'H' && w.x === x && w.y === y);
-      }
-    } else {
-      if (type === 'segment') {
-        // Vertical segments at (x, y) and (x, y+1)
-        return this.game.board.walls.some(w => w.orientation === 'V' && w.x === x && (w.y === y || w.y === y - 1));
-      } else {
-        // Corner at (x, y)
-        return this.game.board.walls.some(w => w.orientation === 'V' && w.x === x && w.y === y);
-      }
-    }
   }
 
   handleMove(pos) {
@@ -151,17 +174,19 @@ class QuoridorView {
   updateStatus() {
     if (this.p1Info) this.p1Info.classList.toggle('active', this.game.turn % 2 === 0);
     if (this.p2Info) this.p2Info.classList.toggle('active', this.game.turn % 2 === 1);
-    if (this.p1Walls) this.p1Walls.textContent = `Walls: ${this.game.players[0].wallsRemaining}`;
-    if (this.p2Walls) this.p2Walls.textContent = `Walls: ${this.game.players[1].wallsRemaining}`;
+    const p1 = this.game.players[0];
+    const p2 = this.game.players[1];
+    if (this.p1Walls && p1) this.p1Walls.textContent = `Walls: ${p1.wallsRemaining}`;
+    if (this.p2Walls && p2) this.p2Walls.textContent = `Walls: ${p2.wallsRemaining}`;
 
-    if (this.undoButton) {
-      this.undoButton.disabled = this.history.length === 0 || this.game.winner !== null;
+    if (this.undoButton instanceof HTMLButtonElement) {
+      this.undoButton.disabled = this.history.length === 0 || this.game.isGameOver;
     }
 
     const turnText = document.getElementById('turn-indicator');
     if (turnText) turnText.textContent = `TURN ${this.game.turn + 1}`;
 
-    if (this.game.winner !== null && this.winnerOverlay && this.winnerText) {
+    if (this.game.isGameOver && this.winnerOverlay && this.winnerText) {
       this.winnerOverlay.style.display = 'flex';
       this.winnerText.innerHTML = `PLAYER ${this.game.winner + 1}<br>VICTORY!`;
       this.winnerText.style.color = this.game.winner === 0 ? 'var(--player1-color)' : 'var(--player2-color)';
