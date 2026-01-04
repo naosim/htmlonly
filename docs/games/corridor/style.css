@@ -11,6 +11,8 @@
   --valid-move-bg: rgba(56, 189, 248, 0.2);
   --glass-bg: rgba(30, 41, 59, 0.7);
   --glass-border: rgba(255, 255, 255, 0.1);
+  --cell-size: 45px;
+  --gap-size: 10px;
 }
 
 * {
@@ -84,8 +86,9 @@ body {
 
 #board {
   display: grid;
-  grid-template-columns: repeat(8, 45px 10px) 45px;
-  grid-template-rows: repeat(8, 45px 10px) 45px;
+  /* repeat count is set dynamically via JS */
+  grid-template-columns: repeat(var(--board-size-minus-1, 8), var(--cell-size) var(--gap-size)) var(--cell-size);
+  grid-template-rows: repeat(var(--board-size-minus-1, 8), var(--cell-size) var(--gap-size)) var(--cell-size);
   background: var(--board-bg);
   padding: 15px;
   border-radius: 12px;
@@ -95,8 +98,8 @@ body {
 }
 
 .cell {
-  width: 45px;
-  height: 45px;
+  width: var(--cell-size);
+  height: var(--cell-size);
   background: var(--cell-bg);
   border-radius: 6px;
   display: flex;
@@ -193,23 +196,21 @@ body {
 /* Mobile adaptations */
 @media (max-width: 600px) {
   #board {
-    grid-template-columns: repeat(8, 32px 6px) 32px;
-    grid-template-rows: repeat(8, 32px 6px) 32px;
+    --cell-size: 32px;
+    --gap-size: 6px;
     padding: 8px;
   }
 
   .cell {
-    width: 32px;
-    height: 32px;
     border-radius: 4px;
   }
 
   .h-wall-slot-segment {
-    height: 6px;
+    height: var(--gap-size);
   }
 
   .v-wall-slot-segment {
-    width: 6px;
+    width: var(--gap-size);
   }
 
   .pawn {
